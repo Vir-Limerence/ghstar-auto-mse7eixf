@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成语肉鸽 · 墨韵</title>
+<script>p5.disableFriendlyErrors = true;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; overflow: hidden; background: #2c2416; }
+  canvas { display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<script>
+// ========== 配置 ==========
+const PALETTE = {
+  paper:    '#f0e6d3',
+  ink:      '#2c2416',
+  inkLight: '#5c5040',
+  red:      '#c41e3a',
+  green:    '#5b8c5a',
+  gold:     '#c9a96e',
+  goldDark: '#8b7355',
+  hpGreen:  '#4a7c59',
+  shield:   '#5b7fa5',
+  fire:     '#d4843a',
+  darkBg:   '#1a1410',
+};
+
+const IDIOMS = [
+  {id:'yijianshuangdiao', name:'一箭双雕', type:'attack', cost:2, value:18, desc:'对敌人造成 18 点伤害'},
+  {id:'guruojintang',     name:'固若金汤', type:'defense',cost:2, value:15, desc:'获得 15 点护盾'},
+  {id:'huoshangjiaoyou',  name:'火上浇油', type:'attack', cost:1, value:8,  desc:'造成 8 点伤害，附加 2 回合灼烧'},
+  {id:'wangyangbulao',    name:'亡羊补牢', type:'heal',  cost:2, value:12, desc:'回复 12 点生命，获得 5 点护盾'},
+  {id:'fudichouxin',      name:'釜底抽薪', type:'debuff',cost:3, value:0,  desc:'移除敌人全部增益，造成 10 点伤害'},
+  {id:'huashuoshidian',   name:'画龙点睛', type:'buff',  cost:1, value:0,  desc:'下回合伤害翻倍'},
+  {id:'shengdongjixi',    name:'声东击西', type:'attack', cost:1, value:10, desc:'造成 10 点伤害，本回合闪避'},
+  {id:'jiedaosharen',     name:'借刀杀人', type:'counter',cost:2, value:0,  desc:'本回合受到攻击时反弹 50% 伤害'},
+  {id:'jinchantuoqiao',   name:'金蝉脱壳', type:'escape',cost:3, value:0,  desc:'生命低于 30 时自动触发：回复 20 血'},
+  {id:'shunshouqianyang', name:'顺手牵羊', type:'steal', cost:1, value:0,  desc:'偷取敌人 8 点生命'},
+];
+
+const ENEMY_ATTACKS = ['黑虎掏心','横扫千军','暗箭伤人'];
+
+// ========== 状态 ==========
+let state, particles, hoveredCard, animQueue, draftCards;
+let shakeTimer = 0, shakeIntensity = 0;
+let gameLog = [];
+
+function resetGame() {
+  state = {
+    screen: 'battle', // battle | draft | win | lose
+    player: { hp:80, maxHp:80, shield:0, energy:3, maxEnergy:5, dmgMul:1, dodge:false, reflect:false, burn:0 },
+    enemy:  { hp:60, maxHp:60, shield:0, buffs:{}, burn:0, atkIdx:0, intent:null },
+    deck: IDIOMS.slice(0, 5).map(c => ({...c})),
+    hand: [],
+    turn: 1,
+    selectedCard: null,
+  };
+  gameLog = ['战斗开始！选择一个成语出击'];
+  animQueue = [];
+  draftCards = [];
+  drawCards();
+}
+
+function drawCards() {
+  state.hand = [];
+  let pool = [...state.deck];
+  for (let i = 0; i < 5 && pool.length > 0; i++) {
+    let idx = Math.floor(Math.random() * pool.length);
+    state.hand.push(pool.splice(idx, 1)[0]);
+  }
+  state.player.energy = min(state.player.maxEnergy, state.player.energy + 3);
+  state.player.dmgMul = 1;
+  state.player.dodge = false;
+  state.player.reflect = false;
+  state.selectedCard = null;
+  // Enemy intent
+  let atkName = ENEMY_ATTACKS[state.enemy.atkIdx % 3];
+  let dmg = 8 + state.enemy.atkIdx * 4;
+  state.enemy.intent = { name: atkName, dmg: dmg };
+  state.enemy.atkIdx++;
+}
+
+function dealDamage(target, amount, attacker) {
+  amount = Math.floor(amount);
+  if (amount <= 0) return 0;
+  let actual = amount;
+  // Shield absorbs
+  if (target.shield > 0) {
+    if (target.shield >= actual) { target.shield -= actual; return 0; }
+    else { actual -= target.shield; target.shield = 0; }
+  }
+  target.hp -= actual;
+  return actual;
+}
+
+function playCard(card) {
+  if (state.player.energy < card.cost) return;
+  state.player.energy -= card.cost;
+  let p = state.player, e = state.enemy;
+
+  switch (card.type) {
+    case 'attack':
+      let dmg = card.value * p.dmgMul;
+      dealDamage(e, dmg, p);
+      gameLog.push(`「${card.name}」造成 ${Math.floor(dmg)} 伤害`);
+      break;
+    case 'defense':
+      p.shield += card.value;
+      gameLog.push(`「${card.name}」获得 ${card.value} 护盾`);
+      break;
+    case 'heal':
+      p.hp = min(p.maxHp, p.hp + card.value);
+      p.shield += 5;
+      gameLog.push(`「${card.name}」回复 ${card.value} 生命 +5护盾`);
+      break;
+    case 'debuff':
+      e.buffs = {};
+      dealDamage(e, 10, p);
+      gameLog.push(`「${card.name}」移除增益，造成 10 伤害`);
+      break;
+    case 'buff':
+      p.dmgMul = 2;
+      gameLog.push(`「${card.name}」下回合伤害翻倍`);
+      break;
+    case 'counter':
+      p.reflect = true;
+      gameLog.push(`「${card.name}」反弹姿态`);
+      break;
+    case 'steal':
+      let stolen = min(8, e.hp);
+      e.hp -= stolen;
+      p.hp = min(p.maxHp, p.hp + stolen);
+      gameLog.push(`「${card.name}」偷取 ${stolen} 生命`);
+      break;
+    case 'escape':
+      if (p.hp <= 30) {
+        p.hp = min(p.maxHp, p.hp + 20);
+        gameLog.push(`「${card.name}」金蝉脱壳！回复 20 生命`);
+      } else {
+        gameLog.push(`「${card.name}」生命高于 30，未触发`);
+      }
+      break;
+  }
+  if (gameLog.length > 6) gameLog.shift();
+  state.selectedCard = null;
+}
+
+function enemyTurn() {
+  let e = state.enemy, p = state.player;
+  let dmg = e.intent.dmg;
+
+  if (p.dodge) { gameLog.push('闪避！'); p.dodge = false; }
+  else if (p.reflect) {
+    dealDamage(p, Math.floor(dmg * 0.5));
+    dealDamage(e, Math.floor(dmg * 0.5));
+    gameLog.push(`反弹！双方各受 ${Math.floor(dmg*0.5)} 伤害`);
+    p.reflect = false;
+  } else {
+    let actual = dealDamage(p, dmg);
+    if (actual > 0) {
+      gameLog.push(`敌人「${e.intent.name}」造成 ${actual} 伤害`);
+      shakeTimer = 10; shakeIntensity = 4;
+    }
+  }
+  // Burn tick
+  if (e.burn > 0) { dealDamage(e, 5); e.burn--; }
+  if (p.burn > 0) { dealDamage(p, 5); p.burn--; }
+
+  // Check win/lose
+  if (e.hp <= 0) {
+    state.screen = 'draft';
+    draftCards = [];
+    let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
+    for (let i = 0; i < 3; i++) {
+      let idx = Math.floor(Math.random() * pool.length);
+      draftCards.push(pool.splice(idx, 1)[0]);
+    }
+    gameLog = ['胜！选择一张新成语加入牌组'];
+    return;
+  }
+  if (p.hp <= 0) {
+    state.screen = 'lose';
+    gameLog = ['败北... 点击重新开始'];
+    return;
+  }
+
+  drawCards();
+  state.turn++;
+}
+
+// ========== p5 ==========
+function setup() {
+  let c = createCanvas(480, 800);
+  pixelDensity(1);
+  textFont('楷体');
+  resetGame();
+  particles = [];
+  for (let i = 0; i < 15; i++) {
+    particles.push({ x: Math.random()*width, y: Math.random()*height, vx:(Math.random()-0.5)*0.3, vy:Math.random()*0.3+0.1, size:Math.random()*2+1, alpha:Math.random()*30+10 });
+  }
+}
+
+function draw() {
+  background(PALETTE.paper);
+
+  // Paper texture effect
+  noStroke();
+  for (let p of particles) {
+    fill(PALETTE.inkLight.replace(')', `,${p.alpha/255})`).replace('rgb','rgba'));
+    ellipse(p.x, p.y, p.size);
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+    if (p.y > height) { p.y = 0; p.x = Math.random()*width; }
+  }
+
+  if (state.screen === 'battle') drawBattle();
+  else if (state.screen === 'draft') drawDraft();
+  else if (state.screen === 'lose') drawLose();
+}
+
+function drawBattle() {
+  push();
+  if (shakeTimer > 0) {
+    translate(Math.sin(shakeTimer*2)*shakeIntensity, Math.cos(shakeTimer*1.7)*shakeIntensity);
+    shakeTimer--; shakeIntensity *= 0.8;
+  }
+
+  // Enemy
+  drawEnemy();
+
+  // Player area
+  let py = 560;
+  // HP bars
+  drawHPBar(30, py-10, state.player.hp, state.player.maxHp, PALETTE.red, '玩家');
+  drawHPBar(30, py+10, state.enemy.hp, state.enemy.maxHp, PALETTE.ink, '敌人');
+
+  // Turn counter
+  fill(PALETTE.inkLight);
+  textSize(14);
+  textAlign(RIGHT);
+  text(`第 ${state.turn} 回合`, width-30, 30);
+
+  // Enemy intent
+  fill(PALETTE.red);
+  textSize(13);
+  textAlign(CENTER);
+  text(`敌方意图: ${state.enemy.intent.name} (${state.enemy.intent.dmg}伤害)`, width/2, 130);
+
+  // Log
+  fill(PALETTE.ink);
+  textSize(12);
+  textAlign(LEFT);
+  for (let i = gameLog.length-1; i >= 0; i--) {
+    fill(i===gameLog.length-1?PALETTE.red:PALETTE.inkLight);
+    text(gameLog[i], 30, 155 + (gameLog.length-1-i)*18);
+  }
+
+  // Energy
+  fill(PALETTE.ink);
+  textSize(13);
+  textAlign(LEFT);
+  text(`⚡ ${state.player.energy}/${state.player.maxEnergy}`, 30, 190);
+  // Shield
+  if (state.player.shield > 0) {
+    fill(PALETTE.shield);
+    text(`🛡 ${state.player.shield}`, 120, 190);
+  }
+
+  // Cards
+  hoveredCard = null;
+  for (let i = 0; i < state.hand.length; i++) {
+    let card = state.hand[i];
+    let cx = 30 + i * 92;
+    let cy = 620;
+    let cardW = 82, cardH = 140;
+    let hover = mouseX > cx && mouseX < cx+cardW && mouseY > cy && mouseY < cy+cardH;
+
+    if (hover) hoveredCard = i;
+
+    // Card shadow
+    if (state.selectedCard === i && state.player.energy >= card.cost) {
+      drawCard(cx, cy-10, cardW, cardH, card, true);
+    } else {
+      drawCard(cx, cy, cardW, cardH, card, hover);
+    }
+
+    // Selected indicator
+    if (state.selectedCard === i) {
+      noFill(); stroke(PALETTE.red); strokeWeight(2);
+      rect(cx-2, cy-12, cardW+4, cardH+4, 6);
+    }
+  }
+
+  // End turn button
+  let bx = width-80, by = 195;
+  fill(PALETTE.red);
+  noStroke();
+  rect(bx, by, 60, 28, 5);
+  fill(255);
+  textSize(12);
+  textAlign(CENTER);
+  text('结束回合', bx+30, by+19);
+
+  pop();
+}
+
+function drawCard(x, y, w, h, card, active) {
+  let canPlay = state.player.energy >= card.cost;
+  let baseY = active ? y-5 : y;
+
+  // Card body
+  noStroke();
+  fill(canPlay ? '#faf5eb' : '#e8e0d5');
+  rect(x, baseY, w, h, 5);
+
+  // Border
+  noFill();
+  stroke(PALETTE.gold);
+  strokeWeight(1.5);
+  rect(x, baseY, w, h, 5);
+
+  // Cost circle
+  noStroke();
+  fill(canPlay ? PALETTE.red : PALETTE.inkLight);
+  ellipse(x+w-14, baseY+14, 24);
+  fill(255);
+  textSize(14);
+  textAlign(CENTER);
+  text(card.cost, x+w-14, baseY+19);
+
+  // Name
+  fill(PALETTE.ink);
+  textSize(15);
+  textAlign(CENTER);
+  text(card.name, x+w/2, baseY+42);
+
+  // Type badge
+  let typeColors = {attack:PALETTE.red, defense:PALETTE.shield, heal:PALETTE.green, buff:PALETTE.gold, debuff:PALETTE.ink, counter:PALETTE.fire, steal:PALETTE.goldDark, escape:PALETTE.inkLight};
+  let typeNames = {attack:'攻', defense:'守', heal:'愈', buff:'强', debuff:'破', counter:'反', steal:'窃', escape:'遁'};
+  fill(typeColors[card.type] || PALETTE.ink);
+  textSize(11);
+  text(typeNames[card.type] || '?', x+w/2, baseY+58);
+
+  // Desc
+  fill(PALETTE.inkLight);
+  textSize(9);
+  textAlign(CENTER);
+  let desc = card.desc;
+  if (desc.length > 12) {
+    text(desc.substring(0, 12), x+w/2, baseY+78);
+    text(desc.substring(12), x+w/2, baseY+92);
+  } else {
+    text(desc, x+w/2, baseY+78);
+  }
+
+  // Seal stamp
+  let sealColors = {attack:PALETTE.red, defense:PALETTE.shield, heal:PALETTE.green, buff:PALETTE.gold};
+  fill(sealColors[card.type] || PALETTE.red.replace(')','').replace('rgb','rgba')+',0.3)');
+  noStroke();
+  rect(x+5, baseY+h-22, 22, 14, 2);
+  fill(255);
+  textSize(8);
+  text(typeNames[card.type], x+16, baseY+h-12);
+}
+
+function drawEnemy() {
+  let ex = width/2, ey = 230;
+  // Body
+  noStroke();
+  // Shadow glow
+  for (let i = 3; i >= 0; i--) {
+    fill(PALETTE.ink.replace(')', `,${0.05+i*0.03})`).replace('rgb','rgba'));
+    ellipse(ex, ey+5, 70+i*10, 70+i*10);
+  }
+  // Main body
+  fill(PALETTE.ink);
+  ellipse(ex, ey, 55, 55);
+  // Eyes
+  fill(255);
+  ellipse(ex-12, ey-8, 10, 8);
+  ellipse(ex+12, ey-8, 10, 8);
+  fill(PALETTE.ink);
+  ellipse(ex-10, ey-7, 4);
+  ellipse(ex+14, ey-7, 4);
+  // Mouth
+  noFill(); stroke(PALETTE.red); strokeWeight(1.5);
+  arc(ex, ey+8, 20, 12, 0.1, PI-0.1);
+  // Enemy name
+  noStroke();
+  fill(PALETTE.ink);
+  textSize(13);
+  textAlign(CENTER);
+  text('魔将', ex, ey+40);
+}
+
+function drawHPBar(x, y, hp, maxHp, col, label) {
+  fill(PALETTE.inkLight);
+  textSize(11);
+  textAlign(LEFT);
+  text(`${label}`, x, y-2);
+  noStroke();
+  fill(PALETTE.ink.replace(')','').replace('rgb','rgba')+',0.2)');
+  rect(x, y, 120, 8, 4);
+  let pct = max(0, hp/maxHp);
+  fill(col);
+  rect(x, y, 120*pct, 8, 4);
+  fill(PALETTE.ink);
+  textSize(10);
+  textAlign(RIGHT);
+  text(`${Math.max(0,hp)}/${maxHp}`, x+120, y-2);
+}
+
+function drawDraft() {
+  fill(PALETTE.ink);
+  textSize(18);
+  textAlign(CENTER);
+  text('选择一张成语入牌', width/2, 200);
+
+  for (let i = 0; i < draftCards.length; i++) {
+    let card = draftCards[i];
+    let cx = 80 + i * 130;
+    let cy = 300;
+    let hover = mouseX > cx-55 && mouseX < cx+55 && mouseY > cy-75 && mouseY < cy+75;
+    drawCard(cx-41, cy-70, 82, 140, card, hover);
+  }
+
+  // Restart text at bottom
+  fill(PALETTE.inkLight);
+  textSize(12);
+  text('点击卡牌选择', width/2, 520);
+}
+
+function drawLose() {
+  fill(PALETTE.red);
+  textSize(24);
+  textAlign(CENTER);
+  text('败 北', width/2, 300);
+
+  fill(PALETTE.inkLight);
+  textSize(14);
+  text('点击重新挑战', width/2, 380);
+}
+
+function mousePressed() {
+  if (state.screen === 'draft') {
+    for (let i = 0; i < draftCards.length; i++) {
+      let cx = 80 + i * 130, cy = 300;
+      if (mouseX > cx-55 && mouseX < cx+55 && mouseY > cy-75 && mouseY < cy+75) {
+        state.deck.push({...draftCards[i]});
+        gameLog = [`获得「${draftCards[i].name}」！】`];
+        state.screen = 'battle';
+        drawCards();
+        return;
+      }
+    }
+    return;
+  }
+
+  if (state.screen === 'lose') {
+    resetGame();
+    return;
+  }
+
+  // End turn button
+  if (mouseX > width-80 && mouseX < width-20 && mouseY > 195 && mouseY < 223) {
+    enemyTurn();
+    return;
+  }
+
+  // Card selection
+  if (hoveredCard !== null && state.hand[hoveredCard]) {
+    let card = state.hand[hoveredCard];
+    if (state.selectedCard === hoveredCard && state.player.energy >= card.cost) {
+      playCard(card);
+    } else {
+      state.selectedCard = hoveredCard;
+    }
+  }
+}
+
+function keyPressed() {
+  if (key === 'r') resetGame();
+}
+
+function windowResized() { resizeCanvas(480, 800); }
+</script>
+</body>
+</html>
