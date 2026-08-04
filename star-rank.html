@@ -53,6 +53,16 @@ h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
 .tag.agent{background:#1a2a3a;color:#58a6ff}
 .tag.tool{background:#3a2a1a;color:#e3b341}
 .tag.opensource{background:#2a1a3a;color:#bc8cff}
+/* AI News */
+.news-list{list-style:none;padding:0;max-width:800px;margin:0 auto}
+.news-list li{display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid #21262d;background:#161b22;margin-bottom:8px;border-radius:10px;border:1px solid #30363d;transition:border-color .2s}
+.news-list li:hover{border-color:#1f6feb}
+.news-cat{font-size:12px;padding:2px 10px;border-radius:10px;white-space:nowrap;font-weight:600;min-width:60px;text-align:center}
+.cat-ai{background:#1a3a2a;color:#3fb950}
+.cat-tech{background:#1a2a3a;color:#58a6ff}
+.cat-biz{background:#3a2a1a;color:#e3b341}
+.news-text{flex:1;font-size:14px;line-height:1.5}
+.news-time{font-size:12px;color:#484f58;white-space:nowrap}
 .footer{text-align:center;margin-top:40px;color:#484f58;font-size:12px}
 .footer a{color:#58a6ff}
 .update-time{text-align:center;color:#484f58;font-size:12px;margin-top:8px}
@@ -65,6 +75,7 @@ h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('rank')">📊 排行榜</button>
   <button class="tab-btn" onclick="switchTab('intro')">📖 项目介绍</button>
+  <button class="tab-btn" onclick="switchTab('news')">📰 AI 新闻</button>
 </div>
 
 <!-- 排行榜 tab -->
@@ -249,6 +260,17 @@ h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
 </div>
 </div>
 
+<!-- AI 新闻 tab -->
+<div id="tab-news" class="tab-content">
+<p class="update-time">来源 vicoman.top · 每日 08:00 自动更新</p>
+<ul class="news-list">
+  <li><span class="news-cat cat-ai">AI</span><span class="news-text">Cloudflare 推出开源库，为 AI 智能体提供独立虚拟工作区</span><span class="news-time">14:11</span></li>
+  <li><span class="news-cat cat-tech">航空</span><span class="news-text">俄罗斯首架全国产化 MC-21-310 客机完成首次飞行</span><span class="news-time">14:09</span></li>
+  <li><span class="news-cat cat-biz">商业</span><span class="news-text">安博同意以约 140 亿英镑收购仓储地产商 Segro</span><span class="news-time">14:05</span></li>
+  <li><span class="news-cat cat-biz">能源</span><span class="news-text">英国石油启动出售可再生能源业务 Archaea Energy</span><span class="news-time">14:00</span></li>
+</ul>
+</div>
+
 <p class="footer">🤖 Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 数据来源 <a href="https://github.com/trending">GitHub Trending</a> · 每天 10:00 自动更新</p>
 
 <script>
@@ -258,7 +280,8 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   var btns = document.querySelectorAll('.tab-btn');
   if (tab === 'rank') btns[0].classList.add('active');
-  else btns[1].classList.add('active');
+  else if (tab === 'intro') btns[1].classList.add('active');
+  else btns[2].classList.add('active');
 }
 </script>
 </body>
