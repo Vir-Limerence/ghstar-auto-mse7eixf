@@ -76,6 +76,7 @@ h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
   <button class="tab-btn active" onclick="switchTab('rank')">📊 排行榜</button>
   <button class="tab-btn" onclick="switchTab('intro')">📖 项目介绍</button>
   <button class="tab-btn" onclick="switchTab('news')">📰 AI 新闻</button>
+  <button class="tab-btn" onclick="switchTab('apps')">🔥 APP热榜</button>
 </div>
 
 <!-- 排行榜 tab -->
@@ -271,6 +272,73 @@ h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
 </ul>
 </div>
 
+<!-- APP热榜 tab -->
+<div id="tab-apps" class="tab-content">
+<p class="update-time">B站全站榜 · 小红书发现页 · 抖音/快手即将支持 · 每日更新</p>
+<style>
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.app-card{background:#161b22;border:1px solid #30363d;border-radius:12px;overflow:hidden}
+.app-card-head{padding:14px 20px;font-size:17px;font-weight:700;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:8px}
+.app-bili .app-card-head{background:linear-gradient(135deg,#fb7299,#fc8fb0);color:#fff}
+.app-xhs .app-card-head{background:linear-gradient(135deg,#ff2442,#ff6b81);color:#fff}
+.app-list{list-style:none;padding:0;max-height:500px;overflow-y:auto}
+.app-list li{padding:10px 16px;border-bottom:1px solid #21262d;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.app-list li:hover{background:#1c2128}
+.app-rank{font-weight:700;min-width:22px;text-align:center;font-size:13px}
+.app-title{flex:1;line-height:1.4}
+</style>
+<div class="app-grid">
+<div class="app-card app-bili">
+<div class="app-card-head">📺 B站 全站排行榜 TOP20</div>
+<ol class="app-list">
+<li><span class="app-rank" style="color:#f85149">1</span><span class="app-title">小时候看不懂，长大后已是局中人</span></li>
+<li><span class="app-rank" style="color:#f85149">2</span><span class="app-title">《原神》至冬交响音乐现场</span></li>
+<li><span class="app-rank" style="color:#d29922">3</span><span class="app-title">⚡宗主连携技⚡</span></li>
+<li><span class="app-rank">4</span><span class="app-title">古罗马离谱习俗颠覆现代人的认知</span></li>
+<li><span class="app-rank">5</span><span class="app-title">《次子就是次子》</span></li>
+<li><span class="app-rank">6</span><span class="app-title">我们拍到了水下风暴</span></li>
+<li><span class="app-rank">7</span><span class="app-title">不是只有伟大艺术家才能创作好作品</span></li>
+<li><span class="app-rank">8</span><span class="app-title">太初神宗的故事（合集）</span></li>
+<li><span class="app-rank">9</span><span class="app-title">1分钟听完8国调式的《千本樱》</span></li>
+<li><span class="app-rank">10</span><span class="app-title">【合唱】千本樱 100000人</span></li>
+<li><span class="app-rank">11</span><span class="app-title">第5集丨零号大坝开满了鲜花</span></li>
+<li><span class="app-rank">12</span><span class="app-title">争夺蜜瓜的修行 绝区零生日会</span></li>
+<li><span class="app-rank">13</span><span class="app-title">苏新皓 POWER直拍 演唱会</span></li>
+<li><span class="app-rank">14</span><span class="app-title">恋爱大师 2.0</span></li>
+<li><span class="app-rank">15</span><span class="app-title">赛伊德我变成女孩了</span></li>
+<li><span class="app-rank">16</span><span class="app-title">奇怪的玩具工厂 第五章</span></li>
+<li><span class="app-rank">17</span><span class="app-title">什么样的结局才配得上颠沛流离</span></li>
+<li><span class="app-rank">18</span><span class="app-title">游隼地球上俯冲速度最快的鸟</span></li>
+<li><span class="app-rank">19</span><span class="app-title">TF家族 突围II破局 EP06</span></li>
+<li><span class="app-rank">20</span><span class="app-title">你们起过最爆笑的外号是什么</span></li>
+</ol></div>
+<div class="app-card app-xhs">
+<div class="app-card-head">📕 小红书 发现页 TOP20</div>
+<ol class="app-list">
+<li><span class="app-rank" style="color:#f85149">1</span><span class="app-title">终于决定开始跟练了</span></li>
+<li><span class="app-rank" style="color:#f85149">2</span><span class="app-title">其实六点下班真的已经很晚了</span></li>
+<li><span class="app-rank" style="color:#d29922">3</span><span class="app-title">上松下紧穿出高级松弛感</span></li>
+<li><span class="app-rank">4</span><span class="app-title">惊不惊喜韩国女团什么都敢干</span></li>
+<li><span class="app-rank">5</span><span class="app-title">好疼精彩剧情搞笑日常百亿小剧场</span></li>
+<li><span class="app-rank">6</span><span class="app-title">三亿氪条录屏</span></li>
+<li><span class="app-rank">7</span><span class="app-title">韩看到中国发展这么好心中苦涩</span></li>
+<li><span class="app-rank">8</span><span class="app-title">蝴蝶忍为啥不叫蝶柱</span></li>
+<li><span class="app-rank">9</span><span class="app-title">香香软软的omega</span></li>
+<li><span class="app-rank">10</span><span class="app-title">有些题材就得外人来拍</span></li>
+<li><span class="app-rank">11</span><span class="app-title">北京中轴线上消失的一栋楼</span></li>
+<li><span class="app-rank">12</span><span class="app-title">未经网络污染的老辈子最好逗</span></li>
+<li><span class="app-rank">13</span><span class="app-title">老房子着火的桥段百看不厌</span></li>
+<li><span class="app-rank">14</span><span class="app-title">日本人日语很难尹正我张口就来</span></li>
+<li><span class="app-rank">15</span><span class="app-title">我居然默认她是男的</span></li>
+<li><span class="app-rank">16</span><span class="app-title">稍不留神就干成了健身房保洁</span></li>
+<li><span class="app-rank">17</span><span class="app-title">报恩还是报仇</span></li>
+<li><span class="app-rank">18</span><span class="app-title">SpaceX突然暴跌马斯克做了什么</span></li>
+<li><span class="app-rank">19</span><span class="app-title">中国人要有自己的英语</span></li>
+<li><span class="app-rank">20</span><span class="app-title">马代选岛看这5张图就够了</span></li>
+</ol></div>
+</div>
+</div>
+
 <p class="footer">🤖 Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 数据来源 <a href="https://github.com/trending">GitHub Trending</a> · 每天 10:00 自动更新</p>
 
 <script>
@@ -281,7 +349,8 @@ function switchTab(tab) {
   var btns = document.querySelectorAll('.tab-btn');
   if (tab === 'rank') btns[0].classList.add('active');
   else if (tab === 'intro') btns[1].classList.add('active');
-  else btns[2].classList.add('active');
+  else if (tab === 'news') btns[2].classList.add('active');
+  else btns[3].classList.add('active');
 }
 </script>
 </body>
