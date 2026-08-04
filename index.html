@@ -5,90 +5,256 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🔥 GitHub 涨星榜</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; }
-  h1 { text-align: center; font-size: 28px; margin-bottom: 8px; color: #f0f6fc; }
-  .subtitle { text-align: center; color: #8b949e; margin-bottom: 30px; font-size: 14px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; }
-  .card-header { padding: 16px 20px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #30363d; }
-  .daily .card-header { background: linear-gradient(135deg, #da3633, #f85149); color: #fff; }
-  .weekly .card-header { background: linear-gradient(135deg, #d29922, #e3b341); color: #0d1117; }
-  .monthly .card-header { background: linear-gradient(135deg, #238636, #3fb950); color: #fff; }
-  .rank-list { list-style: none; padding: 0; }
-  .rank-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 20px; border-bottom: 1px solid #21262d; transition: background .2s; }
-  .rank-list li:hover { background: #1c2128; }
-  .rank { font-size: 14px; font-weight: 700; min-width: 24px; text-align: center; padding-top: 2px; }
-  .rank-1 { color: #f85149; } .rank-2 { color: #d29922; } .rank-3 { color: #3fb950; }
-  .rank-other { color: #8b949e; }
-  .repo-info { flex: 1; min-width: 0; }
-  .repo-name { font-size: 14px; font-weight: 600; color: #58a6ff; }
-  .repo-name:hover { text-decoration: underline; cursor: pointer; }
-  .repo-desc { font-size: 12px; color: #8b949e; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .repo-stars { font-size: 13px; font-weight: 600; color: #e3b341; white-space: nowrap; margin-top: 1px; }
-  .footer { text-align: center; margin-top: 40px; color: #484f58; font-size: 12px; }
-  .footer a { color: #58a6ff; }
-  .update-time { text-align: center; color: #484f58; font-size: 12px; margin-top: 8px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:20px}
+h1{text-align:center;font-size:28px;margin-bottom:8px;color:#f0f6fc}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:10px;font-size:14px}
+/* Tabs */
+.tabs{display:flex;justify-content:center;gap:0;margin-bottom:24px}
+.tab-btn{padding:10px 32px;border:1px solid #30363d;background:#161b22;color:#8b949e;cursor:pointer;font-size:15px;transition:all .2s}
+.tab-btn:first-child{border-radius:8px 0 0 8px}
+.tab-btn:last-child{border-radius:0 8px 8px 0}
+.tab-btn.active{background:#1f6feb;color:#fff;border-color:#1f6feb}
+.tab-content{display:none;max-width:1200px;margin:0 auto}
+.tab-content.active{display:block}
+/* Leaderboard */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;overflow:hidden}
+.card-header{padding:16px 20px;font-size:18px;font-weight:700;border-bottom:1px solid #30363d}
+.daily .card-header{background:linear-gradient(135deg,#da3633,#f85149);color:#fff}
+.weekly .card-header{background:linear-gradient(135deg,#d29922,#e3b341);color:#0d1117}
+.monthly .card-header{background:linear-gradient(135deg,#238636,#3fb950);color:#fff}
+.rank-list{list-style:none;padding:0}
+.rank-list li{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid #21262d;transition:background .2s}
+.rank-list li:hover{background:#1c2128}
+.rank{font-size:14px;font-weight:700;min-width:24px;text-align:center;padding-top:2px}
+.rank-1{color:#f85149}.rank-2{color:#d29922}.rank-3{color:#3fb950}
+.rank-other{color:#8b949e}
+.repo-info{flex:1;min-width:0}
+.repo-name{font-size:14px;font-weight:600;color:#58a6ff}
+.repo-name:hover{text-decoration:underline;cursor:pointer}
+.repo-desc{font-size:12px;color:#8b949e;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.repo-stars{font-size:13px;font-weight:600;color:#e3b341;white-space:nowrap;margin-top:1px}
+/* Analysis tab */
+.analysis{max-width:800px;margin:0 auto}
+.analysis-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:20px;margin-bottom:16px}
+.analysis-card h3{color:#58a6ff;font-size:16px;margin-bottom:8px}
+.analysis-card h3 a{color:#58a6ff;text-decoration:none}
+.analysis-card h3 a:hover{text-decoration:underline}
+.analysis-card .stars{color:#e3b341;font-size:13px;margin-bottom:6px}
+.analysis-card .desc-en{color:#8b949e;font-size:13px;margin-bottom:8px;font-style:italic}
+.analysis-card .desc-zh{color:#c9d1d9;font-size:14px;line-height:1.6}
+.analysis-card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tag{padding:2px 10px;border-radius:12px;font-size:11px;background:#21262d;color:#8b949e}
+.tag.ai{background:#1a3a2a;color:#3fb950}
+.tag.agent{background:#1a2a3a;color:#58a6ff}
+.tag.tool{background:#3a2a1a;color:#e3b341}
+.tag.opensource{background:#2a1a3a;color:#bc8cff}
+.footer{text-align:center;margin-top:40px;color:#484f58;font-size:12px}
+.footer a{color:#58a6ff}
+.update-time{text-align:center;color:#484f58;font-size:12px;margin-top:8px}
 </style>
 </head>
 <body>
-  <h1>🔥 GitHub 涨星排行榜</h1>
-  <p class="subtitle">实时追踪 GitHub 热门项目 — 数据来源 GitHub Trending</p>
-  <p class="update-time">更新于 2026-08-03 · 由 Hermes Agent 自动抓取</p>
+<h1>🔥 GitHub 涨星排行榜</h1>
+<p class="subtitle">实时追踪 GitHub 热门项目 · 每天 10:00 自动更新</p>
 
-  <div class="grid">
-    <!-- 日榜 -->
-    <div class="card daily">
-      <div class="card-header">📅 今日涨星 TOP 10</div>
-      <ol class="rank-list">
-        <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/zhaoxuya520/reverse-skill" target="_blank">zhaoxuya520 / reverse-skill</a><p class="repo-desc">Reverse Engineering / Penetration Testing / Security</p></div><span class="repo-stars">⭐2,446</span></li>
-        <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/AI-For-Beginners" target="_blank">microsoft / AI-For-Beginners</a><p class="repo-desc">12 Weeks, 24 Lessons, AI for All!</p></div><span class="repo-stars">⭐1,902</span></li>
-        <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/firecrawl/pdf-inspector" target="_blank">firecrawl / pdf-inspector</a><p class="repo-desc">Fast Rust library for PDF inspection & classification</p></div><span class="repo-stars">⭐1,699</span></li>
-        <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/TencentCloud/TencentDB-Agent-Memory" target="_blank">TencentCloud / TencentDB-Agent-Memory</a><p class="repo-desc">Team-level memory hub for AI Agents</p></div><span class="repo-stars">⭐1,090</span></li>
-        <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/lyogavin/airllm" target="_blank">lyogavin / airllm</a><p class="repo-desc">70B inference on single 4GB GPU</p></div><span class="repo-stars">⭐1,085</span></li>
-        <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/esengine/DeepSeek-Reasonix" target="_blank">esengine / DeepSeek-Reasonix</a><p class="repo-desc">DeepSeek-native AI coding agent for terminal</p></div><span class="repo-stars">⭐883</span></li>
-        <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/generative-ai-for-beginners" target="_blank">microsoft / generative-ai-for-beginners</a><p class="repo-desc">21 Lessons, Get Started Building with Generative AI</p></div><span class="repo-stars">⭐775</span></li>
-        <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/antirez/ds4" target="_blank">antirez / ds4</a><p class="repo-desc">DeepSeek 4 local inference engine for Metal/CUDA</p></div><span class="repo-stars">⭐384</span></li>
-        <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/donnemartin/system-design-primer" target="_blank">donnemartin / system-design-primer</a><p class="repo-desc">Learn how to design large-scale systems</p></div><span class="repo-stars">⭐237</span></li>
-        <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/shiyu-coder/Kronos" target="_blank">shiyu-coder / Kronos</a><p class="repo-desc">Foundation Model for Financial Market Language</p></div><span class="repo-stars">⭐200</span></li>
-      </ol>
-    </div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('rank')">📊 排行榜</button>
+  <button class="tab-btn" onclick="switchTab('intro')">📖 项目介绍</button>
+</div>
 
-    <!-- 周榜 -->
-    <div class="card weekly">
-      <div class="card-header">📆 本周涨星 TOP 10</div>
-      <ol class="rank-list">
-        <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/AI-For-Beginners" target="_blank">microsoft / AI-For-Beginners</a><p class="repo-desc">12 Weeks, 24 Lessons, AI for All!</p></div><span class="repo-stars">⭐7,554</span></li>
-        <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/block/buzz" target="_blank">block / buzz</a><p class="repo-desc">A hive mind communication platform</p></div><span class="repo-stars">⭐7,372</span></li>
-        <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/zhaoxuya520/reverse-skill" target="_blank">zhaoxuya520 / reverse-skill</a><p class="repo-desc">Reverse Engineering / Penetration Testing</p></div><span class="repo-stars">⭐6,154</span></li>
-        <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/virgiliojr94/book-to-skill" target="_blank">virgiliojr94 / book-to-skill</a><p class="repo-desc">Turn any PDF book into a Claude Code skill</p></div><span class="repo-stars">⭐5,405</span></li>
-        <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/ayghri/i-have-adhd" target="_blank">ayghri / i-have-adhd</a><p class="repo-desc">Stop your coding agent from burying the answer</p></div><span class="repo-stars">⭐5,012</span></li>
-        <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/1jehuang/jcode" target="_blank">1jehuang / jcode</a><p class="repo-desc">Most RAM efficient harness</p></div><span class="repo-stars">⭐3,735</span></li>
-        <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/different-ai/openwork" target="_blank">different-ai / openwork</a><p class="repo-desc">Open-source alternative to Claude Cowork</p></div><span class="repo-stars">⭐3,429</span></li>
-        <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/moeru-ai/airi" target="_blank">moeru-ai / airi</a><p class="repo-desc">💖 Self-hosted Grok Companion</p></div><span class="repo-stars">⭐2,978</span></li>
-        <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/pascalorg/editor" target="_blank">pascalorg / editor</a><p class="repo-desc">Create and share 3D architectural projects</p></div><span class="repo-stars">⭐2,953</span></li>
-        <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/opengeos/GeoLibre" target="_blank">opengeos / GeoLibre</a><p class="repo-desc">Lightweight cloud-native GIS platform</p></div><span class="repo-stars">⭐2,630</span></li>
-      </ol>
-    </div>
-
-    <!-- 月榜 -->
-    <div class="card monthly">
-      <div class="card-header">📊 本月涨星 TOP 10</div>
-      <ol class="rank-list">
-        <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/diegosouzapw/OmniRoute" target="_blank">diegosouzapw / OmniRoute</a><p class="repo-desc">Free MIT AI gateway: 290+ providers, one endpoint</p></div><span class="repo-stars">⭐28,232</span></li>
-        <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/stablyai/orca" target="_blank">stablyai / orca</a><p class="repo-desc">ADE for working with a fleet of parallel agents</p></div><span class="repo-stars">⭐25,250</span></li>
-        <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/emilkowalski/skills" target="_blank">emilkowalski / skills</a><p class="repo-desc">Skills for Designers and Engineers</p></div><span class="repo-stars">⭐19,789</span></li>
-        <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/Nutlope/hallmark" target="_blank">Nutlope / hallmark</a><p class="repo-desc">Anti-AI-slop design skill for Claude Code, Cursor, Codex</p></div><span class="repo-stars">⭐17,706</span></li>
-        <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/koala73/worldmonitor" target="_blank">koala73 / worldmonitor</a><p class="repo-desc">Real-time global intelligence dashboard</p></div><span class="repo-stars">⭐17,517</span></li>
-        <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/iOfficeAI/OfficeCLI" target="_blank">iOfficeAI / OfficeCLI</a><p class="repo-desc">First Office suite purpose-built for CLI</p></div><span class="repo-stars">⭐16,458</span></li>
-        <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/Zackriya-Solutions/meetily" target="_blank">Zackriya-Solutions / meetily</a><p class="repo-desc">Privacy-first AI meeting assistant with Parakeet</p></div><span class="repo-stars">⭐14,535</span></li>
-        <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/bradautomates/claude-video" target="_blank">bradautomates / claude-video</a><p class="repo-desc">Give Claude the ability to watch any video</p></div><span class="repo-stars">⭐10,750</span></li>
-        <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/permissionlesstech/bitchat" target="_blank">permissionlesstech / bitchat</a><p class="repo-desc">Bluetooth mesh chat, IRC vibes</p></div><span class="repo-stars">⭐8,367</span></li>
-        <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/tt-a1i/archify" target="_blank">tt-a1i / archify</a><p class="repo-desc">Beautiful, verifiable architecture & workflow diagrams</p></div><span class="repo-stars">⭐6,501</span></li>
-      </ol>
-    </div>
+<!-- 排行榜 tab -->
+<div id="tab-rank" class="tab-content active">
+<p class="update-time">更新于 2026-08-04 · 由 Hermes Agent 自动抓取</p>
+<div class="grid">
+  <!-- 日榜 -->
+  <div class="card daily">
+    <div class="card-header">📅 今日涨星 TOP 10</div>
+    <ol class="rank-list">
+      <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/zhaoxuya520/reverse-skill" target="_blank">zhaoxuya520 / reverse-skill</a><p class="repo-desc">逆向工程/渗透测试/安全审计工具</p></div><span class="repo-stars">⭐2,446</span></li>
+      <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/AI-For-Beginners" target="_blank">microsoft / AI-For-Beginners</a><p class="repo-desc">12周24课，AI入门全覆盖</p></div><span class="repo-stars">⭐1,902</span></li>
+      <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/firecrawl/pdf-inspector" target="_blank">firecrawl / pdf-inspector</a><p class="repo-desc">Rust PDF检测分类库</p></div><span class="repo-stars">⭐1,699</span></li>
+      <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/TencentCloud/TencentDB-Agent-Memory" target="_blank">TencentCloud / TencentDB-Agent-Memory</a><p class="repo-desc">AI Agent 团队级记忆中心</p></div><span class="repo-stars">⭐1,090</span></li>
+      <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/lyogavin/airllm" target="_blank">lyogavin / airllm</a><p class="repo-desc">单卡4G跑70B大模型推理</p></div><span class="repo-stars">⭐1,085</span></li>
+      <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/esengine/DeepSeek-Reasonix" target="_blank">esengine / DeepSeek-Reasonix</a><p class="repo-desc">DeepSeek原生AI编程终端助手</p></div><span class="repo-stars">⭐883</span></li>
+      <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/generative-ai-for-beginners" target="_blank">microsoft / generative-ai-for-beginners</a><p class="repo-desc">21课生成式AI入门</p></div><span class="repo-stars">⭐775</span></li>
+      <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/antirez/ds4" target="_blank">antirez / ds4</a><p class="repo-desc">Redis作者开发的DeepSeek本地推理引擎</p></div><span class="repo-stars">⭐384</span></li>
+      <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/donnemartin/system-design-primer" target="_blank">donnemartin / system-design-primer</a><p class="repo-desc">系统设计面试准备指南</p></div><span class="repo-stars">⭐237</span></li>
+      <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/shiyu-coder/Kronos" target="_blank">shiyu-coder / Kronos</a><p class="repo-desc">金融市场语言基础模型</p></div><span class="repo-stars">⭐200</span></li>
+    </ol>
   </div>
+  <!-- 周榜 -->
+  <div class="card weekly">
+    <div class="card-header">📆 本周涨星 TOP 10</div>
+    <ol class="rank-list">
+      <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/microsoft/AI-For-Beginners" target="_blank">microsoft / AI-For-Beginners</a><p class="repo-desc">12周24课，AI入门全覆盖</p></div><span class="repo-stars">⭐7,554</span></li>
+      <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/block/buzz" target="_blank">block / buzz</a><p class="repo-desc">蜂群思维通讯平台</p></div><span class="repo-stars">⭐7,372</span></li>
+      <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/zhaoxuya520/reverse-skill" target="_blank">zhaoxuya520 / reverse-skill</a><p class="repo-desc">逆向工程/渗透测试工具</p></div><span class="repo-stars">⭐6,154</span></li>
+      <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/virgiliojr94/book-to-skill" target="_blank">virgiliojr94 / book-to-skill</a><p class="repo-desc">PDF书籍一键转AI技能</p></div><span class="repo-stars">⭐5,405</span></li>
+      <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/ayghri/i-have-adhd" target="_blank">ayghri / i-have-adhd</a><p class="repo-desc">防止AI编程助手跑题的技能</p></div><span class="repo-stars">⭐5,012</span></li>
+      <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/1jehuang/jcode" target="_blank">1jehuang / jcode</a><p class="repo-desc">极致RAM优化的AI编码框架</p></div><span class="repo-stars">⭐3,735</span></li>
+      <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/different-ai/openwork" target="_blank">different-ai / openwork</a><p class="repo-desc">Claude Cowork开源替代</p></div><span class="repo-stars">⭐3,429</span></li>
+      <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/moeru-ai/airi" target="_blank">moeru-ai / airi</a><p class="repo-desc">💖自托管AI伴侣</p></div><span class="repo-stars">⭐2,978</span></li>
+      <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/pascalorg/editor" target="_blank">pascalorg / editor</a><p class="repo-desc">在线3D建筑项目编辑器</p></div><span class="repo-stars">⭐2,953</span></li>
+      <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/opengeos/GeoLibre" target="_blank">opengeos / GeoLibre</a><p class="repo-desc">轻量云原生GIS平台</p></div><span class="repo-stars">⭐2,630</span></li>
+    </ol>
+  </div>
+  <!-- 月榜 -->
+  <div class="card monthly">
+    <div class="card-header">📊 本月涨星 TOP 10</div>
+    <ol class="rank-list">
+      <li><span class="rank rank-1">1</span><div class="repo-info"><a class="repo-name" href="https://github.com/diegosouzapw/OmniRoute" target="_blank">diegosouzapw / OmniRoute</a><p class="repo-desc">290+模型免费AI网关，MIT协议</p></div><span class="repo-stars">⭐28,232</span></li>
+      <li><span class="rank rank-2">2</span><div class="repo-info"><a class="repo-name" href="https://github.com/stablyai/orca" target="_blank">stablyai / orca</a><p class="repo-desc">并行AI代理舰队管理框架</p></div><span class="repo-stars">⭐25,250</span></li>
+      <li><span class="rank rank-3">3</span><div class="repo-info"><a class="repo-name" href="https://github.com/emilkowalski/skills" target="_blank">emilkowalski / skills</a><p class="repo-desc">设计师和工程师的AI技能库</p></div><span class="repo-stars">⭐19,789</span></li>
+      <li><span class="rank rank-other">4</span><div class="repo-info"><a class="repo-name" href="https://github.com/Nutlope/hallmark" target="_blank">Nutlope / hallmark</a><p class="repo-desc">反AI垃圾设计技能</p></div><span class="repo-stars">⭐17,706</span></li>
+      <li><span class="rank rank-other">5</span><div class="repo-info"><a class="repo-name" href="https://github.com/koala73/worldmonitor" target="_blank">koala73 / worldmonitor</a><p class="repo-desc">实时全球情报仪表盘</p></div><span class="repo-stars">⭐17,517</span></li>
+      <li><span class="rank rank-other">6</span><div class="repo-info"><a class="repo-name" href="https://github.com/iOfficeAI/OfficeCLI" target="_blank">iOfficeAI / OfficeCLI</a><p class="repo-desc">首款AI代理专用Office套件</p></div><span class="repo-stars">⭐16,458</span></li>
+      <li><span class="rank rank-other">7</span><div class="repo-info"><a class="repo-name" href="https://github.com/Zackriya-Solutions/meetily" target="_blank">Zackriya-Solutions / meetily</a><p class="repo-desc">隐私优先AI会议助手</p></div><span class="repo-stars">⭐14,535</span></li>
+      <li><span class="rank rank-other">8</span><div class="repo-info"><a class="repo-name" href="https://github.com/bradautomates/claude-video" target="_blank">bradautomates / claude-video</a><p class="repo-desc">让Claude看视频的能力</p></div><span class="repo-stars">⭐10,750</span></li>
+      <li><span class="rank rank-other">9</span><div class="repo-info"><a class="repo-name" href="https://github.com/permissionlesstech/bitchat" target="_blank">permissionlesstech / bitchat</a><p class="repo-desc">蓝牙Mesh聊天，IRC风格</p></div><span class="repo-stars">⭐8,367</span></li>
+      <li><span class="rank rank-other">10</span><div class="repo-info"><a class="repo-name" href="https://github.com/tt-a1i/archify" target="_blank">tt-a1i / archify</a><p class="repo-desc">AI自动生成架构/工作流/时序图</p></div><span class="repo-stars">⭐6,501</span></li>
+    </ol>
+  </div>
+</div>
+</div>
 
-  <p class="footer">🤖 Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 自动抓取 GitHub Trending · <a href="https://github.com/trending" target="_blank">原始数据</a></p>
+<!-- 项目介绍 tab -->
+<div id="tab-intro" class="tab-content">
+<div class="analysis">
+
+<div class="analysis-card">
+  <h3>🥇 <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank">OmniRoute</a></h3>
+  <div class="stars">⭐28,232 本月 · 月榜第1</div>
+  <div class="desc-en">Free MIT AI gateway: one endpoint, 290+ providers, 500+ models</div>
+  <div class="desc-zh">🚀 <b>万能AI网关</b>——一个接口调用290+模型提供商、500+模型，包括Kimi、DeepSeek等90+免费模型。MIT开源协议，零成本零门槛。适合个人开发者和企业快速接入各类AI模型。</div>
+  <div class="tags"><span class="tag ai">AI网关</span><span class="tag opensource">MIT开源</span><span class="tag tool">开发者工具</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3>🥈 <a href="https://github.com/stablyai/orca" target="_blank">Orca</a></h3>
+  <div class="stars">⭐25,250 本月 · 月榜第2</div>
+  <div class="desc-en">ADE for working with a fleet of parallel agents</div>
+  <div class="desc-zh">🐋 <b>并行AI代理舰队</b>——在一个终端窗口同时运行管理多个编码代理（Claude Code、Codex等），支持自定义子代理。相当于AI界的"航母战斗群"，大幅提升开发效率。</div>
+  <div class="tags"><span class="tag agent">AI代理</span><span class="tag ai">并行计算</span><span class="tag tool">开发工具</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3>🥉 <a href="https://github.com/emilkowalski/skills" target="_blank">Skills</a></h3>
+  <div class="stars">⭐19,789 本月 · 月榜第3</div>
+  <div class="desc-en">Skills for Designers and Engineers</div>
+  <div class="desc-zh">🎨 <b>设计师+工程师的AI技能包</b>——为Claude Code、Cursor、Codex等AI编程助手提供专业设计技能，让AI不仅能写代码，还能产出高质量UI/UX设计。</div>
+  <div class="tags"><span class="tag agent">AI技能</span><span class="tag opensource">设计</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/Nutlope/hallmark" target="_blank">Hallmark</a></h3>
+  <div class="stars">⭐17,706 本月 · 月榜第4</div>
+  <div class="desc-en">Anti-AI-slop design skill for Claude Code, Cursor, and Codex</div>
+  <div class="desc-zh">🛡️ <b>反AI垃圾设计</b>——专门防止AI生成千篇一律的"AI味"设计。为Claude Code等工具提供高质量设计约束，让AI产出的UI/UX有质感、有灵魂，不再"一眼AI"。</div>
+  <div class="tags"><span class="tag agent">AI技能</span><span class="tag opensource">设计质量</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/koala73/worldmonitor" target="_blank">WorldMonitor</a></h3>
+  <div class="stars">⭐17,517 本月 · 月榜第5</div>
+  <div class="desc-en">Real-time global intelligence dashboard</div>
+  <div class="desc-zh">🌍 <b>全球实时情报仪表盘</b>——AI驱动的新闻聚合与地缘政治监控系统。自动抓取全球新闻、分析舆情趋势、提供情报洞察，堪称个人版"军情六处"。</div>
+  <div class="tags"><span class="tag ai">AI分析</span><span class="tag tool">情报监控</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/iOfficeAI/OfficeCLI" target="_blank">OfficeCLI</a></h3>
+  <div class="stars">⭐16,458 本月 · 月榜第6</div>
+  <div class="desc-en">First Office suite purpose-built for AI agents</div>
+  <div class="desc-zh">📎 <b>AI原生Office套件</b>——专为AI代理设计，让AI能直接读写Word、Excel、PPT等文档。自动化办公的未来：AI替你写报告、做表格、出PPT。</div>
+  <div class="tags"><span class="tag agent">AI代理</span><span class="tag tool">办公自动化</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/Zackriya-Solutions/meetily" target="_blank">Meetily</a></h3>
+  <div class="stars">⭐14,535 本月 · 月榜第7</div>
+  <div class="desc-en">Privacy-first AI meeting assistant with 4x faster Parakeet/Whisper</div>
+  <div class="desc-zh">🎙️ <b>隐私优先的AI会议助手</b>——比Whisper快4倍的实时语音转写、说话人分离、自动生成会议纪要。所有处理本地完成，会议内容不外泄。</div>
+  <div class="tags"><span class="tag ai">AI语音</span><span class="tag opensource">隐私保护</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/asgeirtj/system_prompts_leaks" target="_blank">System Prompts Leaks</a></h3>
+  <div class="stars">⭐14,503 本月 · 月榜</div>
+  <div class="desc-en">Extracted system prompts from Anthropic, OpenAI, Google, xAI, Meta</div>
+  <div class="desc-zh">🔓 <b>AI系统提示词泄露合集</b>——提取了Claude（Fable5/Opus5）、OpenAI（Codex/o3/o4-mini）、Google（Gemini3）、xAI（Grok4）等主流AI的内部系统提示词。了解AI"大脑"的绝佳窗口。</div>
+  <div class="tags"><span class="tag ai">AI研究</span><span class="tag opensource">提示工程</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/bradautomates/claude-video" target="_blank">Claude-Video</a></h3>
+  <div class="stars">⭐10,750 本月 · 月榜第8</div>
+  <div class="desc-en">Give Claude the ability to watch any video</div>
+  <div class="desc-zh">🎬 <b>让Claude能看视频</b>——自动下载视频→抽取关键帧→语音转文字→交给Claude理解分析。视频内容从此可以被AI完整"观看"和理解。</div>
+  <div class="tags"><span class="tag ai">AI多模态</span><span class="tag agent">Claude插件</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/openai/codex-plugin-cc" target="_blank">Codex Plugin for Claude Code</a></h3>
+  <div class="stars">⭐8,384 本月 · 月榜</div>
+  <div class="desc-en">Use Codex from Claude Code to review code or delegate tasks</div>
+  <div class="desc-zh">🔗 <b>Claude Code里调用Codex</b>——OpenAI官方出品，让Claude Code能调用Codex来审查代码或分配任务。两大AI编程助手强强联手，告别"二选一"。</div>
+  <div class="tags"><span class="tag agent">AI代理</span><span class="tag ai">多模型协作</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/facebook/astryx" target="_blank">Astryx</a></h3>
+  <div class="stars">⭐7,387 本月 · 月榜</div>
+  <div class="desc-en">Open source design system, fully customizable and agent ready</div>
+  <div class="desc-zh">🎯 <b>Meta开源设计系统</b>——完全可定制的AI就绪设计框架。不仅人类设计师能用，AI代理也能直接调用生成界面。开源世界的"设计语言标准"。</div>
+  <div class="tags"><span class="tag opensource">Meta</span><span class="tag agent">AI设计</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/permissionlesstech/bitchat" target="_blank">BitChat</a></h3>
+  <div class="stars">⭐8,367 本月 · 月榜第9</div>
+  <div class="desc-en">Bluetooth mesh chat, IRC vibes</div>
+  <div class="desc-zh">📡 <b>蓝牙Mesh聊天</b>——去中心化通讯工具。不需要互联网、不需要基站，通过蓝牙Mesh网络实现设备间直接通信。适合户外、灾难应急、隐私通信场景。</div>
+  <div class="tags"><span class="tag opensource">去中心化</span><span class="tag tool">通讯工具</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/huggingface/speech-to-speech" target="_blank">Speech-to-Speech</a></h3>
+  <div class="stars">⭐5,579 本月 · 月榜</div>
+  <div class="desc-en">Build local voice agents with open-source models</div>
+  <div class="desc-zh">🗣️ <b>本地语音代理</b>——HuggingFace出品，用开源模型构建本地语音助手。端到端语音对话，全部本地运行，不依赖云端API。隐私和延迟的最佳平衡。</div>
+  <div class="tags"><span class="tag ai">语音AI</span><span class="tag opensource">本地运行</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/microsoft/AI-For-Beginners" target="_blank">AI-For-Beginners</a></h3>
+  <div class="stars">⭐7,554 本周 · 日榜/周榜双料</div>
+  <div class="desc-en">12 Weeks, 24 Lessons, AI for All!</div>
+  <div class="desc-zh">📚 <b>微软AI入门课</b>——12周24节课，从机器学习到深度学习、NLP、计算机视觉全覆盖。微软官方出品，配套代码+实验+测验，零基础友好。本周热度第二、周榜第一。</div>
+  <div class="tags"><span class="tag ai">教程</span><span class="tag opensource">微软</span></div>
+</div>
+
+<div class="analysis-card">
+  <h3><a href="https://github.com/tt-a1i/archify" target="_blank">Archify</a></h3>
+  <div class="stars">⭐6,501 本月 · 月榜第10</div>
+  <div class="desc-en">Agent skill for beautiful, verifiable architecture & workflow diagrams</div>
+  <div class="desc-zh">📐 <b>AI自动架构图</b>——自动生成架构图、工作流图、时序图、数据流图。代码即图表，可验证、可维护，告别手绘UML的痛苦。</div>
+  <div class="tags"><span class="tag agent">AI技能</span><span class="tag tool">可视化</span></div>
+</div>
+
+</div>
+</div>
+
+<p class="footer">🤖 Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 数据来源 <a href="https://github.com/trending">GitHub Trending</a> · 每天 10:00 自动更新</p>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
 </body>
 </html>
