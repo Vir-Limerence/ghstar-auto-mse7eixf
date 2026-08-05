@@ -3,189 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>STEPS 论文解读 · 自触发智能推送系统</title>
+<title>STEPS 论文深度解读 · 自触发智能推送系统</title>
 <style>
-:root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --border: #30363d;
-  --text: #e6edf3;
-  --text-muted: #8b949e;
-  --accent: #58a6ff;
-  --green: #3fb950;
-  --red: #f85149;
-  --orange: #d2991d;
-  --purple: #a371f7;
-  --font: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --mono: 'SF Mono',Menlo,monospace;
-}
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--text-muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#d2991d;--purple:#a371f7;--pink:#f778ba;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--mono:'SF Mono',Menlo,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;padding:clamp(16px,4vw,40px);-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.75;padding:clamp(16px,4vw,40px);-webkit-font-smoothing:antialiased}
 .container{max-width:900px;margin:0 auto}
-h1{font-size:clamp(22px,4vw,32px);font-weight:700;letter-spacing:-.02em;margin-bottom:8px;color:#fff}
-.subtitle{color:var(--text-muted);font-size:14px;margin-bottom:6px}
-.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;margin-right:6px}
-.badge-venue{background:#1f3a5f;color:var(--accent)}
-.badge-deploy{background:#1a3a1a;color:var(--green)}
-.badge-year{background:#2d1a3a;color:var(--purple)}
-.section{margin-top:32px}
-.section h2{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff;border-left:3px solid var(--accent);padding-left:12px}
-.section h3{font-size:15px;font-weight:600;margin:16px 0 8px;color:var(--accent)}
+h1{font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.03em;margin-bottom:6px;color:#fff}
+.subtitle{color:var(--text-muted);font-size:14px;margin-bottom:4px}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;margin:2px 4px}
+.badge-venue{background:rgba(88,166,255,.15);color:var(--accent)}
+.badge-deploy{background:rgba(63,185,80,.15);color:var(--green)}
+.badge-year{background:rgba(167,113,247,.15);color:var(--purple)}
+.badge-tag{background:var(--surface);border:1px solid var(--border);color:var(--text-muted)}
+.section{margin-top:36px}
+.section h2{font-size:20px;font-weight:700;margin-bottom:16px;color:#fff;border-left:4px solid var(--accent);padding-left:14px;line-height:1.3}
+.section h3{font-size:16px;font-weight:600;margin:20px 0 10px;color:var(--accent)}
+.section h4{font-size:14px;font-weight:600;margin:14px 0 6px;color:var(--orange)}
 p{font-size:14px;color:var(--text-muted);margin-bottom:12px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
-.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
-.meta-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
-.meta-item .value{font-size:24px;font-weight:700;font-family:var(--mono)}
-.meta-item .label{font-size:11px;color:var(--text-muted);margin-top:4px}
-.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}
-.agent-card{border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;background:var(--surface);border-radius:0 8px 8px 0}
-.agent-card.plan{border-color:#3fb950}
-.agent-card.exec{border-color:#d2991d}
-.agent-card.filter{border-color:#a371f7}
-.agent-card h4{font-size:14px;margin-bottom:4px}
-.agent-card p{font-size:13px;margin:0}
-.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
-.compare-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
-.compare-item .head{font-size:12px;color:var(--text-muted);margin-bottom:6px}
-.compare-item .val{font-size:13px}
-.compare-item.bad .val{color:var(--red)}
-.compare-item.good .val{color:var(--green)}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
-th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase}
-td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:var(--surface);border:1px solid var(--border);margin:2px}
-.footer{text-align:center;margin-top:48px;color:var(--text-muted);font-size:12px}
+strong{color:var(--text)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:20px 0}
+.meta-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:border-color .2s}
+.meta-item:hover{border-color:var(--accent)}
+.meta-item .val{font-size:26px;font-weight:800;font-family:var(--mono)}
+.meta-item .lbl{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4}
+.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}.purple{color:var(--purple)}.pink{color:var(--pink)}
+.agent{background:var(--surface);border-radius:10px;padding:18px 20px;margin:14px 0;border-left:4px solid}
+.agent.plan{border-color:var(--green)}
+.agent.exec{border-color:var(--orange)}
+.agent.filter{border-color:var(--purple)}
+.agent h4{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.agent .icon{font-size:20px}
+.agent p{font-size:13px;margin:4px 0 0}
+.formula{background:rgba(88,166,255,.06);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;font-family:var(--mono);font-size:13px;overflow-x:auto;color:var(--text);line-height:1.8}
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
+.compare-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.compare-item .head{font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:600}
+.compare-item .desc{font-size:13px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:9px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+.highlight-row{background:rgba(63,185,80,.06)}
+.highlight-row td{color:var(--green);font-weight:600}
+ul,ol{margin:8px 0 12px 20px;color:var(--text-muted);font-size:14px}
+li{margin:6px 0}
+.tag-group{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;background:var(--surface);border:1px solid var(--border);color:var(--text-muted)}
+.callout{background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.2);border-radius:10px;padding:14px 18px;margin:16px 0}
+.callout p{color:var(--accent);font-size:13px;margin:0}
+.footer{text-align:center;margin-top:48px;color:var(--text-muted);font-size:12px;line-height:1.8}
 .footer a{color:var(--accent)}
-img{max-width:100%;border-radius:8px;margin:12px 0}
+hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+.num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;margin-right:8px;flex-shrink:0}
 </style>
 </head>
 <body>
 <div class="container">
 
 <h1>STEPS：自触发智能推送推荐系统</h1>
-<p class="subtitle">A Self-Triggered Agentic Push Recommendation System</p>
-<p class="subtitle">
-  <span class="badge badge-venue">RecSys 2026</span>
+<p class="subtitle" style="font-size:16px;color:var(--text);margin-top:6px">A Self-Triggered Agentic Push Recommendation System</p>
+<p class="subtitle" style="margin-top:8px">
+  <span class="badge badge-venue">ACM RecSys 2026</span>
   <span class="badge badge-deploy">🚀 抖音全量部署</span>
-  <span class="badge badge-year">10亿+用户</span>
+  <span class="badge badge-year">10亿+ 用户</span>
+  <span class="badge badge-tag">字节跳动 × 北京大学</span>
 </p>
-<p style="margin-top:8px;font-size:13px">Zhao-Yu Zhang, Qingying Chen, Chunyuan Zheng, Jing Zhou, Jian Sun, Siqi Chen, Leiying Chen, Chuan Zhou et al.</p>
+<p style="font-size:13px;color:var(--text-muted);margin-top:6px">Zhao-Yu Zhang, Qingying Chen, Chunyuan Zheng, Jing Zhou, Jian Sun, Siqi Chen, Leiying Chen, Chuan Zhou, Huiyou Jiang, Xin Tao, Haoxuan Li, Zhouchen Lin</p>
+
+<!-- 一句话 -->
+<div class="callout">
+  <p>💡 <strong>一句话概括：</strong>把推送推荐从"被动等定时器唤醒"变成"系统自己决定下次什么时候醒来"，用三个智能体（规划-执行-过滤）端到端闭环优化，在抖音线上实现活跃+0.28%、骚扰-1.9%、算力-79%。</p>
+</div>
 
 <!-- 核心指标 -->
 <div class="meta-grid">
-  <div class="meta-item">
-    <div class="value green">+0.28%</div>
-    <div class="label">用户活跃天数提升</div>
-  </div>
-  <div class="meta-item">
-    <div class="value green">-1.91%</div>
-    <div class="label">推送权限关闭率下降</div>
-  </div>
-  <div class="meta-item">
-    <div class="value green">-79.4%</div>
-    <div class="label">计算开销降低</div>
-  </div>
+  <div class="meta-item"><div class="val green">+0.28%</div><div class="lbl">用户活跃天数 UAD ↑</div></div>
+  <div class="meta-item"><div class="val green">−1.91%</div><div class="lbl">推送权限关闭率 NE ↓</div></div>
+  <div class="meta-item"><div class="val green">−79.4%</div><div class="lbl">计算资源消耗 ↓</div></div>
+  <div class="meta-item"><div class="val green">+179%</div><div class="lbl">合理间隔推送(3-6h) ↑</div></div>
 </div>
 
-<!-- 背景 -->
-<div class="section">
-  <h2>📌 背景与问题</h2>
-  <p>推送通知是大规模平台的关键推荐场景——让系统在App之外主动触达用户，提升长期留存。但设计最优推送系统面临两个核心挑战：</p>
-  <table>
-    <tr><th>挑战</th><th>说明</th></tr>
-    <tr><td><strong>复杂的动作空间</strong></td><td>需要同时决定"是否推送"和"何时推送"</td></tr>
-    <tr><td><strong>系统资源约束</strong></td><td>推送频率和计算开销受严格限制</td></tr>
-  </table>
-</div>
+<hr>
 
-<!-- 已有方法的局限 -->
+<!-- 1. 背景 -->
 <div class="section">
-  <h2>❌ 已有方法的局限</h2>
-  <div class="compare">
-    <div class="compare-item bad">
-      <div class="head">预规划频率法</div>
-      <div class="val">离线建模分配推送时间<br>缺乏实时适应性</div>
-    </div>
-    <div class="compare-item bad">
-      <div class="head">固定间隔触发法</div>
-      <div class="val">定时轮询系统<br>计算开销大 vs 时机丢失的两难</div>
-    </div>
-    <div class="compare-item bad">
-      <div class="head">多阶段框架</div>
-      <div class="val">各阶段独立优化<br>陷入局部最优</div>
-    </div>
-  </div>
-</div>
-
-<!-- STEPS 方案 -->
-<div class="section">
-  <h2>💡 STEPS 核心方案</h2>
-  <p>将推送推荐重新定义为<strong>自触发的智能体过程</strong>：系统不仅决定是否推送，还决定<strong>何时再次唤醒自己</strong>，形成闭环。</p>
+  <h2>1. 背景：推送推荐为什么难</h2>
   
-  <div class="agent-card plan">
-    <h4>🧠 规划智能体 Planning Agent</h4>
-    <p>基于 Decision Transformer，使用<strong>门控有序回归</strong>方法调度下次系统调用时间。不只是"推不推"，而是"下次什么时候再来检查"。</p>
-  </div>
-  <div class="agent-card exec">
-    <h4>⚡ 执行智能体 Execution Agent</h4>
-    <p>基于<strong>轨迹奖励</strong>决定是否发送推送。综合考虑用户状态、内容质量和历史反馈。</p>
-  </div>
-  <div class="agent-card filter">
-    <h4>🛡️ 过滤智能体 Filtering Agent</h4>
-    <p>轻量级守卫：控制计算开销，防止不合理的规划行为。单独贡献<strong>79.42%的算力节省</strong>。</p>
+  <p>推送通知是大规模平台上<strong>唯一能在App外主动触达用户</strong>的渠道。用户在刷抖音时不会收到推送——推送只在用户离开App后才起作用。因此，推送的设计直接影响<strong>长期留存和重新激活</strong>。</p>
+
+  <p>但设计最优推送系统面临一个经典的<strong>"是否 + 何时"两难</strong>：</p>
+  
+  <div class="card">
+    <p><strong>🎯 动作空间复杂：</strong>系统必须在连续时间轴上同时决定——这个时刻要不要推？如果现在不推，那什么时候再检查？</p>
+    <p><strong>⚡ 资源约束严格：</strong>每秒钟对所有用户做实时排序判断在工业系统中不可行。推送系统需要平衡效果、效率和用户体验。</p>
+    <p><strong>😫 用户疲劳敏感：</strong>推送时机不当会导致用户直接关闭推送权限——这是不可逆的损失。</p>
   </div>
 </div>
 
-<!-- 对比 -->
+<!-- 2. 已有方法的局限 -->
 <div class="section">
-  <h2>📊 与已有方法对比</h2>
+  <h2>2. 已有方法为什么不够好</h2>
+  
+  <div class="compare-grid">
+    <div class="compare-item" style="border-color:var(--red)">
+      <div class="head" style="color:var(--red)">预规划频率法<br>Pre-planned Frequency</div>
+      <div class="desc">离线建模 → 整数规划求解最优频率和推送时刻 → 按时执行。<br><br><strong style="color:var(--red)">问题：</strong>不感知实时用户状态，错过高价值推送时机</div>
+    </div>
+    <div class="compare-item" style="border-color:var(--orange)">
+      <div class="head" style="color:var(--orange)">固定间隔触发法<br>Fixed-interval Triggering</div>
+      <div class="desc">定时轮询系统 → 每次判断是否推送。<br><br><strong style="color:var(--orange)">两难：</strong>间隔太短→算力爆炸；间隔太长→错过最佳时机</div>
+    </div>
+    <div class="compare-item" style="border-color:var(--red)">
+      <div class="head" style="color:var(--red)">多阶段框架<br>Multi-stage Pipeline</div>
+      <div class="desc">各阶段独立优化 → 全局次优。<br><br><strong style="color:var(--red)">问题：</strong>前一阶段的决策限制后一阶段，陷入局部最优</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. STEPS方案 -->
+<div class="section">
+  <h2>3. STEPS 核心方案：自触发闭环</h2>
+  
+  <p>STEPS 将推送推荐<strong>重新定义为一个自触发的智能体过程</strong>。系统不再被动等待外部定时器唤醒，而是<strong>自己决定下次何时唤醒自己</strong>，形成一个完整的闭环：</p>
+
+  <div class="formula">触发 → 判断是否推送 → 规划下次触发时间 → 触发 → ...（闭环）</div>
+
+  <p>核心公式：在每个时刻 t，系统同时输出两个决策：</p>
+  
+  <div class="formula">(a<sub>t</sub>, Δt) = (π<sub>A</sub>(s<sub>t</sub>, R<sub>t</sub>), π<sub>P</sub>(s<sub>t</sub>, R<sub>t</sub>))</div>
+
+  <p style="font-size:13px;color:var(--text-muted)">其中 a<sub>t</sub> ∈ {0,1} 是执行智能体π<sub>A</sub>的推送决策，Δt > 0 是规划智能体π<sub>P</sub>生成的下次唤醒间隔，R<sub>t</sub> 是目标回报（return-to-go）</p>
+
+  <h3>三智能体架构</h3>
+
+  <div class="agent plan">
+    <h4><span class="icon">🧠</span> 规划智能体 Planning Agent</h4>
+    <p><strong>职责：</strong>生成下次系统激活的时间间隔 Δt。是系统的"主动引擎"，让闭环自驱动成为可能。</p>
+    <p><strong>核心创新① — 门控RTG机制 (Gated-RTG)：</strong>标准Decision Transformer中，高维状态特征会淹没低维的RTG信号（1维标量），导致模型"忽略"目标回报。STEPS提出用 <strong>Hadamard积（逐元素乘）</strong> 将RTG注入状态：e<sub>gated</sub> = e<sub>s</sub> ⊙ MLP(R<sub>t</sub>)。RTG从"普通特征"升级为"门控信号"，强制模型关注目标回报。</p>
+    <p><strong>核心创新② — 有序回归 (Ordinal Regression)：</strong>直接预测连续时间 Δt 不稳定（标签非高斯、长尾、误差容忍度非线性）。STEPS将连续空间离散为 K=100 个等频桶，用 BCE 损失逐桶预测，在线推理时平滑聚合得到精确 Δt。</p>
+    <div class="formula">损失: L<sub>next</sub> = Σ<sub>k</sub> BCE(y<sub>k</sub>, z<sub>k</sub>)，其中 y<sub>k</sub> = 1[Δt > τ<sub>k</sub>]<br>推理: Δt = Σ<sub>k</sub> (τ<sub>k</sub> − τ<sub>k−1</sub>) · Sigmoid(z<sub>k</sub>)</div>
+  </div>
+
+  <div class="agent exec">
+    <h4><span class="icon">⚡</span> 执行智能体 Execution Agent</h4>
+    <p><strong>职责：</strong>在规划智能体指定的时刻，基于实时上下文决定是否发送推送。</p>
+    <p><strong>核心创新 — Bellman RTG 建模 (GAVE改进)：</strong>离线训练数据中的行为是次优的，直接用观测RTG做回归会导致偏差。STEPS引入<strong>Bellman方程</strong>学习 Q(s,a|λ<sub>n</sub>)，并通过优势加权重新加权动作损失，引导策略向高Q值动作学习。</p>
+    <div class="formula">Q值学习: L<sub>Q</sub> = Σ (R<sub>t+1</sub> − Q(s<sub>t</sub>,a<sub>t</sub>|λ<sub>n</sub>))²<br>策略加权: w<sub>t</sub> = Sigmoid(α·(Q(a)−Q(1−a)))<br>策略损失: L<sub>π</sub> = −Σ [w'·log π + (1−w')·log(1−π)]</div>
+  </div>
+
+  <div class="agent filter">
+    <h4><span class="icon">🛡️</span> 过滤智能体 Filtering Agent</h4>
+    <p><strong>职责：</strong>在请求到达昂贵的执行智能体之前，用轻量模型筛选掉低价值请求，同时拦截不合理的规划行为。</p>
+    <p><strong>关键设计：</strong>用3层MLP + 仅用户和环境特征（排除物品特征），避免触发下游昂贵的物品排序管线。执行智能体处理物品排序时，每1k请求的算力是过滤智能体的<strong>57倍</strong>。</p>
+    <p><strong>双重边界控制：</strong>系统侧（推送后短时间抑制）+ 用户侧（用户刚活跃后抑制），用分钟级保守阈值防止极端case。</p>
+  </div>
+</div>
+
+<!-- 4. 对比 -->
+<div class="section">
+  <h2>4. 端到端对比</h2>
   <table>
     <tr><th>方法</th><th>触发方式</th><th>实时性</th><th>计算效率</th><th>全局最优</th></tr>
-    <tr><td>预规划频率</td><td>被动 · 离线分配</td><td>❌ 低</td><td>✅ 高</td><td>❌</td></tr>
-    <tr><td>固定间隔触发</td><td>被动 · 定时轮询</td><td>⚠️ 中</td><td>❌ 低</td><td>❌</td></tr>
-    <tr style="background:rgba(63,185,80,0.08)"><td><strong>STEPS（本文）</strong></td><td><strong>主动 · 自触发闭环</strong></td><td><strong>✅ 高</strong></td><td><strong>✅ 高</strong></td><td><strong>✅</strong></td></tr>
+    <tr><td>预规划频率</td><td>被动 · 离线分配</td><td>❌ 低</td><td>✅ 高</td><td>❌ 局部</td></tr>
+    <tr><td>固定间隔触发</td><td>被动 · 定时轮询</td><td>⚠️ 中</td><td>❌ 低</td><td>❌ 局部</td></tr>
+    <tr class="highlight-row"><td><strong>STEPS</strong></td><td><strong>主动 · 自触发闭环</strong></td><td><strong>✅ 高</strong></td><td><strong>✅ 高</strong></td><td><strong>✅ 端到端</strong></td></tr>
   </table>
 </div>
 
-<!-- 实验结果 -->
+<!-- 5. 实验结果 -->
 <div class="section">
-  <h2>🧪 在线A/B实验结果</h2>
+  <h2>5. 实验结果（在线A/B · 14天 · 10亿+用户）</h2>
+  
+  <h3>5.1 整体效果 vs 基线</h3>
+  <table>
+    <tr><th>方法</th><th>UAD ↑</th><th>NE ↓</th><th>资源 ↓</th></tr>
+    <tr><td>预规划频率（基线）</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>固定间隔触发</td><td class="red">−0.067%</td><td class="red">+0.021%</td><td class="red">+6.55%</td></tr>
+    <tr class="highlight-row"><td>STEPS</td><td>+0.2843%</td><td>−1.9089%</td><td>−79.42%</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">基线是抖音线上正在运行的预规划频率系统。固定间隔触发在相同算力预算下甚至不如基线，说明单纯高频轮询不能解决问题。</p>
+
+  <h3>5.2 消融实验：每个智能体的贡献</h3>
+  <table>
+    <tr><th>智能体</th><th>UAD ↑</th><th>NE ↓</th><th>资源 ↓</th></tr>
+    <tr><td>规划智能体</td><td class="green">+0.181%</td><td class="green">−0.978%</td><td class="green">−4.54%</td></tr>
+    <tr><td>执行智能体</td><td class="green">+0.104%</td><td class="green">−0.684%</td><td>—</td></tr>
+    <tr><td>过滤智能体</td><td>—</td><td class="green">−0.247%</td><td class="green">−74.88%</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">规划智能体是效果提升的最大贡献者（+0.18% UAD）。过滤智能体几乎独立承担了全部算力节省（-74.88%），同时还额外减少了骚扰。</p>
+
+  <h3>5.3 推送间隔分布变化</h3>
+  <table>
+    <tr><th>间隔区间</th><th>变化</th><th>含义</th></tr>
+    <tr><td>0~20分钟</td><td class="red">−35.9%</td><td>短间隔高频骚扰大幅减少</td></tr>
+    <tr><td>20分钟~1小时</td><td class="green">+20.4%</td><td>合理间隔增加</td></tr>
+    <tr><td>1~3小时</td><td class="green">+91.9%</td><td>适度间隔显著增加</td></tr>
+    <tr class="highlight-row"><td>3~6小时</td><td>+179.8%</td><td>最佳间隔区域爆发式增长</td></tr>
+  </table>
+
+  <h3>5.4 每日推送数量变化</h3>
+  <table>
+    <tr><th>每日推送数</th><th>变化</th></tr>
+    <tr><td>0条（零推送）</td><td class="red">−4.06%</td></tr>
+    <tr class="highlight-row"><td>1~20条（合理）</td><td>+20.31%</td></tr>
+    <tr><td>21~30条（频繁）</td><td class="red">−6.87%</td></tr>
+    <tr><td>>30条（极端）</td><td class="red">−9.30%</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">零推送减少 + 极端推送减少 = 人群向"1~20条/天"的合理区间集中，整体分布更健康。</p>
+</div>
+
+<!-- 6. 关键技术分析 -->
+<div class="section">
+  <h2>6. 关键技术深度分析</h2>
+
+  <h3>6.1 门控RTG为什么重要</h3>
+  <p>标准Decision Transformer中，1维RTG标量与高维状态拼接后容易被<strong>淹没</strong>——神经网络直接绕过RTG信号。STEPS的门控RTG用<strong>逐元素乘法</strong>强制状态被RTG调制，使模型的RTG相关性比从随机波动稳定收敛到约1.8（匹配训练数据真实统计）。</p>
+
+  <h3>6.2 Bellman RTG vs 观测RTG</h3>
+  <p>在线A/B显示：直接学习观测RTG的方法初期有提升但随后衰减至接近零；Bellman RTG建模<strong>持续稳定上升</strong>。原因在于离线数据中的历史行为是次优的，Bellman方程能纠正这种偏差，学习真实的累积价值。</p>
+
+  <h3>6.3 过滤阈值敏感性</h3>
+  <p>过滤智能体的阈值直接影响触发间隔。实验发现：间隔从0增到20分钟时，QPS显著节省且UAD几乎不降——这是<strong>最佳效率区间</strong>。但超过60分钟后UAD急剧下降。线上采用保守的<strong>分钟级</strong>阈值。</p>
+
+  <h3>6.4 不同活跃度用户的过滤策略</h3>
+  <table>
+    <tr><th>用户类型</th><th>请求丢弃率</th><th>原因</th></tr>
+    <tr><td>非活跃用户</td><td>78.86%</td><td>边际响应价值极低</td></tr>
+    <tr class="highlight-row"><td>高活跃用户</td><td>85.65%</td><td>自然行为已产生大量冗余推送机会</td></tr>
+  </table>
+</div>
+
+<!-- 7. 工程落地 -->
+<div class="section">
+  <h2>7. 工程落地挑战与解决方案</h2>
+
   <div class="card">
+    <h3 style="margin-top:0">挑战1：实时事件与规划时间的融合</h3>
+    <p>平台上有大量实时业务事件（关注创作者开播、好友发新视频等）。纯依赖规划智能体可能错过这些高价值时机。STEPS将<strong>事件驱动触发与智能体规划时间无缝融合</strong>，确保响应性和全面性。</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">挑战2：百万QPS下的算力预算</h3>
+    <p>过滤智能体是核心解决方案。执行智能体处理物品排序时，每1k请求消耗的算力是过滤智能体的<strong>57.72倍</strong>。通过在早期用轻量MLP（仅用户和环境特征，不含物品特征）筛掉低价值请求，避免了触发昂贵的排序管线。</p>
     <table>
-      <tr><th>指标</th><th>提升</th><th>意义</th></tr>
-      <tr><td>用户活跃天数</td><td class="green">+0.2843%</td><td>在10亿用户规模下极其显著</td></tr>
-      <tr><td>推送权限关闭率</td><td class="green">-1.9089%</td><td>用户更少关闭推送，体验更好</td></tr>
-      <tr><td>计算开销</td><td class="green">-79.42%</td><td>过滤智能体大幅节省算力</td></tr>
+      <tr><th>智能体</th><th>每1k请求相对算力</th></tr>
+      <tr><td>过滤</td><td>1.00x</td></tr>
+      <tr><td>规划</td><td>1.27x</td></tr>
+      <tr class="highlight-row"><td>执行</td><td>57.72x</td></tr>
     </table>
   </div>
-</div>
 
-<!-- 关键创新 -->
-<div class="section">
-  <h2>🔑 关键创新点</h2>
   <div class="card">
-    <p><strong>1. 自触发闭环：</strong>首次将推送推荐建模为自触发智能体过程，系统主动决定下次调用时机，而非被动等待。</p>
-    <p><strong>2. 三智能体架构：</strong>规划-执行-过滤三层协作，端到端优化，避免多阶段框架的局部最优问题。</p>
-    <p><strong>3. 工业级验证：</strong>已在抖音全量部署，覆盖超10亿用户，线上指标显著提升。</p>
-    <p><strong>4. 效率与效果平衡：</strong>过滤智能体在保证效果的前提下节省79%算力，使高频自触发成为可能。</p>
+    <h3 style="margin-top:0">挑战3：在线策略可调节</h3>
+    <p>STEPS在训练时对 λ<sub>n</sub>（正负奖励权重）从均匀分布 U(0,1) 中采样，使策略在不同目标权衡下都有效。上线后可以<strong>无需重新训练</strong>，直接调整 λ<sub>n</sub> 来改变推送策略的激进程度。</p>
   </div>
 </div>
 
-<!-- 技术标签 -->
+<!-- 8. 创新总结 -->
 <div class="section">
-  <h2>🏷️ 技术标签</h2>
+  <h2>8. 核心创新总结</h2>
+  
+  <div class="card">
+    <p><span class="num">1</span> <strong>自触发闭环范式：</strong>首次将推送推荐建模为主动的自触发智能体过程，系统自主决定下次激活时间，而非被动等待。</p>
+    <p><span class="num">2</span> <strong>门控RTG：</strong>用逐元素乘法将目标回报注入状态，解决高维特征淹没低维条件信号的问题。</p>
+    <p><span class="num">3</span> <strong>有序回归时间生成：</strong>将连续时间预测转为有序分类，100个等频桶在密集短间隔区域分配更细分辨率。</p>
+    <p><span class="num">4</span> <strong>Bellman RTG价值学习：</strong>用Bellman方程纠正离线数据中的次优行为偏差，实现持续的长期价值提升。</p>
+    <p><span class="num">5</span> <strong>轻量过滤守卫：</strong>用3层MLP在早期截断低价值请求，避免触发57倍算力的排序管线，独立贡献79%的算力节省。</p>
+    <p><span class="num">6</span> <strong>工业级验证：</strong>抖音全量部署，14天在线A/B，10亿+用户，三大指标全面正向。</p>
+  </div>
+</div>
+
+<div class="tag-group">
   <span class="tag">Agentic Recommender System</span>
   <span class="tag">Push Notification</span>
   <span class="tag">Decision Transformer</span>
   <span class="tag">Self-Triggered</span>
   <span class="tag">Reinforcement Learning</span>
+  <span class="tag">Generative Recommendation</span>
+  <span class="tag">Ordinal Regression</span>
+  <span class="tag">Bellman Equation</span>
   <span class="tag">Online A/B Testing</span>
   <span class="tag">Industrial Deployment</span>
   <span class="tag">Douyin/TikTok</span>
+  <span class="tag">ByteDance</span>
 </div>
 
 <p class="footer">
-  论文：<a href="https://arxiv.org/abs/2608.01949">arxiv.org/abs/2608.01949</a> · 发表于 ACM RecSys 2026<br>
+  📄 论文：<a href="https://arxiv.org/abs/2608.01949">arxiv.org/abs/2608.01949</a> · DOI: <a href="https://doi.org/10.1145/3773078.3831932">10.1145/3773078.3831932</a><br>
+  📍 ACM RecSys 2026 · Minneapolis, MN, USA · Sep 27–Oct 2, 2026<br>
   生成于 2026-08-05 · <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>
 </p>
 
