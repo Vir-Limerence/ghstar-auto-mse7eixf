@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>STEPS 论文解读 · 自触发智能推送系统</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --orange: #d2991d;
+  --purple: #a371f7;
+  --font: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono: 'SF Mono',Menlo,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;padding:clamp(16px,4vw,40px);-webkit-font-smoothing:antialiased}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:clamp(22px,4vw,32px);font-weight:700;letter-spacing:-.02em;margin-bottom:8px;color:#fff}
+.subtitle{color:var(--text-muted);font-size:14px;margin-bottom:6px}
+.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;margin-right:6px}
+.badge-venue{background:#1f3a5f;color:var(--accent)}
+.badge-deploy{background:#1a3a1a;color:var(--green)}
+.badge-year{background:#2d1a3a;color:var(--purple)}
+.section{margin-top:32px}
+.section h2{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff;border-left:3px solid var(--accent);padding-left:12px}
+.section h3{font-size:15px;font-weight:600;margin:16px 0 8px;color:var(--accent)}
+p{font-size:14px;color:var(--text-muted);margin-bottom:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.meta-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.meta-item .value{font-size:24px;font-weight:700;font-family:var(--mono)}
+.meta-item .label{font-size:11px;color:var(--text-muted);margin-top:4px}
+.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}
+.agent-card{border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;background:var(--surface);border-radius:0 8px 8px 0}
+.agent-card.plan{border-color:#3fb950}
+.agent-card.exec{border-color:#d2991d}
+.agent-card.filter{border-color:#a371f7}
+.agent-card h4{font-size:14px;margin-bottom:4px}
+.agent-card p{font-size:13px;margin:0}
+.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.compare-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.compare-item .head{font-size:12px;color:var(--text-muted);margin-bottom:6px}
+.compare-item .val{font-size:13px}
+.compare-item.bad .val{color:var(--red)}
+.compare-item.good .val{color:var(--green)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;text-transform:uppercase}
+td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:var(--surface);border:1px solid var(--border);margin:2px}
+.footer{text-align:center;margin-top:48px;color:var(--text-muted);font-size:12px}
+.footer a{color:var(--accent)}
+img{max-width:100%;border-radius:8px;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>STEPS：自触发智能推送推荐系统</h1>
+<p class="subtitle">A Self-Triggered Agentic Push Recommendation System</p>
+<p class="subtitle">
+  <span class="badge badge-venue">RecSys 2026</span>
+  <span class="badge badge-deploy">🚀 抖音全量部署</span>
+  <span class="badge badge-year">10亿+用户</span>
+</p>
+<p style="margin-top:8px;font-size:13px">Zhao-Yu Zhang, Qingying Chen, Chunyuan Zheng, Jing Zhou, Jian Sun, Siqi Chen, Leiying Chen, Chuan Zhou et al.</p>
+
+<!-- 核心指标 -->
+<div class="meta-grid">
+  <div class="meta-item">
+    <div class="value green">+0.28%</div>
+    <div class="label">用户活跃天数提升</div>
+  </div>
+  <div class="meta-item">
+    <div class="value green">-1.91%</div>
+    <div class="label">推送权限关闭率下降</div>
+  </div>
+  <div class="meta-item">
+    <div class="value green">-79.4%</div>
+    <div class="label">计算开销降低</div>
+  </div>
+</div>
+
+<!-- 背景 -->
+<div class="section">
+  <h2>📌 背景与问题</h2>
+  <p>推送通知是大规模平台的关键推荐场景——让系统在App之外主动触达用户，提升长期留存。但设计最优推送系统面临两个核心挑战：</p>
+  <table>
+    <tr><th>挑战</th><th>说明</th></tr>
+    <tr><td><strong>复杂的动作空间</strong></td><td>需要同时决定"是否推送"和"何时推送"</td></tr>
+    <tr><td><strong>系统资源约束</strong></td><td>推送频率和计算开销受严格限制</td></tr>
+  </table>
+</div>
+
+<!-- 已有方法的局限 -->
+<div class="section">
+  <h2>❌ 已有方法的局限</h2>
+  <div class="compare">
+    <div class="compare-item bad">
+      <div class="head">预规划频率法</div>
+      <div class="val">离线建模分配推送时间<br>缺乏实时适应性</div>
+    </div>
+    <div class="compare-item bad">
+      <div class="head">固定间隔触发法</div>
+      <div class="val">定时轮询系统<br>计算开销大 vs 时机丢失的两难</div>
+    </div>
+    <div class="compare-item bad">
+      <div class="head">多阶段框架</div>
+      <div class="val">各阶段独立优化<br>陷入局部最优</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEPS 方案 -->
+<div class="section">
+  <h2>💡 STEPS 核心方案</h2>
+  <p>将推送推荐重新定义为<strong>自触发的智能体过程</strong>：系统不仅决定是否推送，还决定<strong>何时再次唤醒自己</strong>，形成闭环。</p>
+  
+  <div class="agent-card plan">
+    <h4>🧠 规划智能体 Planning Agent</h4>
+    <p>基于 Decision Transformer，使用<strong>门控有序回归</strong>方法调度下次系统调用时间。不只是"推不推"，而是"下次什么时候再来检查"。</p>
+  </div>
+  <div class="agent-card exec">
+    <h4>⚡ 执行智能体 Execution Agent</h4>
+    <p>基于<strong>轨迹奖励</strong>决定是否发送推送。综合考虑用户状态、内容质量和历史反馈。</p>
+  </div>
+  <div class="agent-card filter">
+    <h4>🛡️ 过滤智能体 Filtering Agent</h4>
+    <p>轻量级守卫：控制计算开销，防止不合理的规划行为。单独贡献<strong>79.42%的算力节省</strong>。</p>
+  </div>
+</div>
+
+<!-- 对比 -->
+<div class="section">
+  <h2>📊 与已有方法对比</h2>
+  <table>
+    <tr><th>方法</th><th>触发方式</th><th>实时性</th><th>计算效率</th><th>全局最优</th></tr>
+    <tr><td>预规划频率</td><td>被动 · 离线分配</td><td>❌ 低</td><td>✅ 高</td><td>❌</td></tr>
+    <tr><td>固定间隔触发</td><td>被动 · 定时轮询</td><td>⚠️ 中</td><td>❌ 低</td><td>❌</td></tr>
+    <tr style="background:rgba(63,185,80,0.08)"><td><strong>STEPS（本文）</strong></td><td><strong>主动 · 自触发闭环</strong></td><td><strong>✅ 高</strong></td><td><strong>✅ 高</strong></td><td><strong>✅</strong></td></tr>
+  </table>
+</div>
+
+<!-- 实验结果 -->
+<div class="section">
+  <h2>🧪 在线A/B实验结果</h2>
+  <div class="card">
+    <table>
+      <tr><th>指标</th><th>提升</th><th>意义</th></tr>
+      <tr><td>用户活跃天数</td><td class="green">+0.2843%</td><td>在10亿用户规模下极其显著</td></tr>
+      <tr><td>推送权限关闭率</td><td class="green">-1.9089%</td><td>用户更少关闭推送，体验更好</td></tr>
+      <tr><td>计算开销</td><td class="green">-79.42%</td><td>过滤智能体大幅节省算力</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 关键创新 -->
+<div class="section">
+  <h2>🔑 关键创新点</h2>
+  <div class="card">
+    <p><strong>1. 自触发闭环：</strong>首次将推送推荐建模为自触发智能体过程，系统主动决定下次调用时机，而非被动等待。</p>
+    <p><strong>2. 三智能体架构：</strong>规划-执行-过滤三层协作，端到端优化，避免多阶段框架的局部最优问题。</p>
+    <p><strong>3. 工业级验证：</strong>已在抖音全量部署，覆盖超10亿用户，线上指标显著提升。</p>
+    <p><strong>4. 效率与效果平衡：</strong>过滤智能体在保证效果的前提下节省79%算力，使高频自触发成为可能。</p>
+  </div>
+</div>
+
+<!-- 技术标签 -->
+<div class="section">
+  <h2>🏷️ 技术标签</h2>
+  <span class="tag">Agentic Recommender System</span>
+  <span class="tag">Push Notification</span>
+  <span class="tag">Decision Transformer</span>
+  <span class="tag">Self-Triggered</span>
+  <span class="tag">Reinforcement Learning</span>
+  <span class="tag">Online A/B Testing</span>
+  <span class="tag">Industrial Deployment</span>
+  <span class="tag">Douyin/TikTok</span>
+</div>
+
+<p class="footer">
+  论文：<a href="https://arxiv.org/abs/2608.01949">arxiv.org/abs/2608.01949</a> · 发表于 ACM RecSys 2026<br>
+  生成于 2026-08-05 · <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>
+</p>
+
+</div>
+</body>
+</html>
