@@ -3,243 +3,323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>大白话解读 STEPS · 抖音怎么决定什么时候给你发推送</title>
+<title>STEPS 深度解读 · 抖音如何决定推送时机</title>
 <style>
-:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif}
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.8;padding:20px 16px 60px}
-.wrap{max-width:720px;margin:0 auto}
-h1{font-size:clamp(20px,5vw,30px);font-weight:800;line-height:1.3;margin-bottom:8px;text-align:center}
-.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:32px}
-.banner{background:linear-gradient(135deg,rgba(121,192,255,.08),rgba(210,168,255,.08));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin-bottom:32px}
-.banner .big{font-size:15px;color:var(--t1);margin-bottom:8px}
-.banner .small{font-size:13px;color:var(--t2)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
-.stat .n{font-size:22px;font-weight:800}
-.stat .l{font-size:10px;color:var(--t2);margin-top:2px}
-.s{margin-top:48px}
-.s h2{font-size:18px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px}
-.s h3{font-size:15px;font-weight:600;margin:20px 0 10px;color:var(--t1)}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
+.s{margin-top:52px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
 p{font-size:14px;color:var(--t2);margin-bottom:14px}
 b{color:var(--t1)}
-.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:16px 0}
-.box.p{background:rgba(126,231,135,.04);border-color:rgba(126,231,135,.2)}
-.box.w{background:rgba(255,166,87,.04);border-color:rgba(255,166,87,.2)}
-.box.b{background:rgba(121,192,255,.04);border-color:rgba(121,192,255,.2)}
-.box.r{background:rgba(255,147,138,.04);border-color:rgba(255,147,138,.2)}
-.box.h{background:rgba(210,168,255,.04);border-color:rgba(210,168,255,.2)}
-.emoji{font-size:24px;margin-right:6px}
+.em{color:var(--blue)}
+.em2{color:var(--orange)}
+.em3{color:var(--green)}
+.em4{color:var(--purple)}
+.em5{color:var(--red)}
+/* 白话块 */
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+/* 技术块 */
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
+.tech p{font-size:13px;margin-bottom:6px}
+/* 对比卡 */
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-@media(max-width:480px){.compare{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}
-.citem{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
-.citem .t{font-size:13px;font-weight:600;margin-bottom:6px}
-.citem .d{font-size:13px;color:var(--t2)}
-.citem.bad{border-left:3px solid var(--red)}
-.citem.good{border-left:3px solid var(--green)}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+/* 表格 */
 table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
-th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px}
-td{padding:8px 12px;border-bottom:1px solid var(--border)}
-hr{border:none;border-top:1px solid var(--border);margin:36px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+td.up{color:var(--green)}td.down{color:var(--red)}
+.high{background:rgba(126,231,135,.04)}.high td{color:var(--green);font-weight:600}
+/* 流程图 */
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:20px 0}
+.flow-step{display:flex;align-items:center;gap:10px;width:100%;max-width:500px}
+.flow-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.flow-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;flex:1}
+.flow-arrow{color:var(--t2);font-size:16px;text-align:center}
+.flow-split{display:flex;gap:12px;width:100%;max-width:500px}
+.flow-split .flow-box{flex:1;text-align:center;font-size:12px}
+/* 列表 */
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
 .footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
 .footer a{color:var(--blue)}
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:var(--card);border:1px solid var(--border);margin:2px;color:var(--t2)}
-.glossary{margin:30px 0}
-.glossary dt{font-weight:700;color:var(--t1);margin-top:14px;font-size:14px}
-.glossary dd{color:var(--t2);font-size:13px;margin:4px 0 0 0;padding:0}
-.faq{margin:20px 0}
-.faq .q{font-weight:600;color:var(--t1);font-size:14px;margin-top:16px}
-.faq .a{color:var(--t2);font-size:13px;margin-top:4px}
-.step{display:flex;gap:12px;margin:16px 0;align-items:flex-start}
-.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px}
-.step-body{flex:1;font-size:14px;color:var(--t2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 8px}
+.tag-item{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 0;color:var(--t2);font-size:13px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<h1>📱 抖音是怎么决定<br>什么时候给你发推送的？</h1>
-<p class="sub">大白话解读 STEPS 论文 · 零基础也能看懂</p>
+<h1>STEPS：抖音如何决定推送时机</h1>
+<p class="sub">A Self-Triggered Agentic Push Recommendation System</p>
+<p class="sub" style="margin-top:4px">
+  <span class="tag-item">RecSys 2026</span>
+  <span class="tag-item">字节跳动 × 北大</span>
+  <span class="tag-item">10亿用户全量部署</span>
+</p>
 
-<!-- 一句话概览 -->
-<div class="banner">
-  <div class="big">抖音用 <b style="color:var(--blue)">三个AI小助手</b> 配合，自动决定什么时候给你发推送、发什么内容。</div>
-  <div class="small">结果：你更愿意打开App了，也不会因为烦而关掉推送。</div>
+<div class="hero">
+  <div class="big">核心思路：<b class="em">别定计划了</b>，让系统<b class="em3">自己决定下次什么时候醒</b>。</div>
+  <div class="sml">三个AI小助手配合——规划师排时间、执行官定内容、守门员省算力——端到端闭环优化。</div>
 </div>
 
-<div class="stats">
-  <div class="stat"><div class="n" style="color:var(--green)">+0.28%</div><div class="l">你打开App的天数变多了</div></div>
-  <div class="stat"><div class="n" style="color:var(--green)">−1.9%</div><div class="l">更少人关掉推送权限</div></div>
-  <div class="stat"><div class="n" style="color:var(--blue)">−79%</div><div class="l">服务器算力开销节省</div></div>
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.28%</div><div class="l">用户活跃天数 UAD ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">−1.91%</div><div class="l">推送权限关闭率 NE ↓</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">−79.4%</div><div class="l">计算资源消耗 ↓</div></div>
 </div>
 
 <hr>
 
-<!-- 背景 -->
+<!-- ===== 1. 背景 ===== -->
 <div class="s">
-  <h2>🤔 背景：推送为什么这么难搞？</h2>
-  
-  <p>你关掉抖音之后，抖音想让你再打开它，唯一的方法就是<b>发推送通知</b>。但什么时候发、发什么内容，是个巨大的难题：</p>
+  <h2>一、推送通知为什么是个难题</h2>
 
-  <div class="box r">
-    <p style="margin:0"><b>❌ 发得太频繁：</b>你烦了，直接把推送权限关了 → <b style="color:var(--red)">永久失去联系</b></p>
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>推送通知是<b>唯一能在App外面触达用户</b>的方式。你关掉抖音后，只有推送能让你再打开它。但问题在于：发多了你烦、发少了浪费、每秒都检查服务器扛不住。</p>
   </div>
-  <div class="box w">
-    <p style="margin:0"><b>❌ 发得太少/时机不对：</b>你不打开App → <b style="color:var(--orange)">浪费了推送名额</b></p>
-  </div>
-  <div class="box b">
-    <p style="margin:0"><b>❌ 每秒都检查要不要发：</b>抖音有10亿用户 → <b style="color:var(--blue)">服务器直接爆炸</b></p>
-  </div>
-</div>
 
-<!-- 老方法 -->
-<div class="s">
-  <h2>📖 抖音以前是怎么做的？</h2>
-  
   <div class="compare">
-    <div class="citem bad">
-      <div class="t" style="color:var(--red)">❌ 方法一：提前排班</div>
-      <div class="d">前一天晚上，系统根据你的历史数据算出"小明明天应该收到3条推送，时间分别是9点、14点、20点"。<br><br><b>问题：</b>今天你9点就打开App了，9点的推送完全浪费了。而下午你喜欢的博主突然直播，但系统已经定好了计划，没法临时发推送通知你。</div>
-    </div>
-    <div class="citem bad">
-      <div class="t" style="color:var(--orange)">❌ 方法二：每隔几分钟检查一次</div>
-      <div class="d">设置一个闹钟，每5分钟响一次，响了就检查要不要给每个人发推送。<br><br><b>问题：</b>5分钟检查一次 → 服务器累死。30分钟检查一次 → 你喜欢的博主15分钟前开播了，等你检查到的时候已经晚了。</div>
-    </div>
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 老方法一：提前排班</h4><p>前一天离线算好每个人明天几点发。不看实时情况，你9点自己打开了App，9点的推送就浪费了。</p></div>
+    <div class="cc bad"><h4 style="color:var(--orange)">❌ 老方法二：固定闹钟</h4><p>每N分钟检查一次要不要发。N太小→服务器爆炸；N太大→错过最佳时机。</p></div>
   </div>
 
-  <p style="margin-top:16px">更重要的是，这两个方法都是<b>"分步走"</b>的——第一步决定什么时候检查，第二步决定要不要发。分开决定，<b>很容易得到"整体不是最好"的结果</b>。</p>
-</div>
-
-<!-- 新方法 -->
-<div class="s">
-  <h2>💡 STEPS 新方法：让系统自己决定</h2>
-  
-  <p>STEPS 的核心思路很简单：<b>别提前定计划了，也别设固定闹钟了。让系统自己判断"我接下来什么时候该醒过来看看"。</b></p>
-
-  <p>就像你早上醒来，看一眼手机，决定"现在没什么事，两小时后再看吧"——而不是提前一天设定闹钟每30分钟响一次。</p>
-
-  <div class="box b" style="text-align:center">
-    <p style="font-size:16px;margin:0">🔄 <b>闭合循环：</b>醒来 → 判断要不要发推送 → 决定下次什么时候再醒来 → 再醒来 → ...</p>
+  <div class="plain">
+    <span class="tag o">关键矛盾</span>
+    <p>两个老方法共同的致命伤：<b>分步优化，各管各的</b>。第一步定好"什么时候检查"，第二步再"检查时决定发不发"，每一步都是局部最优，合起来不是全局最优。</p>
   </div>
 
-  <!-- 三个助手 -->
-  <h3>三个AI小助手各司其职</h3>
-
-  <div class="box p">
-    <p style="margin:0"><b>🧠 小助手一：规划师（Planning Agent）</b><br>负责决定"下次什么时候再检查"。它不决定发不发推送，只管<b>"多久之后再来"</b>。比如现在情况很好，那就"1小时后再来"；如果现在用户刚打开过App，那就"3小时后再来"。</p>
-  </div>
-
-  <div class="box w">
-    <p style="margin:0"><b>⚡ 小助手二：执行官（Execution Agent）</b><br>到了规划师指定的时间，执行官看当前的实时情况——用户现在在干嘛？有什么好内容？——然后决定<b>"现在发还是不发"</b>。</p>
-  </div>
-
-  <div class="box h">
-    <p style="margin:0"><b>🛡️ 小助手三：守门员（Filtering Agent）</b><br>在执行官出手之前，守门员先快速判断"这事值不值得麻烦执行官"。比如用户已经三天没打开App了，大概率发了也没用，守门员直接拦下，<b>省下79%的算力</b>。相当于先过一遍筛子，只把有价值的递给执行官。</p>
-  </div>
-
-  <!-- 流程图 -->
-  <div class="box" style="text-align:center;padding:20px">
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
-      <div style="display:flex;gap:12px;align-items:center">
-        <span style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:13px">⏰ 规划师定的时间到了</span>
-      </div>
-      <span style="color:var(--t2);font-size:18px">⬇️</span>
-      <div style="display:flex;gap:12px;align-items:center">
-        <span style="background:rgba(210,168,255,.1);border:1px solid rgba(210,168,255,.3);border-radius:8px;padding:6px 14px;font-size:13px">🛡️ 守门员：值得发给执行官吗？</span>
-      </div>
-      <div style="display:flex;gap:24px;margin:4px 0">
-        <span style="color:var(--t2);font-size:12px">↘️ 不值得 → 🗑️ 直接扔</span>
-        <span style="color:var(--t2);font-size:12px">↘️ 值得 → ⬇️</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:center">
-        <span style="background:rgba(255,166,87,.1);border:1px solid rgba(255,166,87,.3);border-radius:8px;padding:6px 14px;font-size:13px">⚡ 执行官：现在发还是不发？</span>
-      </div>
-      <span style="color:var(--t2);font-size:18px">⬇️</span>
-      <div style="display:flex;gap:12px;align-items:center">
-        <span style="background:rgba(126,231,135,.1);border:1px solid rgba(126,231,135,.3);border-radius:8px;padding:6px 14px;font-size:13px">🧠 规划师：下次什么时候再来？</span>
-      </div>
-      <span style="color:var(--t2);font-size:18px">⬇️</span>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:13px;color:var(--blue)">🔄 回到第一步，循环往复</div>
-    </div>
+  <div class="tech">
+    <p><b class="em">技术表述：</b>推送推荐可建模为连续时间序列上的<b>"是否+何时"(whether and when)</b>决策问题。设一天内有T个候选推送时刻，目标是最大化正价值（用户活跃）同时控制负价值（推送关闭）。已有方法分为两种范式：</p>
+    <p>① <b>预规划频率法 (Pre-planned Frequency)</b>：离线uplift建模 + 整数规划求解最优频率和时刻，按时执行。问题：不感知实时用户状态。</p>
+    <p>② <b>固定间隔触发法 (Fixed-interval Triggering)</b>：以固定间隔轮询，每次判断是否推送。问题：间隔选择面临算力-效果trade-off，且多阶段框架陷入局部最优。</p>
   </div>
 </div>
 
-<!-- 为什么厉害 -->
+<!-- ===== 2. 核心方案 ===== -->
 <div class="s">
-  <h2>🎯 为什么这么做更厉害？</h2>
+  <h2>二、STEPS 核心方案：自触发闭环</h2>
 
-  <div class="box p">
-    <p style="margin:0"><b>✅ 端到端：</b>三个小助手一起训练，目标一致——"让用户打开App"。不像老方法分两步走，各管各的。</p>
+  <div class="plain">
+    <span class="tag b">白话</span>
+    <p>思路很简单：<b>别提前定计划了，让系统自己决定"下次什么时候醒来"。</b>就像你早上醒来看一眼手机，觉得没什么事就决定两小时后再看——而不是提前一天设闹钟。</p>
   </div>
-  <div class="box b">
-    <p style="margin:0"><b>✅ 会自己调整频率：</b>对活跃用户，规划师会安排更长的间隔（反正他自己会打开App）；对沉默用户，会找合适的时机尝试激活。</p>
+
+  <div class="tech">
+    <p>STEPS将推送推荐<b>重新形式化</b>为自触发智能体过程。在每个时刻t，系统观察当前状态s<sub>t</sub>和目标回报R<sub>t</sub>，同时输出两个决策：</p>
+    <div class="formula">(a<sub>t</sub>, Δt) = (π<sub>A</sub>(s<sub>t</sub>, R<sub>t</sub>), π<sub>P</sub>(s<sub>t</sub>, R<sub>t</sub>))</div>
+    <p>a<sub>t</sub> ∈ {0,1} 是执行智能体π<sub>A</sub>的推送决策，Δt > 0 是规划智能体π<sub>P</sub>生成的下次激活间隔。系统不再依赖预先定义的T。</p>
   </div>
-  <div class="box w">
-    <p style="margin:0"><b>✅ 节省大量算力：</b>守门员用简单的模型先筛一遍，挡住80%的无意义请求。执行官很贵（要算推荐内容），只处理真正有价值的20%。</p>
+
+  <div class="flow">
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">⏰ 规划师定的时间到了</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🛡️ 守门员：值得往下走吗？</div></div>
+    <div class="flow-split">
+      <div class="flow-box" style="border-color:var(--red);text-align:center;font-size:12px">不值得 → 🗑️ 丢弃</div>
+      <div class="flow-box" style="border-color:var(--green);text-align:center;font-size:12px">值得 → ⬇</div>
+    </div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--orange)">⚡ 执行官：现在发还是不发？</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--green)">🧠 规划师：下次什么时候再来？生成 Δt</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">5</span><div class="flow-box" style="border-color:var(--blue)">🔄 等到 Δt 后，回到步骤1</div></div>
   </div>
 </div>
 
-<!-- 数据验证 -->
+<!-- ===== 3. 规划智能体 ===== -->
 <div class="s">
-  <h2>📊 实际效果怎么样？</h2>
-  <p>抖音在线上做了14天的A/B测试（一半用户用老方法，一半用STEPS），覆盖10亿用户。</p>
+  <h2>三、规划智能体：决定"下次什么时候来"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>规划师不决定发不发推送，只管一件事：<b>"现在情况怎么样？多久之后再检查一次比较合适？"</b>如果用户刚打开过App，那3小时后再来；如果用户已经半天没动静了，可能30分钟后就来。</p>
+    <p style="margin-top:8px">它需要解决两个难题：① 怎么让模型听懂"目标"？② 怎么稳定预测一个连续的时间？</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">难题一：RTG信号太弱</span>
+    <p>规划师需要知道"目标回报"（RTG，即期望用户产生多少价值），但RTG只是一个数字，而用户状态是几百维的向量。直接拼接的话，<b>神经网络会直接忽略RTG</b>——就像在100个人说话的房间里有一个人轻声说了句话，没人听得到。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">解法：门控RTG (Gated-RTG)。</b>不用拼接，改用<b>逐元素乘法（Hadamard积）</b>将RTG注入状态：</p>
+    <div class="formula">e<sub>gated</sub> = e<sub>s</sub> ⊙ MLP(R<sub>t</sub>)</div>
+    <p>RTG先通过MLP升维，然后与状态逐元素相乘。这样RTG变成了<b>门控开关</b>，模型<em class="em5">无法绕过</em>它。</p>
+    <p><b>验证：</b>定义"相关系数" = 输入高RTG时生成的Δt / 输入低RTG时生成的Δt。标准DT的系数随机波动在1.0附近（说明模型忽略了RTG）。Gated-RTG稳定收敛到约1.8，匹配真实数据分布。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">难题二：连续时间预测不稳定</span>
+    <p>直接预测一个数字"3.7小时后"很难——数据分布是长尾的（大多数集中在小值），而且误差的严重程度是非线性的（差30分钟在短间隔很严重，在长间隔无所谓）。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em2">解法：有序回归 (Ordinal Regression)。</b>将连续的时间空间离散为K=100个等频桶，每个桶问一个简单问题："Δt大于这个阈值吗？"然后用BCE损失逐桶训练：</p>
+    <div class="formula">L<sub>next</sub> = Σ<sub>k=1</sub><sup>K</sup> BCE(y<sub>k</sub>, z<sub>k</sub>)，其中 y<sub>k</sub> = 1[Δt > τ<sub>k</sub>]</div>
+    <p><b>在线推理：</b>平滑聚合所有桶的概率得到精确连续值：</p>
+    <div class="formula">Δt = Σ<sub>k=1</sub><sup>K</sup> (τ<sub>k</sub> − τ<sub>k−1</sub>) · Sigmoid(z<sub>k</sub>)</div>
+    <p>等频分桶（而非等宽）的妙处：在短间隔密集区域分配更细的桶，提高关键区域的分辨率。实验验证K=100时RegAUC最高（0.751）。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em3">可调节的策略：</b>训练时对λ<sub>n</sub>（正负奖励权重）从U(0,1)均匀采样，让模型学会在各种权衡下工作。上线后无需重新训练，直接调λ<sub>n</sub>就能改变推送激进程度。</p>
+  </div>
+</div>
+
+<!-- ===== 4. 执行智能体 ===== -->
+<div class="s">
+  <h2>四、执行智能体：决定"现在推不推"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>到了规划师指定的时间，执行官登场。它看<b>实时的用户状态和推荐内容</b>，决定"现在发还是不发"。执行官是三个助手里<b class="em5">最贵的</b>——因为它要做完整的推荐排序（从海量内容里挑最好的发给你），算力消耗是守门员的57倍。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">核心挑战：训练数据有问题</span>
+    <p>执行官的训练数据来自<b>历史日志</b>——但历史日志记录的是"当时系统做的选择"，而当时的系统可能做的是<b>次优决策</b>。直接用这些数据学，模型会学到"前任的错误"。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em2">解法：Bellman RTG建模。</b>受GAVE启发，但不直接回归观测RTG（会被历史次优行为污染），而是用<b>Bellman方程</b>学习Q(s,a|λ<sub>n</sub>)：</p>
+    <div class="formula">L<sub>Q</sub> = Σ<sub>t=1</sub><sup>T−1</sup> (R<sub>t+1</sub> − Q(s<sub>t</sub>, a<sub>t</sub>|λ<sub>n</sub>))²</div>
+    <p>其中R<sub>t</sub> = R⁺<sub>t</sub> − λ<sub>n</sub>R⁻<sub>t</sub>，R⁺是活跃奖励（用户打开App），R⁻是负向奖励（用户关推送）。</p>
+    <p>学习Q值后，计算<b>优势权重</b>：</p>
+    <div class="formula">w<sub>t</sub> = Sigmoid(α<sub>r</sub> · (Q(s<sub>t</sub>, a<sub>t</sub>) − Q(s<sub>t</sub>, 1−a<sub>t</sub>)))</div>
+    <p>用这个权重重写动作损失：L<sub>π</sub> = −Σ [w'·log π + (1−w')·log(1−π)]。直观理解：<b>给"比相反动作好很多"的决策更高权重</b>，引导策略远离次优行为。</p>
+  </div>
+
+  <div class="tech">
+    <p><b>在线验证：</b>直接学习观测RTG的方法初期有提升但迅速衰减至零；Bellman RTG持续稳定上升并维持正向。同时，用户每日推送量的分布更加合理：零推送−4.06%，极端高频(>30条)−9.30%，合理区间(1~20条)+20.31%。</p>
+  </div>
+</div>
+
+<!-- ===== 5. 过滤智能体 ===== -->
+<div class="s">
+  <h2>五、过滤智能体：把不值的请求拦下来</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>守门员是最简单但<b class="em3">最省钱</b>的助手。执行官太贵了（要做推荐排序），如果每个请求都送到执行官那里，服务器会爆炸。守门员用<b>极简模型</b>（3层MLP）先过一遍，只放行值得的请求。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em3">关键设计：</b>守门员<b>只用用户和环境特征</b>，故意排除物品特征。因为一旦引入物品特征，就会触发下游的召回→粗排→精排管线，这是算力开销的主要来源。</p>
+    <p>守门员的知识来自<b>知识蒸馏</b>——从执行官学到的决策能力压缩到轻量模型。</p>
+    <p><b>双重边界控制：</b>系统侧（推送后固定窗口内抑制） + 用户侧（用户刚活跃后抑制），用分钟级保守阈值防止极端case。</p>
+  </div>
 
   <table>
-    <tr><th>对比项</th><th>老方法</th><th style="color:var(--green)">STEPS</th></tr>
-    <tr><td>用户活跃天数</td><td>基准</td><td style="color:var(--green)"><b>+0.2843%</b></td></tr>
-    <tr><td>关推送权限的人数</td><td>基准</td><td style="color:var(--green)"><b>−1.9089%</b></td></tr>
-    <tr><td>服务器算力消耗</td><td>基准</td><td style="color:var(--blue)"><b>−79.42%</b></td></tr>
+    <tr><th>智能体</th><th>每1k请求相对算力</th><th>说明</th></tr>
+    <tr><td>🛡️ 守门员</td><td>1.00x</td><td>3层MLP，仅用户特征</td></tr>
+    <tr><td>🧠 规划师</td><td>1.27x</td><td>Decision Transformer</td></tr>
+    <tr class="high"><td>⚡ 执行官</td><td>57.72x</td><td>含完整物品排序管线</td></tr>
   </table>
 
-  <p style="font-size:12px;color:var(--t2)">0.28%听起来很小？考虑抖音有10亿用户，这意味着<b>每天多出几十万活跃用户</b>。</p>
-</div>
-
-<!-- 小白QA -->
-<div class="s">
-  <h2>🙋 你可能想问</h2>
-
-  <div class="faq">
-    <div class="q">💬 "守门员怎么知道什么东西值得发？"</div>
-    <div class="a">守门员是被执行官"教"出来的——执行官的经验被蒸馏到一个轻量模型里。守门员只用用户的基本信息就能判断（不看具体推荐内容），所以很快。</div>
-
-    <div class="q">💬 "规划师怎么学习什么时候该来？"</div>
-    <div class="a">规划师看的是<b>最终结果</b>。如果它安排的时间导致推送被守门员或执行官拒绝了（用户没收到推送），它就知道"这个时间不好，下次别来了"。如果推送成功触达用户且用户打开了App，它就知道"这个时间段不错"。</div>
-
-    <div class="q">💬 "三个助手的算力差距有多大？"</div>
-    <div class="a">守门员（轻量MLP）处理1000个请求的算力记为1倍。规划师需要1.27倍。执行官要<b>57.72倍</b>——因为它要做完整的推荐排序。所以守门员能拦下80%的请求，直接省了巨大的开销。</div>
-
-    <div class="q">💬 "B站、小红书能用吗？"</div>
-    <div class="a">理论上可以。任何有推送通知功能的App都存在"何时发推送"的问题。但STEPS需要大量的用户行为数据来训练，并且需要在线A/B测试来验证效果。</div>
+  <div class="plain">
+    <span class="tag b">过滤策略随用户活跃度不同</span>
+    <p>非活跃用户（长期不打开）：请求丢弃率<b>78.86%</b>——边际响应价值低，发了也白发。<br>高活跃用户（天天打开）：请求丢弃率<b>85.65%</b>——他们本身行为就产生大量冗余推送机会，全发出去反而骚扰。</p>
   </div>
 </div>
 
-<!-- 术语表 -->
+<!-- ===== 6. 实验 ===== -->
 <div class="s">
-  <h2>📚 术语小词典</h2>
-  <dl class="glossary">
-    <dt>RTG (Return-to-Go)</dt>
-    <dd>"目标回报"——系统期望用户接下来产生的总价值。比如"我希望这个用户未来7天打开App 5次"。</dd>
-    <dt>UAD (User Active Days)</dt>
-    <dd>用户活跃天数——衡量用户粘性的核心指标。</dd>
-    <dt>NE (Negative Experience)</dt>
-    <dd>负面体验——主要指用户关闭推送权限。这是不可逆的损失。</dd>
-    <dt>Decision Transformer</dt>
-    <dd>一种用Transformer做决策的AI模型。把"状态-动作-奖励"序列当成语言来学习。</dd>
-    <dt>闭环 (Closed Loop)</dt>
-    <dd>系统自己决定下一步做什么，再做下一步决定，形成循环。不需要外部指令。</dd>
-  </dl>
+  <h2>六、实验数据（14天在线A/B · 10亿用户）</h2>
+
+  <h3>整体效果 vs 基线</h3>
+  <table>
+    <tr><th>方法</th><th>UAD ↑</th><th>NE ↓</th><th>资源 ↓</th></tr>
+    <tr><td>预规划频率（当前线上）</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>固定间隔触发</td><td class="down">−0.067%</td><td class="down">+0.021%</td><td class="down">+6.55%</td></tr>
+    <tr class="high"><td><b>STEPS</b></td><td>+0.2843%</td><td>−1.9089%</td><td>−79.42%</td></tr>
+  </table>
+  <blockquote>固定间隔触发在相同算力预算下反而更差，说明单纯提高检查频率不是正解。</blockquote>
+
+  <h3>消融实验：每个智能体的贡献</h3>
+  <table>
+    <tr><th>智能体</th><th>UAD ↑</th><th>NE ↓</th><th>资源 ↓</th></tr>
+    <tr><td>🧠 规划</td><td class="up">+0.181%</td><td class="up">−0.978%</td><td class="up">−4.54%</td></tr>
+    <tr><td>⚡ 执行</td><td class="up">+0.104%</td><td class="up">−0.684%</td><td>—</td></tr>
+    <tr><td>🛡️ 过滤</td><td>—</td><td class="up">−0.247%</td><td class="up">−74.88%</td></tr>
+  </table>
+  <blockquote>规划师是效果最大贡献者；守门员几乎独立承担全部算力节省，还额外减少骚扰。</blockquote>
+
+  <h3>推送间隔分布变化</h3>
+  <table>
+    <tr><th>间隔区间</th><th>变化</th><th>解读</th></tr>
+    <tr><td>0~20分钟</td><td class="down">−35.93%</td><td>高频骚扰锐减</td></tr>
+    <tr><td>1~3小时</td><td class="up">+91.93%</td><td>适度间隔大增</td></tr>
+    <tr class="high"><td>3~6小时</td><td>+179.84%</td><td>最佳间隔爆发式增长</td></tr>
+  </table>
+  <blockquote>第5到50百分位的间隔全面增大，说明规划师有效地抑制了高频推送簇。</blockquote>
+
+  <h3>每日推送数量变化</h3>
+  <table>
+    <tr><th>每日推送数</th><th>变化</th></tr>
+    <tr><td>0条</td><td class="down">−4.06%</td></tr>
+    <tr class="high"><td>1~20条（健康区间）</td><td>+20.31%</td></tr>
+    <tr><td>21~30条</td><td class="down">−6.87%</td></tr>
+    <tr><td>>30条（极端高频）</td><td class="down">−9.30%</td></tr>
+  </table>
+  <blockquote>分布向"1~20条/天"的合理区间集中，两端都在减少。</blockquote>
 </div>
 
-<div class="tag-group" style="margin-top:32px;display:flex;flex-wrap:wrap;gap:6px">
-  <span class="tag">推送通知</span><span class="tag">推荐系统</span><span class="tag">AI智能体</span>
-  <span class="tag">强化学习</span><span class="tag">Decision Transformer</span><span class="tag">抖音</span>
-  <span class="tag">RecSys 2026</span><span class="tag">字节跳动</span><span class="tag">工业级部署</span>
+<!-- ===== 7. 总结 ===== -->
+<div class="s">
+  <h2>七、总结</h2>
+
+  <div class="plain">
+    <p><b class="em">1. 新范式：</b>把推送从"被动等唤醒"变成"主动自触发闭环"，系统自己决定下次何时激活。</p>
+    <p><b class="em2">2. 门控RTG：</b>用逐元素乘注入目标信号，解决高维特征淹没条件信息的问题。</p>
+    <p><b class="em3">3. 有序回归：</b>100个等频桶将连续时间离散化，短间隔更细、长间隔更粗。</p>
+    <p><b class="em4">4. Bellman值学习：</b>纠正离线数据中的次优行为偏差，实现持续长期价值提升。</p>
+    <p><b class="em5">5. 轻量守门员：</b>用3层MLP拦下80%低价值请求，节省57倍算力。</p>
+    <p><b class="em">6. 工业级验证：</b>抖音全量部署，三项指标全面正向，14天稳定运行。</p>
+  </div>
+</div>
+
+<div class="tags">
+  <span class="tag-item">Agentic Recommender System</span>
+  <span class="tag-item">Push Notification</span>
+  <span class="tag-item">Decision Transformer</span>
+  <span class="tag-item">Self-Triggered</span>
+  <span class="tag-item">Reinforcement Learning</span>
+  <span class="tag-item">Ordinal Regression</span>
+  <span class="tag-item">Bellman Equation</span>
+  <span class="tag-item">Douyin/TikTok</span>
 </div>
 
 <p class="footer">
-  📄 论文：<a href="https://arxiv.org/abs/2608.01949">arxiv.org/abs/2608.01949</a><br>
-  📍 ACM RecSys 2026 · <a href="https://doi.org/10.1145/3773078.3831932">10.1145/3773078.3831932</a><br>
-  <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> 生成 · 2026-08-05
+  📄 <a href="https://arxiv.org/abs/2608.01949">arxiv.org/abs/2608.01949</a> · ACM RecSys 2026<br>
+  DOI: <a href="https://doi.org/10.1145/3773078.3831932">10.1145/3773078.3831932</a>
 </p>
 
 </div>
