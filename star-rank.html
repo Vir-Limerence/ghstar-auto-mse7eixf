@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>⚡ 热度仪表盘</title>
 <style>
-:root {--bg:#f8f9fa;--surface:#fff;--border:#e5e7eb;--text:#111827;--text-muted:#6b7280;--accent:#2563eb;--accent-hover:#1d4ed8;--red:#ef4444;--amber:#f59e0b;--green:#10b981;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-mono:'SF Mono',Menlo,monospace;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);--shadow-hover:0 4px 12px rgba(0,0,0,.08)}
+:root{--bg:#f8f9fa;--surface:#fff;--border:#e5e7eb;--text:#111827;--text-muted:#6b7280;--accent:#2563eb;--accent-hover:#1d4ed8;--red:#ef4444;--amber:#f59e0b;--green:#10b981;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-mono:'SF Mono',Menlo,monospace;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);--shadow-hover:0 4px 12px rgba(0,0,0,.08)}
 @media(prefers-color-scheme:dark){:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--text-muted:#8b949e;--shadow:0 1px 3px rgba(0,0,0,.3);--shadow-hover:0 4px 12px rgba(0,0,0,.4)}}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip}
@@ -44,6 +44,7 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 .news-list li{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px}
 .news-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap;min-width:44px;text-align:center}
 .badge-tech{background:#dbeafe;color:#1e40af}.badge-biz{background:#fef3c7;color:#92400e}
+.badge-intl{background:#fce7f3;color:#9d174d}.badge-ai{background:#d1fae5;color:#065f46}.badge-sec{background:#fee2e2;color:#991b1b}
 .news-link{flex:1;color:var(--text);text-decoration:none;line-height:1.4}
 .news-link:hover{color:var(--accent)}
 .xhs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}
@@ -79,12 +80,12 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
   <div class="card accent-douyin">
     <div class="card-head"><span class="icon">🎵</span> 抖音热点</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.douyin.com/search/%E4%B8%AD%E6%96%B9%E5%AF%B96%E5%AE%B6%E7%BE%8E%E5%9B%BD%E5%AE%9E%E4%BD%93%E9%87%87%E5%8F%96%E5%8F%8D%E5%88%B6%E6%8E%AA%E6%96%BD" target="_blank">中方对6家美国实体采取反制措施</a></li>
-      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.douyin.com/search/%E8%BF%99%E4%B8%96%E7%95%8C%E5%A4%A7%E5%BE%97%E8%AE%A9%E4%BD%A0%E5%BE%88%E9%9A%BE%E4%B8%8D%E6%97%85%E6%B8%B8" target="_blank">这世界大得让你很难不旅游</a></li>
+      <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.douyin.com/search/%E8%BF%99%E4%B8%96%E7%95%8C%E5%A4%A7%E5%BE%97%E8%AE%A9%E4%BD%A0%E5%BE%88%E9%9A%BE%E4%B8%8D%E6%97%85%E6%B8%B8" target="_blank">这世界大得让你很难不旅游</a></li>
+      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.douyin.com/search/%E8%B6%81%E5%A4%8F%E5%A4%A9%E8%B5%B4%E4%B8%80%E5%9C%BA%E5%85%AB%E5%A4%A7%E5%8F%A4%E9%95%87%E4%B9%8B%E7%BA%A6" target="_blank">趁夏天赴一场八大古镇之约</a></li>
       <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.douyin.com/search/%E5%87%89%E8%B5%84%E6%BA%90%E6%BF%80%E6%B4%BB%E5%A4%8F%E6%97%A5%E7%BB%8F%E6%B5%8E%E7%83%AD%E6%B5%81%E9%87%8F" target="_blank">凉资源激活夏日经济热流量</a></li>
-      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.douyin.com/search/%E4%BA%BA%E8%B4%A9%E5%AD%90%22%E6%A2%85%E5%A7%A8%22%E7%9C%9F%E5%AE%9E%E5%A7%93%E5%90%8D%E6%9B%9D%E5%85%89" target="_blank">人贩子&quot;梅姨&quot;真实姓名曝光</a></li>
-      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.douyin.com/search/%E8%B6%81%E5%A4%8F%E5%A4%A9%E8%B5%B4%E4%B8%80%E5%9C%BA%E5%85%AB%E5%A4%A7%E5%8F%A4%E9%95%87%E4%B9%8B%E7%BA%A6" target="_blank">趁夏天赴一场八大古镇之约</a></li>
-      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.douyin.com/search/%E9%A6%96%E5%B1%8A%E6%97%A9%E9%A4%90%E7%83%98%E7%84%99%E5%A4%A7%E5%B8%88%E8%B5%9B" target="_blank">首届早餐烘焙大师赛</a></li>
+      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.douyin.com/search/%E4%BA%BA%E8%B4%A9%E5%AD%90%E2%80%9C%E6%A2%85%E5%A7%A8%E2%80%9D%E7%9C%9F%E5%AE%9E%E5%A7%93%E5%90%8D%E6%9B%9D%E5%85%89" target="_blank">人贩子"梅姨"真实姓名曝光</a></li>
+      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.douyin.com/search/%E9%A6%96%E5%B1%8A%E6%97%A9%E9%A4%90%E7%83%98%E7%84%99%E5%A4%A7%E5%B8%88%E8%B5%9B" target="_blank">首届早餐烘焙大师赛</a></li>
+      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.douyin.com/search/%E4%B8%AD%E6%96%B9%E5%AF%B96%E5%AE%B6%E7%BE%8E%E5%9B%BD%E5%AE%9E%E4%BD%93%E9%87%87%E5%8F%96%E5%8F%8D%E5%88%B6%E6%8E%AA%E6%96%BD" target="_blank">中方对6家美国实体采取反制措施</a></li>
       <li><span class="rank-num ">7</span><a class="rank-title" href="https://www.douyin.com/search/%E6%97%A0%E7%95%8F%E5%B7%A1%E5%9B%9E%E6%88%90%E9%83%BD%E7%AB%99%E5%BC%80%E8%B5%9B" target="_blank">无畏巡回成都站开赛</a></li>
       <li><span class="rank-num ">8</span><a class="rank-title" href="https://www.douyin.com/search/2026%E6%8A%96%E9%9F%B3%E5%88%9B%E4%BD%9C%E8%80%85%E5%A4%A7%E4%BC%9A%E6%9D%A5%E4%BA%86" target="_blank">2026抖音创作者大会来了</a></li>
       <li><span class="rank-num ">9</span><a class="rank-title" href="https://www.douyin.com/search/%E5%A4%8F%E6%97%A5%E8%93%9D%E8%89%B2%E7%B3%BB%E5%A6%86%E4%B8%80%E7%9C%BC%E9%99%8D%E6%B8%A9" target="_blank">夏日蓝色系妆一眼降温</a></li>
@@ -129,41 +130,41 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
   <div class="card accent-gh">
     <div class="card-head">📅 今日涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a><span class="rank-meta">⭐933</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/mikiarlo3/awesome-growth-hacking-skills" target="_blank">mikiarlo3/awesome-growth-hacking-skills</a><span class="rank-meta">⭐414</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Find agentic growth hacking skills for Claude, ChatGPT, Manu</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/Packets/Vanta" target="_blank">Packets/Vanta</a><span class="rank-meta">⭐344</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">A two-faction battle royale. Own what you earn. The $VANTA w</p></div></li>
-      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/Binaryify/open-kimi-ppt-skill" target="_blank">Binaryify/open-kimi-ppt-skill</a><span class="rank-meta">⭐342</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">非官方 Kimi Slides Skill：让 AI Agent 生成可编辑 PPTD + PPTX，并附带本地浏览器编</p></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/criptogus/HermesOffice" target="_blank">criptogus/HermesOffice</a><span class="rank-meta">⭐282</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">HermesOffice — AI-native office suite forked from GenOffice</p></div></li>
-      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/AMAP-ML/LongHorizon-Harness" target="_blank">AMAP-ML/LongHorizon-Harness</a><span class="rank-meta">⭐266</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">The long-horizon computer-use harness. Run AI agents across</p></div></li>
-      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/SandAI-org/MAGI-2-preview" target="_blank">SandAI-org/MAGI-2-preview</a><span class="rank-meta">⭐264</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">MAGI-2-preview: Scaling Video Generation Models Efficiently</p></div></li>
-      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/fuxicodex/Fuxi" target="_blank">fuxicodex/Fuxi</a><span class="rank-meta">⭐223</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FuXi is a fast, self-contained AI developer terminal</p></div></li>
-      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/cristicretu/diri" target="_blank">cristicretu/diri</a><span class="rank-meta">⭐193</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Native macOS orchestrator for coding agents — run Claude Cod</p></div></li>
-      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/ZzzLc0405/photo-abstract-editorial" target="_blank">ZzzLc0405/photo-abstract-editorial</a><span class="rank-meta">⭐183</span></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a><span class="rank-meta">⭐988</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Binaryify/open-kimi-ppt-skill" target="_blank">Binaryify/open-kimi-ppt-skill</a><span class="rank-meta">⭐461</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">非官方 Kimi Slides Skill：让 AI Agent 生成可编辑 PPTD + PPTX，并附带本地浏览器编</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/mikiarlo3/awesome-growth-hacking-skills" target="_blank">mikiarlo3/awesome-growth-hacking-skills</a><span class="rank-meta">⭐452</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Find agentic growth hacking skills for Claude, ChatGPT, Manu</p></div></li>
+      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/criptogus/HermesOffice" target="_blank">criptogus/HermesOffice</a><span class="rank-meta">⭐308</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">HermesOffice — AI-native office suite forked from GenOffice</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/SandAI-org/MAGI-2-preview" target="_blank">SandAI-org/MAGI-2-preview</a><span class="rank-meta">⭐275</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">MAGI-2-preview: Scaling Video Generation Models Efficiently</p></div></li>
+      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/AMAP-ML/LongHorizon-Harness" target="_blank">AMAP-ML/LongHorizon-Harness</a><span class="rank-meta">⭐270</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">The long-horizon computer-use harness. Run AI agents across</p></div></li>
+      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/fuxicodex/Fuxi" target="_blank">fuxicodex/Fuxi</a><span class="rank-meta">⭐244</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FuXi is a fast, self-contained AI developer terminal</p></div></li>
+      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/ZzzLc0405/photo-abstract-editorial" target="_blank">ZzzLc0405/photo-abstract-editorial</a><span class="rank-meta">⭐200</span></div></li>
+      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/cristicretu/diri" target="_blank">cristicretu/diri</a><span class="rank-meta">⭐197</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Native macOS orchestrator for coding agents — run Claude Cod</p></div></li>
+      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/jd-opensource/JoyAI-Video-Edit" target="_blank">jd-opensource/JoyAI-Video-Edit</a><span class="rank-meta">⭐141</span></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
     <div class="card-head">📆 本周涨星 TOP10</div>
     <ol class="rank-list">
       <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11.6K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai/crm</a><span class="rank-meta">⭐5.8K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An open-source, agentic-first CRM.</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt/decimen-optical-transfer</a><span class="rank-meta">⭐4.6K</span></div></li>
-      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl/anydoc</a><span class="rank-meta">⭐3.7K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CS</p></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3.3K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南（基于范冰《增长黑客》原书框架）</p></div></li>
-      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev/kimi-k3-in-c</a><span class="rank-meta">⭐2.4K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">A 2.78-trillion-parameter Kimi K3 running inference on a sin</p></div></li>
-      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh/zhuzhiliao</a><span class="rank-meta">⭐2.0K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 一转就哇哇叫的传统玩具，Web 模拟版。零依赖单文件，真实录音采样，移动端优先。</p></div></li>
-      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/microsoft/skill-recorder" target="_blank">microsoft/skill-recorder</a><span class="rank-meta">⭐1.9K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Desktop app that records your on-screen work session and use</p></div></li>
-      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai/genoffice</a><span class="rank-meta">⭐1.7K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An AI-native office suite for macOS and Windows: word proces</p></div></li>
-      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/thebuggeddev/anatomy" target="_blank">thebuggeddev/anatomy</a><span class="rank-meta">⭐1.5K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An interactive 3D human anatomy explorer built using threejs</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai/crm</a><span class="rank-meta">⭐5945</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An open-source, agentic-first CRM.</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt/decimen-optical-transfer</a><span class="rank-meta">⭐4661</span></div></li>
+      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl/anydoc</a><span class="rank-meta">⭐4177</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CS</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3370</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南（基于范冰《增长黑客》原书框架）</p></div></li>
+      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev/kimi-k3-in-c</a><span class="rank-meta">⭐2483</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">A 2.78-trillion-parameter Kimi K3 running inference on a sin</p></div></li>
+      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh/zhuzhiliao</a><span class="rank-meta">⭐2000</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 一转就哇哇叫的传统玩具，Web 模拟版。零依赖单文件，真实录音采样，移动端优先。</p></div></li>
+      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/microsoft/skill-recorder" target="_blank">microsoft/skill-recorder</a><span class="rank-meta">⭐1934</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Desktop app that records your on-screen work session and use</p></div></li>
+      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai/genoffice</a><span class="rank-meta">⭐1712</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An AI-native office suite for macOS and Windows: word proces</p></div></li>
+      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/thebuggeddev/anatomy" target="_blank">thebuggeddev/anatomy</a><span class="rank-meta">⭐1520</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An interactive 3D human anatomy explorer built using threejs</p></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
     <div class="card-head">📊 本月涨星 TOP5</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a><span class="rank-meta">⭐24.2K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">SpaceXAI&#x27;s coding agent harness and TUI. Fullscreen, mouse i</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a><span class="rank-meta">⭐24.2K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">SpaceXAI's coding agent harness and TUI. Fullscreen, mouse i</p></div></li>
       <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a><span class="rank-meta">⭐13.3K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex Dream Skin</p></div></li>
       <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a><span class="rank-meta">⭐13.1K</span></div></li>
       <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11.6K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a><span class="rank-meta">⭐9.9K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Rebuild the object in a reference image as a code-only, proc</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a><span class="rank-meta">⭐9868</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Rebuild the object in a reference image as a code-only, proc</p></div></li>
     </ol>
   </div>
 </div>
@@ -171,7 +172,7 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 
 <!-- AI新闻 -->
 <div id="tab-news" class="tab-content">
-<p class="update-time">来源 vicoman.top · 实时更新（vicoman 当前404，保留历史快照）</p>
+<p class="update-time">来源 vicoman.top · vicoman 当前404，保留历史快照</p>
 <ul class="news-list">
   <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">英国保守党辩护提名前新纳粹成员为候选人</a></li>
   <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">美国服务业PMI微升至54.1显示稳步扩张</a></li>
@@ -195,15 +196,16 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 <!-- 解读 -->
 <div id="tab-intro" class="tab-content">
 <div class="analysis">
-  <div class="analysis-item"><h3>🥇 <a href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a></h3><div class="meta">⭐24.2K 本月</div><div class="desc">SpaceXAI&#x27;s coding agent harness and TUI. Fullscreen, mouse i</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥇 <a href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a></h3><div class="meta">⭐24.2K 本月</div><div class="desc">SpaceXAI's coding agent harness and TUI. Fullscreen, mouse i</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
   <div class="analysis-item"><h3>🥈 <a href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a></h3><div class="meta">⭐13.3K 本月</div><div class="desc">Codex Dream Skin</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
   <div class="analysis-item"><h3>🥉 <a href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a></h3><div class="meta">⭐13.1K 本月</div><div class="desc">热门开源项目</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
   <div class="analysis-item"><h3> <a href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a></h3><div class="meta">⭐11.6K 本月</div><div class="desc">Multiplayer agent harness for work</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3> <a href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a></h3><div class="meta">⭐9.9K 本月</div><div class="desc">Rebuild the object in a reference image as a code-only, proc</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3> <a href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a></h3><div class="meta">⭐9868 本月</div><div class="desc">Rebuild the object in a reference image as a code-only, proc</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+
 </div>
 </div>
 
-<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-06 00:47 CST</p>
+<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-06 01:53 CST</p>
 
 <script>
 function switchTab(tab){
