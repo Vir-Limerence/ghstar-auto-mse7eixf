@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HGenPush 深度解读 · 快手如何用生成式模型统一推荐内容与作者</title>
+<title>HGenPush 深度解读 · 快手异构生成式推送架构</title>
 <style>
 :root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,7 +14,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
 .hero .big{font-size:15px;margin-bottom:6px}
 .hero .sml{font-size:13px;color:var(--t2)}
-.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
 .kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
 .kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
 .kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
@@ -23,11 +23,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
 p{font-size:14px;color:var(--t2);margin-bottom:14px}
 b{color:var(--t1)}
-.em{color:var(--blue)}
-.em2{color:var(--orange)}
-.em3{color:var(--green)}
-.em4{color:var(--purple)}
-.em5{color:var(--red)}
+.em{color:var(--blue)}.em2{color:var(--orange)}.em3{color:var(--green)}.em4{color:var(--purple)}.em5{color:var(--red)}
 .plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
 .plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
 .plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
@@ -40,7 +36,7 @@ b{color:var(--t1)}
 .tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
 .tech p{font-size:13px;margin-bottom:6px}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,1fr)}}
 .cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
 .cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
 .cc h4{font-size:14px;margin-bottom:6px}
@@ -70,202 +66,241 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
 <body>
 <div class="wrap">
 
-<h1>HGenPush：快手如何统一生成视频推文和作者推文</h1>
-<p class="sub">A Heterogeneous Generative Recommendation Architecture for Industrial Push Notification Systems</p>
+<h1>HGenPush：快手如何做异构生成式推送</h1>
+<p class="sub">Heterogeneous Generative Push Recommendation Architecture</p>
 <p class="sub" style="margin-top:4px">
-  <span class="tag-item">2026.07</span>
-  <span class="tag-item">快手 (Kuaishou)</span>
-  <span class="tag-item">工业级部署</span>
+  <span class="tag-item">KDD 2026</span>
+  <span class="tag-item">快手</span>
+  <span class="tag-item">生成式推荐</span>
+  <span class="tag-item">4亿DAU</span>
 </p>
 
 <div class="hero">
-  <div class="big">核心思路：<b class="em">一个模型同时生成"推什么视频"和"推哪个作者"</b>，不用自回归逐个生成，<b class="em3">一次并行产出所有 token</b>。</div>
-  <div class="sml">四层架构：行为理解 → 双分支生成 → 多 token 并行预测 → 用户偏好对齐，全端到端训练。</div>
+  <div class="big">核心思路：<b class="em">别只推荐内容</b>，把<b class="em3">视频+作者</b>一起生成式推荐，用户既要好内容也要信任的作者。</div>
+  <div class="sml">Hybrid用户行为理解 + 双分支异构生成 + Chained-MTP并行解码 + RL偏好对齐，一套端到端架构同时搞定视频和作者推荐。</div>
 </div>
 
 <div class="kpi">
   <div class="kpi-item"><div class="n" style="color:var(--green)">+0.181%</div><div class="l">日活用户 DAU ↑</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--blue)">统一生成</div><div class="l">视频 + 作者双类型</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--green)">端到端</div><div class="l">全流程可微</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">0.3915</div><div class="l">视频HitRate@100</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">0.4848</div><div class="l">作者HitRate@100</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">1.70k QPS</div><div class="l">Chained-MTP推理吞吐</div></div>
 </div>
 
 <hr>
 
-<!-- 1. 背景 -->
+<!-- ===== 1. 背景 ===== -->
 <div class="s">
   <h2>一、为什么需要异构生成式推送</h2>
 
   <div class="plain">
     <span class="tag g">白话</span>
-    <p>刷短视频时，你既关心<b>"内容好不好看"</b>，也关心<b>"这人靠不靠谱"</b>。一个你信任的创作者发的内容，哪怕题材不熟悉你也愿意点开。但现有的 AI 推荐系统只能推荐<b>单一类型</b>——要么推荐视频，要么推荐作者，做不到两者兼顾。而且它们用<b>自回归</b>方式一个一个 token 地生成，太慢了。</p>
+    <p>刷短视频时你不只看内容好不好，还会关注"这个作者值不值得关注"。传统推荐系统把"推荐视频"和"推荐作者"当成两个独立任务，分开做——但用户的需求是<b>一体两面的</b>。</p>
+    <p style="margin-top:8px">另外，传统生成式推荐（如TIGER）用<b>自回归（autoregressive）</b>方式逐token生成——一次只吐一个token，跟打字一个字一个字蹦似的，推理效率太低，上线困难。</p>
   </div>
 
   <div class="compare">
-    <div class="cc bad"><h4 style="color:var(--red)">❌ 单类型推荐</h4><p>只能推荐视频或只能推荐作者。用户"想看好内容"和"想关注好作者"是两个需求，分开满足效率低。</p></div>
-    <div class="cc bad"><h4 style="color:var(--orange)">❌ 自回归生成</h4><p>一次生成一个 token，N 个 token 就要 N 轮推理。工业场景下用户量太大，延迟扛不住。</p></div>
-  </div>
-
-  <div class="plain">
-    <span class="tag o">关键洞察</span>
-    <p>传统生成式推荐把物品编码成<b>语义 ID</b>（semantic ID），然后像 GPT 写作文一样从左到右自回归生成。但推荐任务和文本生成不一样——推荐 token 之间没有强因果依赖，<b>完全可以一次性并行预测所有 token</b>。</p>
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 老方法一：单一类型推荐</h4><p>TIGER等只用semantic ID推荐视频，完全没考虑"你关注哪个作者"这个需求，用户对作者有偏好但系统看不到。</p></div>
+    <div class="cc bad"><h4 style="color:var(--orange)">❌ 老方法二：自回归逐token解码</h4><p>一次forward pass只出一个token，3个codebook就要3轮推理。QPS直接被卡死，没法大规模上线。</p></div>
   </div>
 
   <div class="tech">
-    <p><b class="em">技术表述：</b>短视频平台的推送系统需要同时满足用户对<b>高质量内容</b>和<b>可信作者</b>的双重需求。现有生成式推荐方法（如 TIGER、P5）仅生成单一类型的推荐内容，且采用自回归范式逐个生成语义 ID，效率低下。HGenPush 首次将<b>异构生成</b>（heterogeneous generation）引入推送推荐——在一个统一框架内同时生成视频推荐和作者推荐。</p>
+    <p><b class="em">技术表述：</b>现有生成式推荐面临两大挑战：(1) <b>同质化生成</b>——仅聚焦单一类型物品（如视频），无法联合推荐异构内容（视频+作者）；(2) <b>自回归瓶颈</b>——主流semantic ID逐token自回归生成范式限制推理速度，消耗大量计算资源，阻碍生成式推荐模型在生产系统部署。</p>
+    <p>HGenPush重新定义问题：给定用户行为序列S（含feed行为S<sub>feed</sub>和push行为S<sub>push</sub>），同时生成视频推荐结果和可信任作者推荐结果，且生成过程高效可部署。</p>
   </div>
 </div>
 
-<!-- 2. 核心方法 -->
+<!-- ===== 2. 整体架构 ===== -->
 <div class="s">
-  <h2>二、HGenPush 四层架构</h2>
+  <h2>二、HGenPush 整体架构</h2>
 
   <div class="plain">
     <span class="tag b">白话</span>
-    <p>HGenPush 像一条流水线：<b>① 理解用户</b>→<b>② 双路生成</b>→<b>③ 并行预测</b>→<b>④ 用户反馈对齐</b>。每一步都有专门的设计来解决一个具体问题。</p>
+    <p>HGenPush有三层核心模块：<b>(1) Hybrid用户理解</b>——把feed流和push流的行为融合起来理解你；(2) <b>双分支异构生成</b>——视频推荐和作者推荐共享同一个理解结果，各自走自己的生成分支；(3) <b>UCPA偏好对齐</b>——用你真实的观看反馈（点赞、完播、转发）做RL优化，让模型不推"标题党"内容。</p>
   </div>
 
   <div class="flow">
-    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">🔍 混合行为理解：融合同一用户在搜索/关注/点赞/观看等多个场景的行为</div></div>
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📊 Hybrid行为理解：融合feed长期+短期+push点击+push发送序列</div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🔀 双分支生成：视频分支 + 作者分支，共享底层表征各走各路</div></div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🧠 Decoder-Only Transformer：16层，输出用户兴趣表征 h'<sub>[cls]v</sub> 和 h'<sub>[cls]a</sub></div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--green)">⚡ 多 token 并行预测：一次性输出所有语义 ID，抛弃自回归</div></div>
+    <div class="flow-split">
+      <div class="flow-box" style="border-color:var(--blue)">📹 视频分支：Chained-MTP → 生成视频semantic ID → beam search取Top100</div>
+      <div class="flow-box" style="border-color:var(--orange)">👤 作者分支：行为对齐+离散化 → 混合semantic ID → Chained-MTP生成</div>
+    </div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--orange)">🎯 消费偏好对齐：用点击/观看时长等反馈信号微调</div></div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--green)">🎯 UCPA RL偏好对齐：GSISPO算法，用赞/完播/转发/举报等反馈信号优化</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--purple)">🚀 在线部署：生成候选绕过预排序，直通精排模型</div></div>
   </div>
 </div>
 
-<!-- 3. 模块一：行为理解 -->
+<!-- ===== 3. 用户行为理解 ===== -->
 <div class="s">
-  <h2>三、模块一：混合用户行为理解</h2>
+  <h2>三、Hybrid 用户行为理解：四路序列融合</h2>
 
   <div class="plain">
     <span class="tag g">白话</span>
-    <p>你在快手上的行为不是孤立的——你搜过什么、点赞过谁、在哪个视频上多看了一会儿，这些都有关系。传统方法只看单一维度的历史，比如只看"点过哪些视频"，但忽略了搜索意图和作者偏好。</p>
+    <p>你的行为不是孤立的——<b>feed流里爱看什么 + push推送里点什么 + 最近在看什么 + 收到了什么推送</b>，这四路信息合在一起才能完整刻画你。HGenPush用<b>decoder-only架构</b>把这几路序列一次性理解，输出两个压缩向量：一个给视频推荐用，一个给作者推荐用。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em">设计：</b>混合用户行为理解模块整合<b>多场景</b>（搜索、推荐流、关注流）和<b>多视角</b>（点击、点赞、分享、完播、搜索词、关注关系）的行为数据。通过跨场景的特征交叉网络，将不同粒度的行为信号统一成一个稠密向量，作为后续生成模块的输入。</p>
-    <p>关键优势：不是把所有行为简单拼一起，而是学习<b>行为之间的交互</b>——比如"搜了某关键词然后点赞了某个视频"这样的序列关系。</p>
-  </div>
-</div>
-
-<!-- 4. 模块二：双分支生成 -->
-<div class="s">
-  <h2>四、模块二：双分支异构生成</h2>
-
-  <div class="plain">
-    <span class="tag g">白话</span>
-    <p>这是 HGenPush 的核心创新：<b>一个模型同时输出两条推荐</b>——"推荐这个视频"和"推荐这个作者"。两条路共享对用户的理解（用户喜欢什么），但各自走不同的专家网络来生成各自的语义 ID。</p>
+    <p><b class="em">四路序列融合：</b></p>
+    <div class="formula">h<sub>f</sub> = [h<sub>long</sub>; h<sub>short</sub>; h<sub>click</sub>; h<sub>send</sub>; h<sub>static</sub>; h<sub>[cls]a</sub>; h<sub>[cls]v</sub>]</div>
+    <p>① <b>h<sub>long</sub></b>：长期feed行为序列（数月），编码稳定兴趣。每个视频包含 semantic ID + 作者ID + 话题标签 + 播放时长。</p>
+    <p>② <b>h<sub>short</sub></b>：短期feed行为序列（近期），捕捉兴趣漂移。</p>
+    <p>③ <b>h<sub>click</sub></b>：push点击序列，反映用户对推送内容的反应模式（加notification type特征）。</p>
+    <p>④ <b>h<sub>send</sub></b>：push发送序列，构建上下文避免重复推荐。</p>
+    <p>⑤ <b>h<sub>static</sub></b>：静态特征（年龄、性别），作为稀疏行为时的稳定信号。</p>
+    <p>两个<b>[cls] token</b> h<sub>[cls]v</sub>和h<sub>[cls]a</sub>分别承载视频和作者推荐分支的全局视角。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em4">架构细节：</b>双分支生成模块共享底层用户表征编码器，但使用<b>独立的生成头</b>（generation head）：</p>
-    <div class="formula">P(video) = Head_video(E_user)<br>P(author) = Head_author(E_user)</div>
-    <p>视频和作者各自有独立的语义 ID 空间（RQ-VAE 量化的码本），两个头的输出分别对应视频码本和作者码本。训练时两个损失联合优化：</p>
-    <div class="formula">L = L_video + α·L_author</div>
-    <p>α 是平衡系数。两种推荐共享对用户的深层理解，<b>互相增强</b>——从你关注的作者中推断你喜欢的视频类型，反之亦然。</p>
-  </div>
-
-  <div class="plain">
-    <span class="tag b">为什么不用一条路同时输出？</span>
-    <p>视频和作者的语义空间完全不同。视频关注的是内容主题、风格、时长；作者关注的是可信度、垂直领域、更新频率。混合在一起会让模型在两个任务之间左右摇摆（互斥梯度），分开走各自的专家网络反而各精其业。</p>
+    <p><b class="em3">为什么选Decoder-Only？</b>对比实验：Encoder-Decoder架构（0.026B参数）vs Decoder-Only（0.016B参数），decoder-only在<b>参数少38%</b>的情况下达到同等的HitRate@100（0.3432 vs 0.3400），且推理延迟更低。原因是decoder-only统一处理所有序列，不需要encoder-decoder间传递的额外开销。</p>
   </div>
 </div>
 
-<!-- 5. 模块三：多 token 并行预测 -->
+<!-- ===== 4. 视频推荐分支 ===== -->
 <div class="s">
-  <h2>五、模块三：轻量多 Token 并行预测</h2>
+  <h2>四、Chained-MTP：链式多Token并行预测</h2>
 
   <div class="plain">
-    <span class="tag g">白话</span>
-    <p>自回归生成就像你写作文一个一个写字——写完第一个字才知道第二个字写什么。但推荐场景里，视频的第1层语义ID和第2层语义ID <b>没有严格的先后因果关系</b>——完全可以同时预测。HGenPush 把 N 个 token 一次并行输出，推理速度提升 N 倍。</p>
+    <span class="tag o">核心创新</span>
+    <p>这是HGenPush最漂亮的设计。传统自回归生成：第2个token要等第1个token出来才能算——<b>串行，慢。</b>Parallel-MTP：所有token并行算——<b>快，但完全丢了token之间的依赖关系，HitRate暴跌。</b>Chained-MTP取两者精华：<b>用前序token的embedding累积传递依赖，但用并行FFN同时输出所有token</b>。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em3">技术细节：</b>传统自回归范式逐个生成语义 ID：</p>
-    <div class="formula">P(c₁, c₂, ..., c_K | u) = Π<sub>k=1</sub><sup>K</sup> P(c_k | c_{< k}, u)</div>
-    <p>HGenPush 改为<b>并行多 token 预测</b>（multi-token prediction）：</p>
-    <div class="formula">P(c₁, c₂, ..., c_K | u) ≈ Π<sub>k=1</sub><sup>K</sup> P(c_k | u)</div>
-    <p>即每个位置独立预测，K 个 token 一次推理完成。虽然理论上损失了 token 间的条件依赖，但实验表明推荐场景下<b>这一信息损失几乎不影响效果</b>，而推理延迟大幅降低。</p>
-    <p>实现上，用<b>独立的轻量预测头</b>（轻量 MLP）挂载在共享编码器上，每个预测头负责一个 token 位置，所有头并行计算。</p>
-  </div>
-</div>
-
-<!-- 6. 模块四：偏好对齐 -->
-<div class="s">
-  <h2>六、模块四：消费偏好对齐</h2>
-
-  <div class="plain">
-    <span class="tag g">白话</span>
-    <p>模型生成的推荐不一定符合你的口味——可能给你推了你从来不看的类型。这个模块用<b>你真实的反馈</b>（点击了没、看了多久）作为奖励信号，<b>微调模型往你真正喜欢的方向走</b>。类似 RLHF 但更轻量。</p>
+    <p><b class="em">Chained-MTP公式：</b></p>
+    <div class="formula">p<sub>s<sup>k</sup><sub>vt</sub></sub> = softmax(FFN<sup>(k)</sup>(h'<sub>[cls]v</sub> + Σ<sub>j&lt;k</sub> Emb<sup>(j)</sup>(s<sup>j</sup><sub>vt</sub>))) · s<sup>k</sup><sub>vt</sub></div>
+    <p>关键设计：(1) <b>h'<sub>[cls]v</sub>作为稳定兴趣锚点</b>——全局上下文不变，防止"生成着生成着跑偏了"；(2) <b>累积前序embedding</b> ΣEmb——用前一个token的语义信息调节当前token的生成，保持层级依赖；(3) <b>并行FFN</b>——所有token的FFN可以并行计算，不需要等上一个token。</p>
   </div>
 
-  <div class="tech">
-    <p><b class="em2">方法：</b>用户消费偏好对齐模块将用户反馈（点击、观看时长、有效播放、分享等）转化为奖励信号 R(u, item)，然后通过策略梯度方法微调生成模型：</p>
-    <div class="formula">∇<sub>θ</sub> J = E[ R(u, item) · ∇<sub>θ</sub> log P<sub>θ</sub>(item | u) ]</div>
-    <p>这本质是一种<b>离线策略优化</b>：用已收集的曝光日志作为行为数据，对生成模型做偏好对齐，使之偏向生成高互动率的推荐。由于推荐 token 空间有限（码本大小可控），不需要像 LLM 那样用复杂的 PPO，简单的 REINFORCE 就够用。</p>
-  </div>
-</div>
-
-<!-- 7. 实验 -->
-<div class="s">
-  <h2>七、实验（快手线上 A/B）</h2>
-
-  <h3>整体效果</h3>
   <table>
-    <tr><th>指标</th><th>HGenPush vs 基线</th><th>解读</th></tr>
-    <tr class="high"><td>日活用户 (DAU)</td><td>+0.181%</td><td>千万级用户基数，绝对增量显著</td></tr>
-    <tr><td>推送点击率 (CTR)</td><td class="up">显著提升</td><td>双分支推荐更精准匹配兴趣</td></tr>
-    <tr><td>用户留存</td><td class="up">正向</td><td>内容+作者双维度满足增强粘性</td></tr>
+    <tr><th>方法</th><th>HitRate@100</th><th>单设备最大QPS</th></tr>
+    <tr><td>Parallel-MTP</td><td class="down">0.1150</td><td>2.40k</td></tr>
+    <tr><td>DeepSeek-MTP（Transformer级联）</td><td>0.3954</td><td class="down">1.27k</td></tr>
+    <tr class="high"><td>Chained-MTP</td><td>0.3915</td><td>1.70k</td></tr>
   </table>
-
-  <h3>消融实验</h3>
-  <table>
-    <tr><th>消融项</th><th>效果影响</th></tr>
-    <tr><td>去掉作者分支</td><td class="down">DAU 提升下降</td></tr>
-    <tr><td>去掉多 token 并行（改自回归）</td><td class="down">推理延迟 3-5x 增加，效果无提升</td></tr>
-    <tr><td>去掉偏好对齐</td><td class="down">CTR 下降</td></tr>
-    <tr><td>去掉多场景行为融合</td><td class="down">冷启动用户推荐质量下降</td></tr>
-  </table>
-  <blockquote>四个模块各自独立贡献，缺一不可。尤其多 token 并行在保持效果的同时大幅降低延迟，是工业落地的关键。</blockquote>
-
-  <h3>vs 单类型生成系统</h3>
-  <table>
-    <tr><th>对比维度</th><th>单类型（基线）</th><th>HGenPush</th></tr>
-    <tr><td>推荐类型</td><td>仅视频</td><td class="up">视频 + 作者</td></tr>
-    <tr><td>生成范式</td><td>自回归</td><td class="up">多 token 并行</td></tr>
-    <tr><td>行为理解</td><td>单场景</td><td class="up">多场景多视角融合</td></tr>
-    <tr><td>用户反馈学习</td><td>无</td><td class="up">偏好对齐微调</td></tr>
-  </table>
+  <blockquote>Chained-MTP效果与DeepSeek-MTP持平（只差0.4%），但吞吐高出33.86%。Parallel-MTP虽然最快但效果腰斩——证明语义依赖不能丢，但可以通过embedding累积而非串行计算来维持。</blockquote>
 </div>
 
-<!-- 8. 总结 -->
+<!-- ===== 5. 作者推荐分支 ===== -->
 <div class="s">
-  <h2>八、总结</h2>
+  <h2>五、作者推荐分支：行为对齐 + 混合语义ID</h2>
 
   <div class="plain">
-    <p><b class="em">1. 异构生成：</b>首次在推送场景统一生成视频和作者两类推荐，一个模型覆盖双需求。</p>
-    <p><b class="em2">2. 多 token 并行：</b>抛弃自回归，K 个 token 一次并行预测，推理效率大幅提升。</p>
-    <p><b class="em3">3. 多场景行为融合：</b>搜索+推荐流+关注流多视角行为整合，精准画像。</p>
-    <p><b class="em4">4. 偏好对齐：</b>用用户真实反馈做离线微调，生成更贴合口味的推荐。</p>
-    <p><b class="em5">5. 工业验证：</b>快手推送系统全量部署，DAU +0.181%，千万级用户受益。</p>
+    <span class="tag g">白话</span>
+    <p>作者推荐的核心难点：<b>两个同类作者你看哪个？光看内容特征区分不出来。</b>比如两个美妆博主，内容标签差不多，但你只关注其中一个——这个偏好体现在你的行为数据里（你反复点她的视频），但不在内容embedding里。</p>
+    <p>HGenPush的做法：<b>拿你的行为数据和作者特征做对比学习（InfoNCE），把"你喜欢谁"这个信号压缩到作者的semantic ID里</b>，然后生成时直接输出"你喜欢的作者+他最新的视频"。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em4">行为表征对齐（InfoNCE）：</b></p>
+    <div class="formula">L<sub>align</sub> = −1/B · Σ<sub>b</sub> log [exp(cos(h<sub>u</sub><sup>b</sup>, h<sub>a</sub><sup>b</sup>)/τ) / Σ<sub>b'</sub> exp(cos(h<sub>u</sub><sup>b</sup>, h<sub>a</sub><sup>b'</sup>)/τ)]</div>
+    <p>先把用户兴趣表征h'<sub>[cls]a</sub>和作者特征映射到统一空间，再用InfoNCE拉近正样本（你点过的作者）。这样作者semantic ID里就嵌入了"双向受众信息"——不仅知道作者是谁，还知道谁喜欢这类作者。</p>
+    <p><b>混合Semantic ID：</b>s<sub>mt</sub> = (s<sup>1</sup><sub>at</sub>, s<sup>2</sup><sub>at</sub>, s<sup>1</sup><sub>vt</sub>)，把2个作者codebook + 1个视频第一层codebook拼在一起，实现"先推荐作者，再推荐该作者的视频"的层级化生成。</p>
+    <p>作者codebook用<b>SimVQ策略</b>防止codebook坍塌，训练时同步更新：</p>
+    <div class="formula">L<sub>codebook</sub> = 1/B · Σ<sub>b</sub> Σ<sub>l</sub> ∥sg(r<sup>l</sup><sub>ab</sub>) − c<sub>s<sup>l</sup><sub>ab</sub></sub><sup>l</sup>∥²</div>
+  </div>
+</div>
+
+<!-- ===== 6. UCPA ===== -->
+<div class="s">
+  <h2>六、UCPA：点击不够，要看真消费</h2>
+
+  <div class="plain">
+    <span class="tag o">关键问题</span>
+    <p>模型靠点击数据训练，会学到什么？<b>标题党。</b>因为只要诱导你点进去就算"成功"——至于你进去后一秒划走还是看完，模型不关心。UCPA模块把<b>真实的消费反馈信号（完播、点赞、分享、举报）</b>做成奖励，用RL让模型生成高质量内容。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em5">奖励信号设计：</b></p>
+    <div class="formula">r<sub>g</sub> = r<sub>g</sub> + 2 (有效播放/进主页/评论停留)  |  +1 (点赞/关注/分享/评论)  |  −2 (短播放)  |  −5 (点踩)  |  −10 (举报)</div>
+    <p>累计加分制：高质量行为多给分，负反馈重重扣分。所有视频在group内做归一化计算相对优势：</p>
+    <div class="formula">Â<sub>g</sub> = (r<sub>g</sub> − mean(R)) / std(R)</div>
+    <p><b>GSISPO算法：</b>结合GSPO的序列级优化（避免token级优化破坏语义完整性）+ CISPO的裁剪重要性采样权重（保留小众高价值行为的梯度信号）：</p>
+    <div class="formula">L<sub>GSISPO</sub>(θ) = −1/G · Σ<sub>g</sub> sg(w<sub>g</sub>(θ)) · Â<sub>g</sub> · log π<sub>θ</sub>(s<sub>vg</sub> | h'<sub>[cls]v</sub>)</div>
+    <div class="formula">w<sub>g</sub>(θ) = clip( exp(1/L<sub>v</sub> Σ<sub>k</sub> log π<sub>θ</sub>/π<sub>θold</sub>), 1−ε, 1+ε )</div>
+  </div>
+
+  <table>
+    <tr><th>消费指标</th><th>UCPA引入后提升</th></tr>
+    <tr><td>推送播放时长</td><td class="up">+0.43%</td></tr>
+    <tr><td>有效播放率</td><td class="up">+0.37%</td></tr>
+    <tr><td>长播放率</td><td class="up">+0.57%</td></tr>
+    <tr class="high"><td>完播率</td><td class="up">+0.70%</td></tr>
+    <tr><td>转发率</td><td class="up">+7.57%</td></tr>
+    <tr><td>点赞率</td><td class="up">+1.20%</td></tr>
+  </table>
+  <blockquote>对比实验：直接用观看时长做sample reweighting → HitRate暴跌（0.3394 vs 0.3964），主任务严重受损。UCPA保持接近基线的HitRate（0.3915），同时全面提升消费质量——RL做得比简单加权好得多。</blockquote>
+</div>
+
+<!-- ===== 7. 实验 ===== -->
+<div class="s">
+  <h2>七、实验数据</h2>
+
+  <h3>离线对比</h3>
+  <table>
+    <tr><th>模型</th><th>视频 HitRate@100</th><th>作者 HitRate@100</th></tr>
+    <tr><td>SASRec</td><td>0.3093</td><td>0.3495</td></tr>
+    <tr><td>TIGER</td><td>0.3802</td><td>0.4677</td></tr>
+    <tr class="high"><td><b>HGenPush</b></td><td><b>0.3915</b></td><td><b>0.4848</b></td></tr>
+  </table>
+  <blockquote>HGenPush在两个分支都最优。视频分支超越TIGER得益于decoder-only + Chained-MTP；作者分支得益于行为对齐带来的精准区分。</blockquote>
+
+  <h3>Scaling Law</h3>
+  <table>
+    <tr><th>模型规模</th><th>实现方式</th><th>HitRate@100</th></tr>
+    <tr><td>0.016B</td><td>8层, d<sub>h</sub>=256</td><td>0.3432</td></tr>
+    <tr><td>0.064B</td><td>16层, d<sub>h</sub>=512</td><td>0.3915</td></tr>
+    <tr class="high"><td>0.170B</td><td>16层+Sparse MoE</td><td>0.4043</td></tr>
+  </table>
+  <blockquote>0.016B→0.064B提升14.07%，0.064B→0.170B只提升3.27%——边际递减明显，但MoE仍带来正向增益。</blockquote>
+</div>
+
+<!-- ===== 8. 与STEPS对比 ===== -->
+<div class="s">
+  <h2>八、与STEPS的对比与关系</h2>
+
+  <div class="compare">
+    <div class="cc good"><h4 style="color:var(--green)">STEPS</h4><p><b>关注"什么时候推送"</b>：自触发闭环，三个Agent决定推送时机和频率。核心是时间决策。</p></div>
+    <div class="cc good"><h4 style="color:var(--blue)">HGenPush</h4><p><b>关注"推送什么内容"</b>：端到端生成式推荐，从用户行为直接生成高质量视频+作者推荐。核心是内容生成。</p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">互补关系</span>
+    <p>STEPS和HGenPush解决推送系统的<b>不同环节</b>：STEPS管"什么时候推、推不推"，HGenPush管"推什么内容"。两者组合在一起就是完整的智能推送系统——HGenPush生成高质量候选内容，STEPS决定在最佳时机发送。</p>
+    <p style="margin-top:8px"><b>共同趋势：</b>都采用<b>end-to-end学习</b>替代多阶段分步优化，都<b>不依赖人工规则</b>，都<b>在大规模工业场景上线验证</b>。</p>
+  </div>
+</div>
+
+<!-- ===== 9. 总结 ===== -->
+<div class="s">
+  <h2>九、总结与创新点</h2>
+
+  <div class="plain">
+    <p><b class="em">1. 异构生成式推荐：</b>首次在统一架构中同时生成视频和作者推荐，覆盖"内容质量+信任关系"双重用户需求。</p>
+    <p><b class="em2">2. Chained-MTP：</b>用embedding累积传递语义依赖 + 并行FFN生成，效果持平自回归但吞吐提升33.86%。</p>
+    <p><b class="em3">3. 行为对齐作者编码：</b>用InfoNCE对比学习把用户行为偏好注入作者semantic ID，解决"同类作者无法区分"的问题。</p>
+    <p><b class="em4">4. GSISPO偏好对齐：</b>序列级RL优化+裁剪重要性采样，用真实消费反馈替代简单点击信号，全面提升内容质量。</p>
+    <p><b class="em5">5. Scaling Law验证：</b>0.016B→0.064B→0.170B持续正向，MoE扩展有效。</p>
+    <p><b class="em">6. 工业级部署：</b>快手推送系统全量上线，DAU +0.181%，生成候选绕过预排序直通精排。</p>
   </div>
 </div>
 
 <div class="tags">
   <span class="tag-item">Generative Recommendation</span>
   <span class="tag-item">Push Notification</span>
-  <span class="tag-item">Heterogeneous Generation</span>
+  <span class="tag-item">Heterogeneous Rec</span>
   <span class="tag-item">Multi-Token Prediction</span>
+  <span class="tag-item">RL Preference Alignment</span>
   <span class="tag-item">Kuaishou</span>
-  <span class="tag-item">User Preference Alignment</span>
-  <span class="tag-item">Dual-Branch</span>
+  <span class="tag-item">Decoder-Only</span>
 </div>
 
 <p class="footer">
-  📄 <a href="https://arxiv.org/abs/2607.03362">arxiv.org/abs/2607.03362</a><br>
-  Liang X, Feng J, Feng X, et al. · 2026
+  📄 <a href="https://arxiv.org/abs/2607.03362">arxiv.org/abs/2607.03362</a> · ACM KDD 2026<br>
+  DOI: <a href="https://doi.org/10.1145/3770855.3818429">10.1145/3770855.3818429</a>
 </p>
 
 </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GenSeqNotif 深度解读 · LinkedIn 如何用 Decision Transformer 做通知决策</title>
+<title>GenSeqNotif 深度解读 · LinkedIn多目标DT推送决策</title>
 <style>
 :root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,7 +14,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
 .hero .big{font-size:15px;margin-bottom:6px}
 .hero .sml{font-size:13px;color:var(--t2)}
-.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
 .kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
 .kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
 .kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
@@ -23,11 +23,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
 p{font-size:14px;color:var(--t2);margin-bottom:14px}
 b{color:var(--t1)}
-.em{color:var(--blue)}
-.em2{color:var(--orange)}
-.em3{color:var(--green)}
-.em4{color:var(--purple)}
-.em5{color:var(--red)}
+.em{color:var(--blue)}.em2{color:var(--orange)}.em3{color:var(--green)}.em4{color:var(--purple)}.em5{color:var(--red)}
 .plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
 .plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
 .plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
@@ -40,7 +36,7 @@ b{color:var(--t1)}
 .tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
 .tech p{font-size:13px;margin-bottom:6px}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,1fr)}}
 .cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
 .cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
 .cc h4{font-size:14px;margin-bottom:6px}
@@ -70,207 +66,236 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
 <body>
 <div class="wrap">
 
-<h1>GenSeqNotif：LinkedIn 如何用 Decision Transformer 优化推送</h1>
+<h1>GenSeqNotif：LinkedIn如何用DT做推送决策</h1>
 <p class="sub">Generative Sequential Notification Optimization via Multi-Objective Decision Transformers</p>
 <p class="sub" style="margin-top:4px">
-  <span class="tag-item">2025.09</span>
   <span class="tag-item">LinkedIn</span>
   <span class="tag-item">Decision Transformer</span>
-  <span class="tag-item">离线强化学习</span>
+  <span class="tag-item">Offline RL</span>
+  <span class="tag-item">100K-150K QPS</span>
 </p>
 
 <div class="hero">
-  <div class="big">核心思路：把推送决策从<b class="em5">RL 赌博</b>变成<b class="em3">有监督学习</b>——用 Decision Transformer 替代 CQL，更稳定、更可控，<b class="em">+0.72% 活跃会话</b>。</div>
-  <div class="sml">CQL 太难调、太敏感、太不稳定。DT 用"目标回报"条件化训练，把策略学习变成简单的序列预测问题。</div>
+  <div class="big">核心思路：<b class="em">CQL太难搞了</b>——训练不稳定、不可复现、不解释——改用<b class="em3">Decision Transformer</b>把推送决策变成有监督序列建模。</div>
+  <div class="sml">Quantile Regression学回报到Go (RTG) → 分位数Prompt调优 → Circular Buffer做生产序列持久化 → 比CQL多得0.72% sessions。</div>
 </div>
 
 <div class="kpi">
-  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.72%</div><div class="l">活跃会话 Sessions ↑</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--green)">更稳定</div><div class="l">vs CQL 反复无常</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--blue)">监督学习</div><div class="l">不折腾 RL 超参</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.72%</div><div class="l">用户Sessions ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">−1.68%</div><div class="l">通知量 ↓ (效率↑)</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">NSS</div><div class="l">CTR持平（护城河）</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--purple)">96.7%</div><div class="l">动作预测精度</div></div>
 </div>
 
 <hr>
 
-<!-- 1. 背景 -->
+<!-- ===== 1. 背景 ===== -->
 <div class="s">
-  <h2>一、CQL 为什么让人头疼</h2>
+  <h2>一、CQL做推送决策有多痛苦</h2>
 
   <div class="plain">
     <span class="tag g">白话</span>
-    <p>之前 LinkedIn 用 <b>CQL (Conservative Q-Learning)</b> 做推送决策——一种离线强化学习方法。听起来很高级，实际用起来<b>让人崩溃</b>：</p>
-    <p>① <b>不稳定</b>：这次训练效果好，下次可能就崩了，没人知道为什么；</p>
-    <p>② <b>对数据敏感</b>：离线数据和线上数据稍微不一样就出问题（分布偏移）；</p>
-    <p>③ <b>难复现</b>：同样的代码跑两遍结果不一样；</p>
-    <p>④ <b>不好解释</b>：为什么发了这条推送？Q 值说发，但 Q 值是个黑箱。</p>
+    <p>LinkedIn之前用CQL（Conservative Q-Learning）做推送的发/不发决策。CQL是offline RL的经典算法，在学术上表现很好。但<b>上了生产就各种翻车：训练不稳定、这次跑和下次跑结果完全不同、出了bug根本解释不清为什么这么决策</b>。而且CQL对高维特征极其敏感，想加几个新特征模型就崩了。</p>
   </div>
 
   <div class="compare">
-    <div class="cc bad"><h4 style="color:var(--red)">❌ CQL 的痛</h4><p>需要精细调超参、对分布偏移敏感、训练不稳定。在 LinkedIn 这种高维推荐场景（用户数亿、特征上千维）尤其严重。</p></div>
-    <div class="cc good"><h4 style="color:var(--green)">✅ DT 的方案</h4><p>把"学策略"变成"预测序列中的下一步"。给定"我想要这个回报水平"，模型直接输出应该做的动作——纯粹的监督学习，稳定可复现。</p></div>
+    <div class="cc bad"><h4 style="color:var(--red)">❌ CQL的三大痛点</h4><p>① 训练不稳定：TD学习对超参数极其敏感；② 不可复现：同样的数据跑两次可能行为完全不同；③ 不可解释：Q值为什么是这个数？说不清。</p></div>
+    <div class="cc good"><h4 style="color:var(--green)">✅ DT的优势</h4><p>① 监督学习范式：稳定、可复现；② 返回条件化：通过prompt调节行为目标，透明可控；③ 支持高维特征：特征维度扩展10倍都能稳定训练。</p></div>
   </div>
 
   <div class="tech">
-    <p><b class="em">技术本质：</b>CQL 在标准 Q 学习上加了保守项，限制 Q 值不要过度估计未见过动作的价值。这在理论上是好的，但在实践中：</p>
-    <ul>
-      <li>保守系数 α 极其敏感：大一点什么都不发，小一点过度推送</li>
-      <li>高维特征空间下，分布偏移问题被放大</li>
-      <li>需要维护一个 Q 网络和一个策略网络，训练不稳定</li>
-    </ul>
-    <p>Decision Transformer 的解法完全不同：它不学 Q 值，而是<b>将整个任务建模为序列生成</b>——给定历史 (state, action, reward)，预测下一步 action。这本质是 GPT 的范式，受益于 Transformer 预训练的所有稳定性提升。</p>
+    <p><b class="em">技术表述：</b>离线RL方法如CQL基于TD学习——在Bellman backup中用保守估计避免高估。这在大规模推荐系统中面临三个瓶颈：(1) 训练不稳定性——TD学习对超参数和分布偏移敏感；(2) 可复现性差——相同数据不同run输出截然不同的策略；(3) 可解释性弱——高维状态空间下Q值难以归因。DT将RL重构为return-conditioned序列建模，用监督损失替代TD error，从根本上解决这些问题。</p>
   </div>
 </div>
 
-<!-- 2. 方法 -->
+<!-- ===== 2. DT架构 ===== -->
 <div class="s">
-  <h2>二、多目标 Decision Transformer 框架</h2>
+  <h2>二、Decision Transformer 推送建模</h2>
 
   <div class="plain">
     <span class="tag b">白话</span>
-    <p>DT 就像一个能<b>"理解目标"</b>的序列模型。你告诉它"今天的目标是让用户多活跃但不骚扰"，它就会按照这个目标来做每一个决策。而 CQL 只管最大化累积奖励，无法灵活调节目标。</p>
+    <p>DT把推送决策建模成<b>一个序列生成问题</b>：看看过去几轮用户的状态 → 判断当时的回报到哪了 → 决定现在发不发。核心公式是(s<sub>t</sub>, R<sub>t</sub>, a<sub>t</sub>, r<sub>t</sub>)——每一轮记录四个东西：当前状态、目标回报、做了什么、拿到了什么回报。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em4">核心公式：</b>Decision Transformer 通过学习条件概率 P(a_t | s_0, a_0, R̂_0, ..., s_t, R̂_t) 来做决策，其中 R̂_t 是"预期剩余回报"（Return-to-Go, RTG）：</p>
-    <div class="formula">R̂_t = Σ<sub>k=t</sub><sup>T</sup> r<sub>k</sub></div>
-    <p>训练时从离线数据中提取 (state, action, RTG) 序列，用因果注意力掩码训练 GPT 风格的 Transformer。推理时指定目标 RTG，模型自回归地生成动作序列。</p>
+    <p><b class="em">轨迹表示：</b></p>
+    <div class="formula">τ = (s<sub>1</sub>, R<sub>1</sub>, a<sub>1</sub>, r<sub>1</sub>, ..., s<sub>T</sub>, R<sub>T</sub>, a<sub>T</sub>, r<sub>T</sub>)</div>
+    <p>其中R<sub>t</sub>是回报到Go (Return-To-Go)，定义为R<sub>t</sub> = Σ<sub>l=0</sub><sup>H</sup> γ<sup>l</sup> r<sub>t+l</sub>。H是前瞻窗口（look-ahead horizon），γ是折扣因子。</p>
+    <p><b>三个核心元素：</b></p>
+    <ul>
+      <li><b>States s<sub>t</sub>：</b>过去x小时发送的通知数量和类型、用户画像、距上次访问的时间、访问率、通知内容理解等精心设计的特征集。</li>
+      <li><b>Actions a<sub>t</sub>：</b>三选一——发badge通知、发push通知、不发。</li>
+      <li><b>Rewards r<sub>t</sub>：</b>多目标向量，包含预测的通知价值（点击概率）和真实用户访问行为。DT保持多维reward结构而非预定义线性加权——让模型自己学习复杂的reward组合关系。</li>
+    </ul>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">关键设计：非episodic任务的Trajectory化</span>
+    <p>推送是连续无限长的（用户一直接收通知），没有"一局结束"的概念。DT的做法：<b>从连续交互流中采样长度为T+H的窗口</b>——T是上下文长度（看多少历史），H是展望长度（看多远未来）。滑动窗口生成重叠trajectory，让DT既能看历史又能规划未来。</p>
+  </div>
+</div>
+
+<!-- ===== 3. Quantile RTG ===== -->
+<div class="s">
+  <h2>三、Quantile Regression：让模型自己学"目标应该多高"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>原始DT需要你手动设一个"目标回报"——比如"我想要CTR 5%"。但这在推送场景里<b>根本说不清该设多少</b>：设太高模型产生幻觉，设太低模型懒得动。GenSeqNotif的方案：<b>让模型学会预测"在当前状态下，各种分位数的回报是多少"</b>，推理时你只需要说"我要75分位的CTR"，模型自己算目标。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em4">训练：学习条件分位数分布</b></p>
+    <p>预定义M个分位数水平{α<sub>j</sub>}<sub>j=1</sub><sup>M</sup> ⊂ (0,1)，模型学习：</p>
+    <div class="formula">Q̂<sub>R(i)</sub>(α<sub>j</sub>; τ<sub>&lt;t</sub>, s<sub>t</sub>) ≈ Q*<sub>R(i)</sub>(α<sub>j</sub>; τ<sub>&lt;t</sub>, s<sub>t</sub>)</div>
+    <p>用<b>Pinball Loss（分位数损失）</b>做回归：</p>
+    <div class="formula">L<sub>RTG</sub> = Σ<sub>t</sub> Σ<sub>i</sub> Σ<sub>j</sub> ρ<sub>α</sub>(Q̂<sup>(i,j)</sup><sub>t</sub>, R<sup>(i)</sup><sub>t</sub>)</div>
+    <div class="formula">ρ<sub>α</sub>(ŷ, y) = α·(y−ŷ) if y≥ŷ else (α−1)·(y−ŷ)</div>
+    <p>总损失为动作损失 + RTG损失的线性组合：L<sub>DT</sub> = L<sub>action</sub> + λ · L<sub>RTG</sub></p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em3">推理：线性插值实现任意分位数Prompt</b></p>
+    <p>虽然训练只学了有限M个分位数，推理时可以通过线性近似预测任意分位数α的RTG：</p>
+    <div class="formula">R̂<sup>(i)</sup><sub>t</sub> = Q̂<sup>(i)</sup><sub>t</sub>(α) = λ<sub>α</sub>Q̂<sup>(i,l)</sup><sub>t</sub> + (1−λ<sub>α</sub>)Q̂<sup>(i,u)</sup><sub>t</sub>, λ<sub>α</sub> = (α<sub>u</sub>−α)/(α<sub>u</sub>−α<sub>l</sub>)</div>
+    <p>这就是<b>Prompt Tuning</b>的魔力——不需要重新训练，只改变α值就能生成不同激进程度的推送策略：α=0.5保守发，α=0.95激进追求高CTR。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">Prompt Tuning 案例</span>
+    <p>实验证明：<b>CTR prompt的分位数越高，在线CTR越高</b>。从α=0.5到α=0.95，每个点对应一次独立A/B实验，CTR单调上升。这意味着运营人员可以直接用一个可解释的参数（"我要第95分位的CTR"）来控制策略行为，而不是调一堆看不懂的超参数。</p>
+  </div>
+</div>
+
+<!-- ===== 4. 生产系统 ===== -->
+<div class="s">
+  <h2>四、生产系统：Circular Buffer + 云端推理</h2>
+
+  <div class="plain">
+    <span class="tag o">工程挑战</span>
+    <p>理论再美，部署到150K QPS才是真功夫。GenSeqNotif的工程方案非常务实：</p>
   </div>
 
   <div class="flow">
-    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📊 历史序列：过去 N 步的 (用户状态, 推送决策, 实际回报)</div></div>
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📨 ATC近线服务收到通知候选 → 调用模型推理服务</div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🎯 设定目标 RTG：我希望接下来达到多少用户活跃</div></div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">💾 Venice KV Store：Circular Buffer存历史序列（Float/Long/String张量）</div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--orange)">🧠 DT 推理：给定过去 + 目标 → 输出"发/不发"</div></div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--orange)">🧠 DT推理：读历史16步 + 当前状态 → 预测动作 + RTG</div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--green)">🔄 更新 RTG（扣除已获得的），继续循环</div></div>
-  </div>
-</div>
-
-<!-- 3. 多目标设计 -->
-<div class="s">
-  <h2>三、多奖励设计：非回合制场景怎么做</h2>
-
-  <div class="plain">
-    <span class="tag g">白话</span>
-    <p>标准 DT 假设任务有明确"开始"和"结束"（一局游戏），但推送通知<b>没有回合边界</b>——用户一直在用 App，你什么时候算"一步结束"？怎么定义 RTG？</p>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--green)">✍️ 写回Venice（Partial Update只写增量）→ 下一轮循环</div></div>
   </div>
 
   <div class="tech">
-    <p><b class="em2">多奖励设计：</b>推送场景有多个优化目标，作者设计了复合奖励：</p>
-    <div class="formula">r<sub>t</sub> = w₁ · r<sup>utility</sup><sub>t</sub> − w₂ · r<sup>fatigue</sup><sub>t</sub> + w₃ · r<sup>session</sup><sub>t</sub></div>
-    <p>其中：
-      <br>r<sup>utility</sup>：推送信息对用户有用嘛（点击、转化等）
-      <br>r<sup>fatigue</sup>：用户是否感到骚扰（关闭推送、负反馈）
-      <br>r<sup>session</sup>：用户整体 App 使用活跃度
-    </p>
-    <p>权重 w₁, w₂, w₃ 在训练时从分布中采样，让模型学会在各种权衡下工作。这是 DT 相比 CQL 的核心优势——<b>条件化训练</b>让模型天然支持多目标。</p>
-  </div>
-
-  <div class="plain">
-    <span class="tag o">非回合制处理</span>
-    <p>没有自然回合边界怎么办？作者用<b>滑动窗口</b>的方式：每次取过去 K 个时间步作为上下文，目标回报设为未来 H 步的累积回报。不是"一局到底"，而是"只看前 K 步、规划 H 步"。参见下文环形缓冲设计。</p>
-  </div>
-</div>
-
-<!-- 4. 分位数回归 -->
-<div class="s">
-  <h2>四、分位数回归 RTG：不只猜一个数</h2>
-
-  <div class="plain">
-    <span class="tag g">白话</span>
-    <p>标准 DT 输入一个确定的 RTG 数字（如"我希望接下来回报是 5"），但现实中未来是不确定的——同样的输入可能回报是 3 也可能是 7。分位数回归让 DT 学习<b>"给定一个分位水平，预期回报是多少"</b>，推理时可以选择保守（低分位）或激进（高分位）。</p>
+    <p><b class="em3">Circular Buffer设计：</b>每个用户维护K=16个历史tuple（FLS张量：Float/Long/String），按round-robin覆盖最旧记录。zstd压缩使存储减至1/5。两个后台Airflow流程：(1) Empty Push——大版本升级时清空；(2) TTL Repush——定期删除14天以上旧数据。</p>
+    <p><b>模型服务隔离：</b>每个模型跑在独立tenant，简单模型用CPU、复杂模型用GPU。这样可以在线同时实验多个模型变体，互不干扰。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em4">分位数回归：</b>不是回归均值 E[R]，而是学习条件分位数 Q<sub>τ</sub>(s) = inf{r : P(R ≤ r | s) ≥ τ}：</p>
-    <div class="formula">L<sub>quantile</sub> = E[ ρ<sub>τ</sub>(y − Q<sub>τ</sub>(x)) ]<br>其中 ρ<sub>τ</sub>(u) = u·(τ − 1[u < 0])</div>
-    <p><b>实践用法：</b></p>
+    <p><b class="em5">上下文长度权衡：</b></p>
+    <table>
+      <tr><th>Context Length</th><th>Action Accuracy (相对提升)</th><th>Serving Cost</th></tr>
+      <tr><td>1</td><td>—</td><td>—</td></tr>
+      <tr><td>2</td><td>+0.094%</td><td>+10%</td></tr>
+      <tr class="high"><td>4</td><td>+0.194%</td><td>+25%</td></tr>
+      <tr><td>8</td><td>+0.202%</td><td>+60%</td></tr>
+    </table>
+    <p>最终选length=4：精度接近最优(8)，但成本只有一半。</p>
+  </div>
+</div>
+
+<!-- ===== 5. 实验 ===== -->
+<div class="s">
+  <h2>五、实验数据</h2>
+
+  <h3>在线A/B：整体DT vs CQL</h3>
+  <table>
+    <tr><th>指标</th><th>变化</th><th>解读</th></tr>
+    <tr class="high"><td>Sessions</td><td class="up">+0.72%</td><td>用户活跃度显著提升</td></tr>
+    <tr><td>通知量</td><td class="down">−1.68%</td><td>少发但更有效</td></tr>
+    <tr><td>CTR</td><td>NSS</td><td>持平，质量未降</td></tr>
+  </table>
+  <blockquote>DT的核心故事：用更少的通知触达了更多session——效率提升的本质。</blockquote>
+
+  <h3>增量消融</h3>
+  <table>
+    <tr><th>增强项</th><th>Sessions</th><th>通知量</th><th>CTR</th></tr>
+    <tr><td>Basic DT (Len=1, 固定RTG)</td><td class="up">+0.51%</td><td class="down">−0.31%</td><td class="down">−0.66%</td></tr>
+    <tr class="high"><td>+ Learned RTG Prompts</td><td>NSS</td><td class="down">−1.18%</td><td class="up">+0.43%</td></tr>
+    <tr><td>+ Longer Context (Len=4)</td><td class="up">+0.21%</td><td class="down">−0.19%</td><td>NSS</td></tr>
+  </table>
+  <blockquote>Learned RTG的贡献最独特：保持session不动但大幅减少通知量（−1.18%），CTR反而上升。这是"精准打击"——只在最需要的时候推送。Longer Context带来额外的session增益。</blockquote>
+
+  <h3>动作预测增强</h3>
+  <table>
+    <tr><th>输入表示</th><th>准确率提升</th></tr>
+    <tr><td>仅Return token (R)</td><td>—</td></tr>
+    <tr class="high"><td>State + Return (s + R)</td><td class="up">+0.064% (±0.031%)</td></tr>
+  </table>
+</div>
+
+<!-- ===== 6. 与STEPS对比 ===== -->
+<div class="s">
+  <h2>六、与STEPS的对比与关系</h2>
+
+  <div class="compare">
+    <div class="cc good"><h4 style="color:var(--green)">STEPS</h4><p><b>三个Agent协同</b>：规划师(Plan)+执行官(Act)+守门员(Filter)，用自触发闭环做推送时机决策，核心是"什么时候醒来检查"。</p></div>
+    <div class="cc good"><h4 style="color:var(--blue)">GenSeqNotif</h4><p><b>单一DT模型</b>：用return-conditioned序列生成一次完成发/不发/发什么类型的决策，核心是"在序列上下文里怎么做决策"。</p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag g">深度联系</span>
+    <p><b>共同基因：</b>都使用Decision Transformer范式。STEPS的规划智能体用门控RTG+有序回归做连续时间预测（下次多久后再来），GenSeqNotif用分位数回归做多目标RTG预测（当前该不该发）。</p>
+    <p style="margin-top:8px"><b>可组合性：</b></p>
     <ul>
-      <li>训练时：对 τ ∈ [0,1] 均匀采样，模型学习"在不同分位水平下回报的分布"</li>
-      <li>推理时：τ = 0.5 → 保守策略（追求中位数回报，少发推送）；τ = 0.9 → 激进策略（追求高分位回报）</li>
+      <li>STEPS的<b>规划智能体</b>设定推送间隔Δt → 时间到了触发</li>
+      <li>GenSeqNotif的<b>DT执行智能体</b>在当前时刻做多目标发/不发决策</li>
+      <li>两者对接：规划师定"什么时候检查"，DT定"检查后发什么/发不发"</li>
     </ul>
-    <p>相比直接预测均值，分位数回归提供了<b>不确定性感知</b>，天然支持风险调节。</p>
+    <p><b>工业启示：</b>LinkedIn的CQL→DT迁移的经验对STEPS有直接参考价值——DT比TD-based RL在训练稳定性、特征扩展性、可解释性上都有显著优势，尤其是生产环境的可维护性。</p>
   </div>
 </div>
 
-<!-- 5. 环形缓冲 -->
+<!-- ===== 7. 部署教训 ===== -->
 <div class="s">
-  <h2>五、环形缓冲：近实时推理的工程魔法</h2>
+  <h2>七、部署教训（工业宝典）</h2>
+
+  <table>
+    <tr><th>维度</th><th>CQL</th><th>DT</th></tr>
+    <tr><td>训练稳定性</td><td class="down">不稳定，易崩溃</td><td class="up">稳定，监督学习</td></tr>
+    <tr><td>特征扩展</td><td class="down">高维特征→训练崩溃</td><td class="up">特征维度扩展10倍仍稳定</td></tr>
+    <tr><td>可复现性</td><td class="down">不同run行为不同</td><td class="up">高度一致</td></tr>
+    <tr><td>候选模型数</td><td>基准</td><td class="up">减少3倍+</td></tr>
+    <tr class="high"><td>Policy调节</td><td>改超参数</td><td>改分位数Prompt</td></tr>
+  </table>
+  <blockquote>从CQL切换到DT后，需要的候选模型数量减少超过3倍，实验周期大幅缩短，这是工业部署中非常实际的收益。</blockquote>
+</div>
+
+<!-- ===== 8. 总结 ===== -->
+<div class="s">
+  <h2>八、总结与创新点</h2>
 
   <div class="plain">
-    <span class="tag g">白话</span>
-    <p>DT 每次推理需要过去 K 步的历史序列，但每次推理都从数据库查一遍历史太慢了。环形缓冲就是<b>在内存里维护一个不断更新的"最近 K 步快照"</b>，推理时直接读取，延迟降到毫秒级。</p>
-  </div>
-
-  <div class="tech">
-    <p><b class="em3">设计：</b>为每个用户维护一个固定大小 K 的环形缓冲区，存储最近 K 步的 (state, action, reward, RTG) 四元组。新数据到来时覆盖最旧的记录。推理时直接取缓冲区内容 + 当前状态，喂给 DT。</p>
-    <p>这个设计的关键价值：</p>
-    <ul>
-      <li><b>零数据库查询</b>：所有历史在内存中</li>
-      <li><b>固定延迟</b>：缓冲区大小固定，推理时间可预测</li>
-      <li><b>自然处理非回合制</b>：缓冲区自动滑动，无需手动切分回合</li>
-    </ul>
-  </div>
-</div>
-
-<!-- 6. 实验 -->
-<div class="s">
-  <h2>六、实验（LinkedIn 通知系统 · 离线 + 在线）</h2>
-
-  <h3>离线对比</h3>
-  <table>
-    <tr><th>方法</th><th>归一化得分</th><th>训练稳定性</th><th>复现性</th></tr>
-    <tr><td>CQL</td><td>基准</td><td class="down">差</td><td class="down">差</td></tr>
-    <tr><td>BC (行为克隆)</td><td class="down">稍低</td><td class="up">好</td><td class="up">好</td></tr>
-    <tr class="high"><td>DT (本文)</td><td class="up">最高</td><td class="up">好</td><td class="up">好</td></tr>
-  </table>
-  <blockquote>CQL 离线得分不低但线上表现差——过拟合离线数据。DT 的监督学习范式天然抗过拟合。</blockquote>
-
-  <h3>在线 A/B</h3>
-  <table>
-    <tr><th>指标</th><th>DT vs CQL</th></tr>
-    <tr class="high"><td>活跃会话 (Sessions)</td><td class="up">+0.72%</td></tr>
-    <tr><td>通知有效性（用户点击）</td><td class="up">提升</td></tr>
-    <tr><td>用户疲劳度（负反馈）</td><td class="up">降低</td></tr>
-  </table>
-
-  <h3>分位数 τ 的影响</h3>
-  <table>
-    <tr><th>推理 τ</th><th>推送量</th><th>会话</th><th>用户疲劳</th></tr>
-    <tr><td>τ = 0.1（保守）</td><td>低</td><td>基准</td><td>最低</td></tr>
-    <tr><td>τ = 0.5（中性）</td><td>中</td><td class="up">↑</td><td>中</td></tr>
-    <tr class="high"><td>τ = 0.9（激进）</td><td>高</td><td class="up">↑↑</td><td>略高</td></tr>
-  </table>
-  <blockquote>推理时调节 τ 即可改变策略激进程度，无需重新训练——这是 DT 条件化训练的巨大工程优势。</blockquote>
-</div>
-
-<!-- 7. 总结 -->
-<div class="s">
-  <h2>七、总结</h2>
-
-  <div class="plain">
-    <p><b class="em">1. DT 替代 CQL：</b>把推送决策从"不稳定 RL"变成"有监督序列预测"，稳定、可复现、好调试。</p>
-    <p><b class="em2">2. 多奖励设计：</b>加权复合 utility/fatigue/session 三目标，权重灵活可调。</p>
-    <p><b class="em3">3. 分位数回归 RTG：</b>学习回报分布而非均值，推理时可调节风险偏好。</p>
-    <p><b class="em4">4. 环形缓冲：</b>内存维护滑动窗口，实现毫秒级近实时推理。</p>
-    <p><b class="em5">5. 工业验证：</b>LinkedIn 通知系统线上运行，+0.72% 活跃会话，相比 CQL 稳定性和可维护性大幅提升。</p>
+    <p><b class="em">1. DT替代CQL：</b>首次在LinkedIn生产推送系统中用DT替换value-based RL，sessions +0.72%同时通知量减少−1.68%。</p>
+    <p><b class="em2">2. 分位数RTG回归：</b>用Pinball Loss学习条件RTG分布，推理时通过Prompt Tuning实现可解释的策略调节。</p>
+    <p><b class="em3">3. 非episodic轨迹化：</b>从连续无限交互流中采样T+H窗口，让DT适配推送场景的无限horizon特点。</p>
+    <p><b class="em4">4. Circular Buffer生产设计：</b>KV store + 16步round-robin历史 + zstd压缩 + 部分更新，支撑150K QPS在线推理。</p>
+    <p><b class="em5">5. 工业级经验：</b>CQL→DT的迁移教训——训练稳定性、特征扩展性、可复现性、策略可调性是工业RL的核心维度。</p>
   </div>
 </div>
 
 <div class="tags">
   <span class="tag-item">Decision Transformer</span>
   <span class="tag-item">Offline RL</span>
-  <span class="tag-item">Multi-Objective</span>
+  <span class="tag-item">Notification</span>
   <span class="tag-item">Quantile Regression</span>
+  <span class="tag-item">Prompt Tuning</span>
   <span class="tag-item">LinkedIn</span>
-  <span class="tag-item">Notification System</span>
-  <span class="tag-item">Conditional Supervised Learning</span>
+  <span class="tag-item">Production RL</span>
 </div>
 
 <p class="footer">
-  📄 <a href="https://arxiv.org/abs/2509.02458">arxiv.org/abs/2509.02458</a><br>
-  Ocejo B, Wang R, Liu K, et al. · LinkedIn · 2025
+  📄 <a href="https://arxiv.org/abs/2509.02458">arxiv.org/abs/2509.02458</a> · LinkedIn Corp<br>
 </p>
 
 </div>

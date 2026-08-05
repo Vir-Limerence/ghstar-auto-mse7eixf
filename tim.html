@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TIM 深度解读 · 快手如何预测用户每一刻的点击意愿</title>
+<title>TIM 深度解读 · 快手推送时机模型</title>
 <style>
 :root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,7 +14,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
 .hero .big{font-size:15px;margin-bottom:6px}
 .hero .sml{font-size:13px;color:var(--t2)}
-.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
 .kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
 .kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
 .kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
@@ -23,11 +23,7 @@ h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-hei
 .s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
 p{font-size:14px;color:var(--t2);margin-bottom:14px}
 b{color:var(--t1)}
-.em{color:var(--blue)}
-.em2{color:var(--orange)}
-.em3{color:var(--green)}
-.em4{color:var(--purple)}
-.em5{color:var(--red)}
+.em{color:var(--blue)}.em2{color:var(--orange)}.em3{color:var(--green)}.em4{color:var(--purple)}.em5{color:var(--red)}
 .plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
 .plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
 .plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
@@ -40,7 +36,7 @@ b{color:var(--t1)}
 .tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
 .tech p{font-size:13px;margin-bottom:6px}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,1fr)}}
 .cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
 .cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
 .cc h4{font-size:14px;margin-bottom:6px}
@@ -70,187 +66,214 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
 <body>
 <div class="wrap">
 
-<h1>TIM：快手预测你一天 24 小时每个时刻的点击意愿</h1>
+<h1>TIM：快手如何决定推送的最佳时刻</h1>
 <p class="sub">Temporal Interaction Model in Notification System</p>
 <p class="sub" style="margin-top:4px">
-  <span class="tag-item">2024.06</span>
-  <span class="tag-item">快手 (Kuaishou)</span>
-  <span class="tag-item">时间注意力</span>
-  <span class="tag-item">用户行为模式</span>
+  <span class="tag-item">ICMR 2024</span>
+  <span class="tag-item">快手</span>
+  <span class="tag-item">推送时机</span>
+  <span class="tag-item">百万用户</span>
 </p>
 
 <div class="hero">
-  <div class="big">核心思路：<b class="em">把一天切成 24 个时段</b>，用<b class="em4">时间注意力单元 (TAU)</b> 学习每个用户在每个时段的历史行为规律，<b class="em3">预测每个时段"推了会不会点"</b>。</div>
-  <div class="sml">不再是"现在要不要发"，而是"今天这 24 个时段里，哪些时段最适合发、最多发几条"的全局优化。</div>
+  <div class="big">核心思路：<b class="em">把一天切成K个时间段</b>，用长序列用户行为预测每个时段你会不会点推送，然后用<b class="em3">凸优化分配策略</b>把每天的推送配额最优地分布到各个时段。</div>
+  <div class="sml">Temporal Attention Unit (TAU)提取行为模式 → 区分工作日/休息日 → 整体发送控制策略 → DAU+0.1%, CTR+1.2%.</div>
 </div>
 
 <div class="kpi">
-  <div class="kpi-item"><div class="n" style="color:var(--green)">逐时段预测</div><div class="l">24 个时隙 CTR 估计</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--blue)">全局控制</div><div class="l">多推送整体优化</div></div>
-  <div class="kpi-item"><div class="n" style="color:var(--orange)">行为模式</div><div class="l">长期序列建模</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.100%</div><div class="l">日活用户 DAU ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+1.217%</div><div class="l">整体CTR ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.066%</div><div class="l">观看时长 ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">0.8614</div><div class="l">AUC（工作日）</div></div>
 </div>
 
 <hr>
 
-<!-- 1. 背景 -->
+<!-- ===== 1. 背景 ===== -->
 <div class="s">
-  <h2>一、现有推送时机优化缺了什么</h2>
+  <h2>一、推送时机为什么是个被低估的问题</h2>
 
   <div class="plain">
     <span class="tag g">白话</span>
-    <p>决定"什么时候推送"时，之前的方法只看<b>当下的上下文</b>——你手机是什么型号、现在几点、上次打开 App 是几分钟前。但它们<b>不看你的行为规律</b>——你每天早上 8 点通勤时爱刷视频，下午 3 点从不点推送，晚上 10 点打开率最高。<b>这些规律是长期稳定的，但之前没人建模。</b></p>
+    <p>你每天收到约100条手机推送。如果推送在你忙的时候来——忽略了。如果在你刚打开手机干活时连续轰炸——烦了、关推送。TIM要解决的核心问题很简单也很致命：<b>找到你"愿意看推送"的那个时刻</b>。</p>
+    <p style="margin-top:8px">这是一个系统级问题——<b>不是单条推送的优化，而是一天中多条推送的整体排列</b>。传统方法只看上下文特征（你当前在干嘛），不看你的行为模式（你每天几点习惯刷手机），且只优化单条推送。TIM是首个同时解决这两个gap的工作。</p>
   </div>
 
   <div class="compare">
-    <div class="cc bad"><h4 style="color:var(--red)">❌ 只看当前上下文</h4><p>知道现在几点、用户在哪，但不知道用户"习惯在此时做什么"。就像知道餐馆在营业但不知道顾客习惯几点来。</p></div>
-    <div class="cc bad"><h4 style="color:var(--orange)">❌ 只看单条推送</h4><p>每次独立判断"这条发不发"，忽略了"今天已经发了 5 条，再发用户就要关推送了"的全局视角。</p></div>
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 传统方法：只看上下文</h4><p>判断"你手机在充电、WiFi连着、在室内"→推测你有空→推送。但没考虑你每天中午12点习惯刷10分钟快手的规律。</p></div>
+    <div class="cc bad"><h4 style="color:var(--orange)">❌ 传统方法：只优化单条</h4><p>每条推送独立判断该不该发。但今天5条配额，应该怎么分布在24小时？分到错误的时段=浪费+骚扰。</p></div>
   </div>
 
-  <div class="plain">
-    <span class="tag o">TIM 的两个补位</span>
-    <p><b>补位一：</b>用长周期历史序列（推送接收、点击、观看时长、有效播放）建模<b>用户行为模式</b>，不是只看当下。<br><b>补位二：</b>提供一整天的<b>全局视角</b>——一次输出 24 个时段的 CTR 预测，然后做全局推送规划。</p>
+  <div class="tech">
+    <p><b class="em">技术表述：</b>移动通知时间优化存在两大空白：(1) <b>行为模式建模缺失</b>——已有方法仅利用用户上下文特征（设备状态、环境），未建模用户长期行为规律；(2) <b>整体时序控制缺失</b>——已有工作聚焦单通知的最佳时刻，缺乏对一天内多条通知整体发送时间的全局优化。TIM通过估计每一时间槽的slot-wise CTR，联合解决这两点。</p>
   </div>
 </div>
 
-<!-- 2. 方法 -->
+<!-- ===== 2. TIM架构 ===== -->
 <div class="s">
-  <h2>二、TIM 模型结构：三个核心模块</h2>
+  <h2>二、TIM 模型架构：TAU + 两阶段注意力</h2>
 
   <div class="plain">
     <span class="tag b">白话</span>
-    <p>TIM 像一台"时间显微镜"：<b>先把你过去几十天的推送行为按时间段切片，再用量身定做的时间注意力机制提取规律，最后输出今天每个时段你愿意点推送的概率。</b></p>
+    <p>TIM的核心是<b>Temporal Attention Unit (TAU)</b>——一个两阶段注意力模块。第一阶段：对着同一个时间槽（比如"上午9-10点"），回顾过去30天你在此时段的行为，输出你对这个时段的"习惯画像"。第二阶段：让所有时段的画像互相"交流"——发现"你中午和下班后最活跃"这种跨时段规律。</p>
   </div>
 
   <div class="flow">
-    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📋 输入：用户过去 N 天的推送历史序列（接收/点击/观看时长/有效播放）× 24 时段</div></div>
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📊 长序列收集：过去L=30天，每天K个时间槽的用户交互特征（接收/点击/活跃时长/浏览数等）</div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🧠 时间注意力单元 (TAU)：学习"用户在相同时段的行为模式"</div></div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--blue)">🎯 TAU阶段1：目标注意力——对每个时间槽k，查询过去30天同槽行为，输出槽嵌入 o<sup>1</sup><sub>k</sub></div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--blue)">📊 CTR 预测头：输出 24 个时段的点击概率</div></div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--purple)">🔄 TAU阶段2：线性自注意力 + RoPE——K个槽嵌入互相交互，输出 o<sup>2</sup><sub>k</sub></div></div>
     <div class="flow-arrow">⬇</div>
-    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--green)">🎯 全局推送策略：在限制总推送量的前提下选最优时段</div></div>
-  </div>
-</div>
-
-<!-- 3. TAU -->
-<div class="s">
-  <h2>三、时间注意力单元 (TAU)：发现你的"生物钟"</h2>
-
-  <div class="plain">
-    <span class="tag g">白话</span>
-    <p>普通注意力机制对所有历史行为一视同仁——昨天中午的行为和上周三午夜的行为权重一样。但推送行为有<b>强烈的时间周期性</b>：你在周一早上 8 点的行为和上周一早上 8 点极其相似，但和晚上 10 点完全不一样。</p>
-    <p>TAU 的巧妙之处：<b>让"相同时段的历史行为"互相增强</b>。在预测今早 8 点的 CTR 时，模型会自动抬高过去所有"早上 8 点左右"的行为权重。</p>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box">🧠 拼接上下文特征 → FC(16) → FC(8) → Sigmoid → 每个时间槽的CTR预测 p<sub>k</sub></div></div>
   </div>
 
   <div class="tech">
-    <p><b class="em4">TAU 原理：</b></p>
-    <p>标准注意力：</p>
-    <div class="formula">Attention(Q,K,V) = softmax(QK<sup>T</sup>/√d) · V</div>
-    <p>TAU 在注意力计算中加入<b>时段相似度偏置</b>：</p>
-    <div class="formula">TAU(Q,K,V,t) = softmax(QK<sup>T</sup>/√d + B<sub>t</sub>) · V<br>其中 B<sub>t</sub>[i,j] = f(Δt<sub>ij</sub>), Δt<sub>ij</sub> = |slot(i) − slot(j)| mod 24</div>
-    <p>B<sub>t</sub> 是一个学习到的时段距离函数：<b>时段越接近，偏置越大</b>（但不一定是线性关系——模型自己学习什么距离最重要）。</p>
-    <p><b>为什么有效：</b>用户行为有日内周期（morning person / night owl）和周内周期（周末 vs 工作日）。TAU 通过偏置矩阵让模型自动发现这些周期模式，而不需要手工设计特征。</p>
-  </div>
-
-  <div class="plain">
-    <span class="tag b">特征设计</span>
-    <p>TIM 的特征不光有"是否点击"，还包括<b>接收行为、观看时长、有效播放</b>等多维信号。"用户收到了推送但没点"和"用户看了 3 秒就关了"和"用户看完了 2 分钟"是三个不同的信号，都比二值点击更有信息量。</p>
+    <p><b class="em">TAU阶段1——目标注意力（沿天维度）：</b></p>
+    <div class="formula">o<sup>1</sup><sub>k</sub> = softmax( q<sup>T</sup><sub>1</sub> K<sub>1</sub> / √d<sub>2</sub> ) V<sub>1</sub></div>
+    <p>其中 q<sub>1</sub> = d<sup>T</sup><sub>q</sub>W<sup>Q</sup><sub>1</sub>（目标日期类型嵌入），K<sub>1</sub> = (D<sub>h</sub> + X<sub>k</sub>)W<sup>K</sup><sub>1</sub>，V<sub>1</sub> = (D<sub>h</sub> + X<sub>k</sub>)W<sup>V</sup><sub>1</sub>。关键是<b>Date Type Embedding (DTE)</b>——把目标日期是工作日还是休息日的信号注入query和key，让模型区分工作日和休息日的行为差异。</p>
+    <p><b class="em4">TAU阶段2——线性自注意力 + RoPE：</b></p>
+    <div class="formula">O<sup>2</sup> = (J + G(Q<sup>2</sup>)G(K<sup>2</sup>)<sup>T</sup>) V<sup>2</sup></div>
+    <p>其中G(·)是先加RoPE再ℓ<sub>2</sub>行归一化，J是全1矩阵。这里用<b>线性注意力</b>（不用softmax）降低计算复杂度，适合K个时间槽的自交互。</p>
   </div>
 </div>
 
-<!-- 4. 全局推送控制 -->
+<!-- ===== 3. DTE + RoPE ===== -->
 <div class="s">
-  <h2>四、优雅的全局推送控制策略</h2>
+  <h2>三、两个关键设计：DTE 和 RoPE</h2>
 
   <div class="plain">
-    <span class="tag g">白话</span>
-    <p>TIM 给出了 24 个时段的 CTR 预测后，要决定"今天到底在哪些时段发推送"。问题在于：你可以在所有高 CTR 时段全发，但一天推 10 次用户就烦了。TIM 的解法是<b>带约束的最优分配</b>：在一天总推送量 ≤ N 的前提下，选择 CTR 最高的 N 个时段。</p>
+    <span class="tag o">DTE的核心洞察</span>
+    <p>你在<b>工作日和休息日的行为模式完全不同</b>——工作日早上通勤看、午休看、晚上看；休息日全天分散。如果模型不区分工作日/休息日，它会把两种模式混在一起，预测精度大打折扣。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag p">RoPE的作用</span>
+    <p>在第二阶段自注意力中，<b>RoPE（旋转位置编码）让模型感知时间槽之间的"距离"</b>——早上9点和10点的行为接近，但和晚上8点的行为远。没有RoPE，模型不知道时间槽之间的远近关系。</p>
   </div>
 
   <div class="tech">
-    <p><b class="em2">策略形式化：</b></p>
-    <div class="formula">max Σ<sub>h=0</sub><sup>23</sup> CTR<sub>h</sub> · x<sub>h</sub><br>s.t. Σ x<sub>h</sub> ≤ N,  x<sub>h</sub> ∈ {0,1}</div>
-    <p>其中 CTR<sub>h</sub> 是 TIM 预测的时段 h 点击率，x<sub>h</sub> 是是否在该时段推送。这本质是一个<b>Top-N 选择问题</b>——选 CTR 最高的 N 个时段即可。</p>
-    <p><b>但没那么简单：</b>实践中还需要<b>时段间距约束</b>——不能连续两个时段都推送（用户会感到被轰炸）。所以实际是：</p>
-    <div class="formula">选 CTR 最高的 N 个时段，但相邻时段至少间隔 K 小时</div>
-    <p>这可以用贪心算法：排序 CTR → 从高到低贪心选择 → 每选一个，屏蔽其前后 K 小时 → 直到选了 N 个。</p>
+    <p><b>注意力热力图的证据：</b></p>
+    <p>TIM的注意力热力图出现<b>清晰的条纹模式</b>——工作日和休息日形成明显分区。当去掉DTE后（TIM<sub>R</sub>），条纹消失，注意力分布变均匀。这证明DTE在引导模型关注正确的历史日期上起了关键作用。</p>
   </div>
 
+  <table>
+    <tr><th>方法</th><th>AUC(工作日)</th><th>HR@1</th><th>HR@5</th><th>AUC(休息日)</th></tr>
+    <tr><td>TIM<sub>base</sub>（无RoPE+DTE）</td><td>0.8535</td><td>0.0393</td><td>0.184</td><td>0.8457</td></tr>
+    <tr><td>TIM<sub>R</sub>（仅RoPE）</td><td>0.8556</td><td>0.0400</td><td>0.186</td><td>0.8464</td></tr>
+    <tr><td>TIM<sub>D</sub>（仅DTE）</td><td>0.8532</td><td>0.0393</td><td>0.184</td><td>0.8464</td></tr>
+    <tr class="high"><td>TIM（两者都有）</td><td><b>0.8614</b></td><td><b>0.0403</b></td><td><b>0.188</b></td><td><b>0.8559</b></td></tr>
+  </table>
+  <blockquote>RoPE单独带来微弱提升，DTE单独在工作日反而略降（因为失去位置信息），两者结合才达到最优——它们在编码不同的信息：DTE编码"哪天"，RoPE编码"哪段"。</blockquote>
+</div>
+
+<!-- ===== 4. 整体发送控制 ===== -->
+<div class="s">
+  <h2>四、整体发送控制：把配额最优地分布到一天</h2>
+
   <div class="plain">
-    <span class="tag o">和 STEPS 的对比</span>
-    <p>TIM（2024）是较早的工作，关注的是"预测哪个时段好"；STEPS（2026）更进一步，引入"自触发"机制不固定时段。但 TIM 的 TAU 设计对此后工作有重要启发。</p>
+    <span class="tag g">白话</span>
+    <p>TIM预测了每个时间槽的CTR后，下一个问题：<b>每天q条推送配额，怎么分到K个时间槽？</b>直觉是"CTR高的槽多发、CTR低的槽少发"。TIM把它建模成一个凸优化问题，用KKT条件推出最优解：<b>每个槽的发送数正比于CTR</b>，再加上一个平滑项防止集中轰炸。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em2">凸优化形式化：</b></p>
+    <div class="formula">minimize<sub>n</sub>  −p<sup>T</sup>n + λ‖n‖²<sub>2</sub>   s.t. ‖n‖<sub>1</sub> = q, n<sub>i</sub> ≥ 0</div>
+    <p>其中 n = (n<sub>1</sub>,...,n<sub>K</sub>) 是各槽预期发送数，p = (p<sub>1</sub>,...,p<sub>K</sub>) 是预测CTR向量，q是每日配额。</p>
+    <p>−p<sup>T</sup>n 是期望点击数的相反数（最小化→最大化），λ‖n‖²<sub>2</sub>是正则项——<b>防止所有推送集中在一个高CTR的槽里骚扰用户</b>。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em3">KKT条件求解：</b></p>
+    <div class="formula">2λ n<sub>i</sub> − p<sub>i</sub> + φ − μ<sub>i</sub> = 0,  ‖n‖<sub>1</sub> = q,  μ<sup>T</sup>n = 0</div>
+    <p>整理得：n<sub>i</sub> = max(0, (p<sub>i</sub> − φ) / (2λ))。当所有n<sub>i</sub> > 0且λ = ‖p‖<sub>1</sub>/(2q)时，有n<sub>i</sub> ∝ p<sub>i</sub>，即每个槽的发送数正比于CTR。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em4">在线实现——累积CTR控制：</b></p>
+    <p>假设槽s从t<sub>s−1</sub>到t<sub>s</sub>，CTR在该时段内均匀。时刻t<sub>s−1</sub>+Δt的期望发送数为：</p>
+    <div class="formula">P(t<sub>s−1</sub>+Δt) = (P<sub>h</sub> + Δt/T · p<sub>s</sub>) · q/‖p‖<sub>1</sub></div>
+    <p>当触发事件发生时，实际发送概率为：</p>
+    <div class="formula">min(P(t<sub>s−1</sub>+Δt) − H(t<sub>s−1</sub>+Δt), 1)</div>
+    <p>其中H(T)是时刻T前实际已发送数。这个公式的直观含义：<b>如果"理想发送进度"领先于"实际发送进度"，就发；否则不发。</b></p>
   </div>
 </div>
 
-<!-- 5. 实验 -->
+<!-- ===== 5. 实验 ===== -->
 <div class="s">
-  <h2>五、实验（快手 · 离线 + 在线 A/B）</h2>
+  <h2>五、实验数据</h2>
 
-  <h3>离线评估</h3>
+  <h3>离线：TIM vs 基线</h3>
   <table>
-    <tr><th>方法</th><th>AUC</th><th>说明</th></tr>
-    <tr><td>基础模型（无时间特征）</td><td>基准</td><td>只看当前上下文</td></tr>
-    <tr><td>+ 时段特征（手工）</td><td class="up">↑</td><td>加了 hour-of-day 等特征</td></tr>
-    <tr class="high"><td>TIM（TAU）</td><td class="up">最高</td><td>自动学习时间行为模式</td></tr>
+    <tr><th>方法</th><th>AUC(工作日)</th><th>HR@1</th><th>AUC(休息日)</th></tr>
+    <tr><td>XGB（无交互特征）</td><td>0.5907</td><td>0.0201</td><td>0.5917</td></tr>
+    <tr><td>XGB<sub>int</sub>（+交互特征）</td><td>0.6673</td><td>0.0207</td><td>0.6644</td></tr>
+    <tr><td>MLP（无交互特征）</td><td>0.7704</td><td>0.0318</td><td>0.7723</td></tr>
+    <tr><td>MLP<sub>int</sub>（+交互特征）</td><td>0.8485</td><td>0.0391</td><td>0.8398</td></tr>
+    <tr class="high"><td><b>TIM</b></td><td><b>0.8614</b></td><td><b>0.0403</b></td><td><b>0.8559</b></td></tr>
   </table>
-  <blockquote>手工时间特征有帮助，但远不如 TAU 自动学习的行为模式有效。</blockquote>
+  <blockquote>交互特征的引入对MLP提升巨大（0.7704→0.8485），但TIM在MLP<sub>int</sub>基础上再提升1.5%——这是TAU结构相对于简单拼接的增量价值。</blockquote>
 
-  <h3>多信号 vs 单信号</h3>
+  <h3>在线A/B：TIM的业务收益</h3>
   <table>
-    <tr><th>输入信号</th><th>AUC 提升</th></tr>
-    <tr><td>仅点击标签</td><td>基准</td></tr>
-    <tr><td>+ 接收信号</td><td class="up">↑</td></tr>
-    <tr><td>+ 观看时长</td><td class="up">↑↑</td></tr>
-    <tr class="high"><td>+ 有效播放（全维度）</td><td class="up">最大</td></tr>
+    <tr><th>指标</th><th>整体（vs均匀投放）</th><th>TIM</th></tr>
+    <tr class="high"><td>DAU</td><td>+0.026%（p=0.37，不显著）</td><td>+0.100%（p≈0，显著）</td></tr>
+    <tr><td>send volume</td><td class="down">−0.214%（p≈0）</td><td>+0.023%（p=0.48，不显著）</td></tr>
+    <tr><td>CTR</td><td>+0.437%（p≈0）</td><td>+1.217%（p≈0）</td></tr>
+    <tr><td>watch time</td><td>+0.014%（p=0.73）</td><td>+0.066%（p=0.11）</td></tr>
+    <tr><td>switch close rate</td><td>+0.408%（p=0.53）</td><td>+0.448%（p=0.47）</td></tr>
   </table>
-  <blockquote>多维信号比单一点击标签提供更丰富的行为描述，有效播放是强信号。</blockquote>
-
-  <h3>在线 A/B</h3>
-  <table>
-    <tr><th>指标</th><th>TIM vs 基线</th></tr>
-    <tr class="high"><td>推送点击率 (CTR)</td><td class="up">显著提升</td></tr>
-    <tr><td>用户活跃度</td><td class="up">正向</td></tr>
-    <tr><td>推送关闭率</td><td class="up">无显著增加</td></tr>
-    <tr><td>每日推送量</td><td>持平或略降</td></tr>
-  </table>
-  <blockquote>在推送总量不变或更少的情况下提升点击率——"少而精"的效果。全局贪心控制策略有效地过滤了低价值时段。</blockquote>
-
-  <h3>时段间距约束的影响</h3>
-  <table>
-    <tr><th>最小间隔 K</th><th>CTR</th><th>用户体验评分</th></tr>
-    <tr><td>K = 0（无约束）</td><td>最高</td><td class="down">差（连续轰炸）</td></tr>
-    <tr class="high"><td>K = 2 小时</td><td>略降</td><td class="up">好</td></tr>
-    <tr><td>K = 4 小时</td><td>进一步下降</td><td class="up">很好</td></tr>
-  </table>
-  <blockquote>K=2 小时是最佳平衡点——CTR 几乎不受影响，用户体验大幅提升。</blockquote>
+  <blockquote>三组对比（均匀投放 vs 整体slot CTR vs TIM）中，TIM在DAU(+0.1%)和CTR(+1.2%)上全面领先，而发送量和关闭率保持中性——说明TIM没有通过"多发"或"骚扰"来实现增长。</blockquote>
 </div>
 
-<!-- 6. 总结 -->
+<!-- ===== 6. 与STEPS对比 ===== -->
 <div class="s">
-  <h2>六、总结</h2>
+  <h2>六、与STEPS的对比与关系</h2>
+
+  <div class="compare">
+    <div class="cc good"><h4 style="color:var(--green)">STEPS</h4><p><b>"动态自触发"</b>：三个Agent实时决策，系统自己决定下次何时醒来。连续时间、自适应间隔。</p></div>
+    <div class="cc good"><h4 style="color:var(--blue)">TIM</h4><p><b>"静态时间段分配"</b>：预先把一天切成K个槽，预测每个槽的CTR，用优化算法分配发送策略。</p></div>
+  </div>
 
   <div class="plain">
-    <p><b class="em">1. TAU 时间注意力：</b>通过时段相似度偏置让模型自动发现用户行为的时间周期性，比手工特征更有效。</p>
-    <p><b class="em2">2. 多维信号建模：</b>不只二值点击，还融合接收、观看时长、有效播放等多维反馈，信息密度更高。</p>
-    <p><b class="em3">3. 全局推送策略：</b>一天 24 时段统一优化，贪心选择 + 间距约束，在 CTR 和用户体验间找到平衡。</p>
-    <p><b class="em4">4. 优雅简洁：</b>相比后来的 RL/DT 方案，TIM 的思考方式更直接——先预测每个时段的价值，再做全局分配。工程友好。</p>
-    <p><b class="em5">5. 工业验证：</b>快手推送系统上线，CTR 提升同时保持用户不被打扰。</p>
+    <span class="tag g">演进关系</span>
+    <p>TIM是<b>STEPS的前身和基础</b>——它奠定了"推送不仅要关注内容，还要关注时机"的核心洞察。但TIM的局限也很明显：</p>
+    <ul>
+      <li>TIM的槽是固定划分的，不能自适应——如果用户在两个槽之间行为发生变化，TIM感知不到。</li>
+      <li>TIM只用slot-wise CTR做分配，没有建模序列决策中的长期影响——发一条推送后用户行为变化了，后续策略该怎么调整？</li>
+    </ul>
+    <p>STEPS在TIM的基础上向前迈进了一大步：用<b>自触发闭环</b>替代固定槽，用<b>Decision Transformer + Bellman RTG</b>替代简单CTR预测 + 凸优化，实现真正的自适应、长期优化的推送时机决策。</p>
+    <p style="margin-top:8px"><b>链条：</b>TIM（2024快手，时间槽CTR+优化分配）→ STEPS（2026字节，自触发闭环+三Agent协同）。TIM提出了"时机问题值得建模型"的命题，STEPS给出了更高维度的解答。</p>
+  </div>
+</div>
+
+<!-- ===== 7. 总结 ===== -->
+<div class="s">
+  <h2>七、总结与创新点</h2>
+
+  <div class="plain">
+    <p><b class="em">1. 时间槽CTR预测：</b>首次将推送时机优化形式化为"一天内所有时间槽的CTR预测问题"，实现整体而非逐条的优化。</p>
+    <p><b class="em2">2. TAU时序注意力单元：</b>两阶段注意力（沿天的目标注意力 + 沿槽的自注意力），提取用户长期行为模式。</p>
+    <p><b class="em3">3. DTE日期类型嵌入：</b>通过在工作日/休息日间做对比学习（注意力热力图验证），让模型区分两种行为模式。</p>
+    <p><b class="em4">4. 凸优化发送控制：</b>将配额分配建模为带平滑项的凸优化，KKT条件得出n<sub>i</sub> ∝ p<sub>i</sub>的优雅策略并给出在线实现。</p>
+    <p><b class="em5">5. 工业验证：</b>快手百万用户A/B实验，DAU+0.1%，CTR+1.2%，发送量和关闭率中性。</p>
+    <p><b class="em">6. 学术影响：</b>被STEPS、GenSeqNotif等后续工作广泛引用，是推送时序决策领域的奠基性工作之一。</p>
   </div>
 </div>
 
 <div class="tags">
   <span class="tag-item">Temporal Attention</span>
+  <span class="tag-item">Push Notification</span>
   <span class="tag-item">CTR Prediction</span>
-  <span class="tag-item">Push Notification Timing</span>
-  <span class="tag-item">User Behavior Pattern</span>
+  <span class="tag-item">Convex Optimization</span>
+  <span class="tag-item">RoPE</span>
   <span class="tag-item">Kuaishou</span>
-  <span class="tag-item">TAU</span>
-  <span class="tag-item">Holistic Optimization</span>
+  <span class="tag-item">Timing Decision</span>
 </div>
 
 <p class="footer">
-  📄 <a href="https://arxiv.org/abs/2406.07067">arxiv.org/abs/2406.07067</a><br>
-  Ji H, Yang H, Li L, et al. · 2024
+  📄 <a href="https://arxiv.org/abs/2406.07067">arxiv.org/abs/2406.07067</a> · ACM ICMR 2024<br>
+  DOI: <a href="https://doi.org/10.1145/3652583.3657614">10.1145/3652583.3657614</a>
 </p>
 
 </div>
