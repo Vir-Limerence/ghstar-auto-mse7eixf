@@ -47,10 +47,6 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 .news-link{flex:1;color:var(--text);text-decoration:none;line-height:1.4}
 .news-link:hover{color:var(--accent)}
 .xhs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}
-.xhs-item{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:var(--border)}
-.xhs-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.xhs-item:hover img{transform:scale(1.04)}
-.xhs-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:10px 8px 8px;color:#fff;font-size:11px;line-height:1.3}
 .analysis{max-width:700px;margin:0 auto}
 .analysis-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
 .analysis-item h3{font-size:15px;margin-bottom:6px}
@@ -86,13 +82,13 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
       <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.douyin.com/search/%E8%B6%81%E5%A4%8F%E5%A4%A9%E8%B5%B4%E4%B8%80%E5%9C%BA%E5%85%AB%E5%A4%A7%E5%8F%A4%E9%95%87%E4%B9%8B%E7%BA%A6" target="_blank">趁夏天赴一场八大古镇之约</a></li>
       <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.douyin.com/search/%E5%B1%B1%E8%A5%BF%E8%8F%9C%E7%94%B3%E8%AF%B7%E5%87%BA%E6%88%98%E6%9A%91%E6%9C%9F%E7%BE%8E%E9%A3%9F%E5%B1%95" target="_blank">山西菜申请出战暑期美食展</a></li>
       <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.douyin.com/search/%E6%88%91%E5%9B%BD%E6%88%90%E5%8A%9F%E5%9C%A8%E6%B5%B7%E4%B8%8A%E5%8F%91%E5%B0%84%E4%B8%80%E7%AE%AD%E5%8F%8C%E6%98%9F" target="_blank">我国成功在海上发射一箭双星</a></li>
-      <li><span class="rank-num">4</span><a class="rank-title" href="https://www.douyin.com/search/%E6%97%A0%E7%95%8F%E5%B7%A1%E5%9B%9E%E6%88%90%E9%83%BD%E7%AB%99%E5%BC%80%E8%B5%9B" target="_blank">无畏巡回成都站开赛</a></li>
-      <li><span class="rank-num">5</span><a class="rank-title" href="https://www.douyin.com/search/WTT%E6%A8%AA%E6%BB%A8%E5%86%A0%E5%86%9B%E8%B5%9B%E4%BB%8A%E6%97%A5%E8%B5%9B%E7%A8%8B" target="_blank">WTT横滨冠军赛今日赛程</a></li>
-      <li><span class="rank-num">6</span><a class="rank-title" href="https://www.douyin.com/search/%E5%A4%8F%E6%97%A5%E8%93%9D%E8%89%B2%E7%B3%BB%E5%A6%86%E4%B8%80%E7%9C%BC%E9%99%8D%E6%B8%A9" target="_blank">夏日蓝色系妆一眼降温</a></li>
-      <li><span class="rank-num">7</span><a class="rank-title" href="https://www.douyin.com/search/%E4%BB%8A%E5%B9%B4%E7%AC%AC14%E5%8F%B7%E5%8F%B0%E9%A3%8E%E9%B2%B8%E9%B1%BC%E7%94%9F%E6%88%90" target="_blank">今年第14号台风鲸鱼生成</a></li>
-      <li><span class="rank-num">8</span><a class="rank-title" href="https://www.douyin.com/search/%E8%A5%BF%E5%AE%89%E9%80%9A%E6%8A%A5%E8%B5%9B%E6%A0%BC%E5%95%86%E5%9C%BA%E5%9D%A0%E4%BA%A1%E4%BA%8B%E4%BB%B6" target="_blank">西安通报赛格商场坠亡事件</a></li>
-      <li><span class="rank-num">9</span><a class="rank-title" href="https://www.douyin.com/search/%E5%BC%A0%E6%99%BA%E6%89%AC101%3A66%E6%8B%BF%E4%B8%8B%E7%9A%AE%E5%B8%A6%E5%93%A5" target="_blank">张智扬101:66拿下皮带哥</a></li>
-      <li><span class="rank-num">10</span><a class="rank-title" href="https://www.douyin.com/search/%E6%B5%99%E6%B1%9F%E5%AE%A3%E4%BC%A0%E8%AF%84%E2%80%9C%E7%AB%B9%E7%9F%A5%E4%BA%86%E2%80%9D%E4%BA%8B%E4%BB%B6" target="_blank">浙江宣传评"竹知了"事件</a></li>
+      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.douyin.com/search/%E6%97%A0%E7%95%8F%E5%B7%A1%E5%9B%9E%E6%88%90%E9%83%BD%E7%AB%99%E5%BC%80%E8%B5%9B" target="_blank">无畏巡回成都站开赛</a></li>
+      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.douyin.com/search/%E4%B8%AD%E6%96%B9%E5%AF%B96%E5%AE%B6%E7%BE%8E%E5%9B%BD%E5%AE%9E%E4%BD%93%E9%87%87%E5%8F%96%E5%8F%8D%E5%88%B6%E6%8E%AA%E6%96%BD" target="_blank">中方对6家美国实体采取反制措施</a></li>
+      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.douyin.com/search/WTT%E6%A8%AA%E6%BB%A8%E5%86%A0%E5%86%9B%E8%B5%9B%E4%BB%8A%E6%97%A5%E8%B5%9B%E7%A8%8B" target="_blank">WTT横滨冠军赛今日赛程</a></li>
+      <li><span class="rank-num ">7</span><a class="rank-title" href="https://www.douyin.com/search/%E8%A5%BF%E5%AE%89%E9%80%9A%E6%8A%A5%E8%B5%9B%E6%A0%BC%E5%95%86%E5%9C%BA%E5%9D%A0%E4%BA%A1%E4%BA%8B%E4%BB%B6" target="_blank">西安通报赛格商场坠亡事件</a></li>
+      <li><span class="rank-num ">8</span><a class="rank-title" href="https://www.douyin.com/search/2026%E6%8A%96%E9%9F%B3%E5%88%9B%E4%BD%9C%E8%80%85%E5%A4%A7%E4%BC%9A%E6%9D%A5%E4%BA%86" target="_blank">2026抖音创作者大会来了</a></li>
+      <li><span class="rank-num ">9</span><a class="rank-title" href="https://www.douyin.com/search/%E9%A6%96%E5%B1%8A%E6%97%A9%E9%A4%90%E7%83%98%E7%84%99%E5%A4%A7%E5%B8%88%E8%B5%9B" target="_blank">首届早餐烘焙大师赛</a></li>
+      <li><span class="rank-num ">10</span><a class="rank-title" href="https://www.douyin.com/search/%E6%98%86%E6%98%8E%E4%B8%80%E5%8C%96%E5%B7%A5%E5%8E%82%E8%A3%85%E5%8D%B8%E9%BB%84%E7%A3%B7%E6%97%B6%E8%B5%B7%E7%81%AB" target="_blank">昆明一化工厂装卸黄磷时起火</a></li>
     </ol>
   </div>
   <!-- 快手 -->
@@ -105,15 +101,15 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
     <div class="card-head"><span class="icon">📺</span> B站全站排行</div>
     <ol class="rank-list">
       <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.bilibili.com/video/BV1bz3Q6oEMP" target="_blank">大家还想看我搬空什么店</a></li>
-      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.bilibili.com/video/BV1D23262EaD" target="_blank">【苏新皓｜4K直拍】POWER 直拍｜梦寐以求·演唱会</a></li>
-      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.bilibili.com/video/BV126GG62E9G" target="_blank">老大，你的意思是我们抽烟抽的慢也得死吗？</a></li>
-      <li><span class="rank-num">4</span><a class="rank-title" href="https://www.bilibili.com/video/BV1KduF6ME4b" target="_blank">《最讨厌复联の一集》</a></li>
-      <li><span class="rank-num">5</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Vo3C6VE1B" target="_blank">几十块入手世界级顶尖好物——居家用品篇</a></li>
-      <li><span class="rank-num">6</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Lg3R65EZn" target="_blank">当黑客入侵我家摄像头将看到……</a></li>
-      <li><span class="rank-num">7</span><a class="rank-title" href="https://www.bilibili.com/video/BV1uPMZ6NEBb" target="_blank">完蛋！我被男同学包围了</a></li>
-      <li><span class="rank-num">8</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xS396ZEUz" target="_blank">【最闪暖的一集】闪暖七周年CG首曝 | 8月5日更新</a></li>
-      <li><span class="rank-num">9</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xwMQ6GEix" target="_blank">还来！！！！！！！！！！！</a></li>
-      <li><span class="rank-num">10</span><a class="rank-title" href="https://www.bilibili.com/video/BV1TY3o6TEqR" target="_blank">完全看不懂中国网络梗的日本人，被40位中国人一人一句写出了一首神曲</a></li>
+      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.bilibili.com/video/BV1KduF6ME4b" target="_blank">《最讨厌复联の一集》</a></li>
+      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.bilibili.com/video/BV1D23262EaD" target="_blank">【苏新皓｜4K直拍】POWER 直拍｜梦寐以求·演唱会</a></li>
+      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.bilibili.com/video/BV126GG62E9G" target="_blank">老大，你的意思是我们抽烟抽的慢也得死吗？</a></li>
+      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Vo3C6VE1B" target="_blank">几十块入手世界级顶尖好物——居家用品篇</a></li>
+      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Lg3R65EZn" target="_blank">当黑客入侵我家摄像头将看到……</a></li>
+      <li><span class="rank-num ">7</span><a class="rank-title" href="https://www.bilibili.com/video/BV1uPMZ6NEBb" target="_blank">完蛋！我被男同学包围了</a></li>
+      <li><span class="rank-num ">8</span><a class="rank-title" href="https://www.bilibili.com/video/BV1RoMf6mEra" target="_blank">当我被外星人取代</a></li>
+      <li><span class="rank-num ">9</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xS396ZEUz" target="_blank">【最闪暖的一集】闪暖七周年CG首曝 | 8月5日更新</a></li>
+      <li><span class="rank-num ">10</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xwMQ6GEix" target="_blank">还来！！！！！！！！！！！</a></li>
     </ol>
   </div>
   <!-- 小红书 -->
@@ -133,41 +129,41 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
   <div class="card accent-gh">
     <div class="card-head">📅 今日涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a><span class="rank-meta">⭐699</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">活人感写作 1.0.0｜通用中文创作与改稿 Skill</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a><span class="rank-meta">⭐746</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话</p></div></li>
       <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Packets/Vanta" target="_blank">Packets/Vanta</a><span class="rank-meta">⭐344</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">A two-faction battle royale. Own what you earn.</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/AMAP-ML/LongHorizon-Harness" target="_blank">AMAP-ML/LongHorizon-Harness</a><span class="rank-meta">⭐244</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">The long-horizon computer-use harness.</p></div></li>
-      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/SandAI-org/MAGI-2-preview" target="_blank">SandAI-org/MAGI-2-preview</a><span class="rank-meta">⭐213</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">MAGI-2-preview: Scaling Video Generation Models</p></div></li>
-      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/fuxicodex/Fuxi" target="_blank">fuxicodex/Fuxi</a><span class="rank-meta">⭐184</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FuXi is a fast, self-contained AI developer terminal</p></div></li>
-      <li><span class="rank-num">6</span><div><a class="rank-title" href="https://github.com/criptogus/HermesOffice" target="_blank">criptogus/HermesOffice</a><span class="rank-meta">⭐176</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">HermesOffice — AI-native office suite</p></div></li>
-      <li><span class="rank-num">7</span><div><a class="rank-title" href="https://github.com/cristicretu/diri" target="_blank">cristicretu/diri</a><span class="rank-meta">⭐163</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Native macOS orchestrator for coding agents</p></div></li>
-      <li><span class="rank-num">8</span><div><a class="rank-title" href="https://github.com/ZzzLc0405/photo-abstract-editorial" target="_blank">ZzzLc0405/photo-abstract-editorial</a><span class="rank-meta">⭐132</span></div></li>
-      <li><span class="rank-num">9</span><div><a class="rank-title" href="https://github.com/jd-opensource/JoyAI-Video-Edit" target="_blank">jd-opensource/JoyAI-Video-Edit</a><span class="rank-meta">⭐126</span></div></li>
-      <li><span class="rank-num">10</span><div><a class="rank-title" href="https://github.com/ryanzhou/deepseek-v4-flash-mi300x" target="_blank">ryanzhou/deepseek-v4-flash-mi300x</a><span class="rank-meta">⭐115</span></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/AMAP-ML/LongHorizon-Harness" target="_blank">AMAP-ML/LongHorizon-Harness</a><span class="rank-meta">⭐246</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">The long-horizon computer-use harness.</p></div></li>
+      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/SandAI-org/MAGI-2-preview" target="_blank">SandAI-org/MAGI-2-preview</a><span class="rank-meta">⭐222</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">MAGI-2-preview: Scaling Video Generation Models</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/mikiarlo3/awesome-growth-hacking-skills" target="_blank">mikiarlo3/awesome-growth-hacking-skills</a><span class="rank-meta">⭐210</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Find agentic growth hacking skills for Claude, ChatGPT</p></div></li>
+      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/criptogus/HermesOffice" target="_blank">criptogus/HermesOffice</a><span class="rank-meta">⭐199</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">HermesOffice — AI-native office suite</p></div></li>
+      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/fuxicodex/Fuxi" target="_blank">fuxicodex/Fuxi</a><span class="rank-meta">⭐191</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FuXi is a fast, self-contained AI developer terminal</p></div></li>
+      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/cristicretu/diri" target="_blank">cristicretu/diri</a><span class="rank-meta">⭐168</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Native macOS orchestrator for coding agents</p></div></li>
+      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/ZzzLc0405/photo-abstract-editorial" target="_blank">ZzzLc0405/photo-abstract-editorial</a><span class="rank-meta">⭐143</span></div></li>
+      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/jd-opensource/JoyAI-Video-Edit" target="_blank">jd-opensource/JoyAI-Video-Edit</a><span class="rank-meta">⭐129</span></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
     <div class="card-head">📆 本周涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11,423</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai/crm</a><span class="rank-meta">⭐5,375</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An open-source, agentic-first CRM.</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt/decimen-optical-transfer</a><span class="rank-meta">⭐4,614</span></div></li>
-      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3,227</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南</p></div></li>
-      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl/anydoc</a><span class="rank-meta">⭐2,689</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Convert Word, PowerPoint, Excel, OpenDocument, RTF</p></div></li>
-      <li><span class="rank-num">6</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev/kimi-k3-in-c</a><span class="rank-meta">⭐2,264</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Kimi K3 inference in C on a single machine</p></div></li>
-      <li><span class="rank-num">7</span><div><a class="rank-title" href="https://github.com/microsoft/skill-recorder" target="_blank">microsoft/skill-recorder</a><span class="rank-meta">⭐1,887</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Desktop app that records your on-screen work session</p></div></li>
-      <li><span class="rank-num">8</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh/zhuzhiliao</a><span class="rank-meta">⭐1,856</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 传统玩具 Web 模拟版</p></div></li>
-      <li><span class="rank-num">9</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai/genoffice</a><span class="rank-meta">⭐1,558</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An AI-native office suite for macOS and Windows</p></div></li>
-      <li><span class="rank-num">10</span><div><a class="rank-title" href="https://github.com/DannyMac180/sol-advisor" target="_blank">DannyMac180/sol-advisor</a><span class="rank-meta">⭐1,370</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex-native architect orchestration</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11,438</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai/crm</a><span class="rank-meta">⭐5,447</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An open-source, agentic-first CRM.</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt/decimen-optical-transfer</a><span class="rank-meta">⭐4,617</span></div></li>
+      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3,244</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl/anydoc</a><span class="rank-meta">⭐2,822</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Convert Word, PowerPoint, Excel, OpenDocument, RTF</p></div></li>
+      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev/kimi-k3-in-c</a><span class="rank-meta">⭐2,294</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Kimi K3 inference in C on a single machine</p></div></li>
+      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/microsoft/skill-recorder" target="_blank">microsoft/skill-recorder</a><span class="rank-meta">⭐1,896</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Desktop app that records your on-screen work session</p></div></li>
+      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh/zhuzhiliao</a><span class="rank-meta">⭐1,884</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 传统玩具 Web 模拟版</p></div></li>
+      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai/genoffice</a><span class="rank-meta">⭐1,576</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An AI-native office suite for macOS and Windows</p></div></li>
+      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/DannyMac180/sol-advisor" target="_blank">DannyMac180/sol-advisor</a><span class="rank-meta">⭐1,377</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex-native architect orchestration</p></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
     <div class="card-head">📊 本月涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a><span class="rank-meta">⭐24,175</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">SpaceXAI's coding agent harness and TUI.</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a><span class="rank-meta">⭐13,236</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex Dream Skin</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a><span class="rank-meta">⭐12,985</span></div></li>
-      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11,423</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a><span class="rank-meta">⭐9,787</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Rebuild images as code-only procedural 3D</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a><span class="rank-meta">⭐24,178</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">SpaceXAI's coding agent harness and TUI.</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a><span class="rank-meta">⭐13,237</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex Dream Skin</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a><span class="rank-meta">⭐12,991</span></div></li>
+      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11,438</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
+      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a><span class="rank-meta">⭐9,805</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Rebuild images as code-only procedural 3D</p></div></li>
     </ol>
   </div>
 </div>
@@ -177,37 +173,37 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 <div id="tab-news" class="tab-content">
 <p class="update-time">来源 vicoman.top · 实时更新</p>
 <ul class="news-list">
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">中汽协启动成立自动驾驶汽车产业发展联席会</a></li>
-  <li><span class="news-badge badge-biz">国际</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">伊朗战争暴露美军战斗机铝供应链脆弱性</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">海底捞拓展汉堡与寿司业务以应对火锅增长放缓</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">富士将于9月发布X-T6相机及新款镜头</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">比亚迪日本专属纯电K-Car订单超700辆</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">俄罗斯夜间空袭基辅致至少17人死亡</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">中国首部L3/L4自动驾驶安全国标2027年实施</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">神舟二十一号航天员乘组返回后首次公开亮相</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">香奈儿上半年销售额同比增长16%</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">乘联会：7月全国乘用车零售同比降18%至150.6万辆</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">国际足联内部矛盾激化因凡蒂诺面临连任挑战</a></li>
-  <li><span class="news-badge badge-tech">AI</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">世界先进预告2027年代工价格续涨，AI营收占比将超10%</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">德国莱比锡机场因发现疑似爆炸无人机紧急分流航班并疏散</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">奥迪确认第二代Q8立项，预计2028年后上市延续轿跑SUV路线</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">华硕技嘉全线显卡大幅调价，RTX 5090D V2单张涨价逾4000元</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">马来西亚拟征电动车税致外资停滞，比亚迪建厂计划陷入僵局</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">WindBorne获3700万美元融资优化AI气象预测</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">沙特阿美投资印度Mitti Labs助力农业节水</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">韩国股东起诉三星与SK海力士CEO涉嫌违规发放奖金</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">AMD向Linux内核提交eSPI标准框架补丁以统一硬件支持</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">俄无人机袭击赫尔松致多人伤亡</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">硅谷人形机器人热潮引发自动化就业担忧</a></li>
+  <li><span class="news-badge badge-biz">国际</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">台湾启动年度军事演习，模拟应对潜在外部军事入侵场景</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">世卫组织总干事赴刚果支援埃博拉疫情，确诊病例近四千例</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">东北亚遭遇创纪录高温，日韩朝多地民众与动物受严重影响</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">礼来季度业绩超预期，上调2026年营收指引至850-870亿美元</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">俄导弹袭击基辅致17死乌防空系统失效</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">SpaceX火箭残骸疑似撞击月球表面</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">华为乾崑智驾ADS Pro V5.0升级，支持园区领航辅助泊车功能</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">秘鲁主教促成1.5亿美元铅中毒和解案</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">迪士尼2026财年第三财季净利润同比减半</a></li>
+  <li><span class="news-badge badge-biz">AI</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">高盛上调中国AI模型市场营收预测至130亿美元</a></li>
 </ul>
 </div>
 
 <!-- 解读 -->
 <div id="tab-intro" class="tab-content">
 <div class="analysis">
-  <div class="analysis-item"><h3>🥇 <a href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a></h3><div class="meta">⭐24,175 本月</div><div class="desc">SpaceXAI's coding agent harness and TUI.</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3>🥈 <a href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a></h3><div class="meta">⭐13,236 本月</div><div class="desc">Codex Dream Skin</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3>🥉 <a href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a></h3><div class="meta">⭐12,985 本月</div><div class="desc">OpenWorker by Andrew Ng</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3> <a href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a></h3><div class="meta">⭐11,423 本月</div><div class="desc">Multiplayer agent harness for work</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3> <a href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a></h3><div class="meta">⭐9,787 本月</div><div class="desc">Rebuild images as code-only procedural 3D</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥇 <a href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a></h3><div class="meta">⭐24,178 本月</div><div class="desc">SpaceXAI's coding agent harness and TUI.</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥈 <a href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a></h3><div class="meta">⭐13,237 本月</div><div class="desc">Codex Dream Skin</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥉 <a href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a></h3><div class="meta">⭐12,991 本月</div><div class="desc">热门开源项目</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3> <a href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a></h3><div class="meta">⭐11,438 本月</div><div class="desc">Multiplayer agent harness for work</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3> <a href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a></h3><div class="meta">⭐9,805 本月</div><div class="desc">Rebuild images as code-only procedural 3D</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
 </div>
 </div>
 
-<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-05 18:38 CST</p>
+<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-05 19:23 CST</p>
 
 <script>
 function switchTab(tab){
