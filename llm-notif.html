@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LLM智能通知 · 上下文感知推送文案</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:clamp(20px,5vw,28px);font-weight:800;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(210,168,255,.06),rgba(121,192,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
+.s{margin-top:48px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px}
+p{font-size:14px;color:var(--t2);margin-bottom:14px}
+b{color:var(--t1)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain p{margin:0;font-size:14px}
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech p{font-size:13px;margin-bottom:6px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0}
+.tags span{padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>LLM智能通知文案</h1>
+<p class="sub">从静态个性化到上下文感知说服</p>
+<p class="sub" style="margin-top:4px">LLM-Based Intelligent Notification Composition · 2026</p>
+
+<div class="hero">
+  <div class="big">把推送文案从<b style="color:var(--purple)">千篇一律的模板</b>升级为<b style="color:var(--blue)">理解你是谁、你在干什么、怎么说你才愿意点</b>的智能文案。</div>
+  <div class="sml">LLM理解上下文 → 生成个性化说服文案 → 持续A/B优化</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+15~30%</div><div class="l">点击率CTR提升</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--purple)">LLM</div><div class="l">大模型驱动文案</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--orange)">Context</div><div class="l">上下文感知说服</div></div>
+</div>
+
+<hr>
+
+<div class="s">
+  <h2>一、背景：推送文案为什么重要</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>推送通知是App触达用户最直接的渠道——但大多数推送文案是<b>模板填空</b>："你关注的XX发布了新视频"。千篇一律，用户看多了直接忽略。更糟的是，不考虑用户当前状态就发推送，反而激起反感。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">核心洞察</span>
+    <p>同样的内容，<b>怎么说</b>决定了用户<b>点不点</b>。对刚下班疲惫的用户说"放松一下"，和对周末无聊的用户说"来看看大家都在玩什么"，效果完全不同。这就是<b>上下文感知说服</b>的力量。</p>
+  </div>
+
+  <div class="compare">
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 传统模板</h4><p>"张三发布了新视频"<br>"李四正在直播"<br>——千篇一律，你是谁不重要</p></div>
+    <div class="cc good"><h4 style="color:var(--green)">✅ LLM智能文案</h4><p>"下班了？张三这段视频笑到肚子疼 🤣"<br>"你关注的设计师开播了，正好解答你昨天问的问题"<br>——知道你是谁、在干嘛、怎么戳中你</p></div>
+  </div>
+</div>
+
+<div class="s">
+  <h2>二、核心方法：LLM如何生成好文案</h2>
+
+  <div class="plain">
+    <span class="tag p">三步架构</span>
+    <p><b>1. 用户画像理解：</b>LLM读取用户行为数据（活跃时间、兴趣标签、最近互动）→ 理解"这是什么样的用户"<br>
+    <b>2. 上下文融合：</b>结合当前时间、天气、用户可能的状态 → 判断"现在说什么合适"<br>
+    <b>3. 说服性生成：</b>用特定风格（轻松/正式/紧迫）生成文案 → "怎么说才有效果"</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="purple" style="color:var(--purple)">技术细节：</b>与传统静态个性化（基于规则+模板）不同，LLM方案的核心优势在于<strong>端到端理解</strong>：</p>
+    <ul>
+      <li><b>意图理解：</b>不只是匹配关键词，而是理解内容的真正含义</li>
+      <li><b>情感适配：</b>根据时段和用户状态调整文案语气</li>
+      <li><b>动态说服：</b>融合社会证明（"X万人正在看"）、紧迫感（"直播即将结束"）、个性化（"根据你的兴趣推荐"）</li>
+      <li><b>持续优化：</b>A/B测试不同风格，反馈回模型持续改进</li>
+    </ul>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">为什么LLM比模板好</span>
+    <p><b>模板瓶颈：</b>模板数量有限，用户看多了就疲劳。且模板无法理解上下文——"李四正在直播"对刚看完李四视频的用户和从未关注李四的用户，意义完全不同。<br>
+    <b>LLM优势：</b>可以针对同一事件生成<b>数百种不同表达</b>，根据用户画像和上下文选择最合适的版本。这解决了推送文案的"千人一面"问题。</p>
+  </div>
+</div>
+
+<div class="s">
+  <h2>三、关键设计：安全与可控性</h2>
+
+  <div class="plain">
+    <span class="tag g">挑战</span>
+    <p>LLM生成的文案可能"太有创造力"——夸大事实、语气不当、甚至产生幻觉。如何在<b>说服力</b>和<b>准确性</b>之间取得平衡？</p>
+  </div>
+
+  <div class="tech">
+    <p><b>多层安全机制：</b></p>
+    <ul>
+      <li><b>内容约束：</b>LLM生成的文案必须基于真实事件（不能编造"张三直播送iPhone"）</li>
+      <li><b>风格控制：</b>通过system prompt限制输出风格，避免过度营销或不当语气</li>
+      <li><b>质量过滤：</b>对生成文案进行自动评分（相关性、准确性、吸引力），低分文案退回模板兜底</li>
+      <li><b>A/B验证：</b>新文案先在小流量测试，点击率显著优于模板才全量</li>
+    </ul>
+  </div>
+</div>
+
+<div class="s">
+  <h2>四、与STEPS的关系</h2>
+
+  <div class="plain">
+    <span class="tag b">互补关系</span>
+    <p>这篇论文解决的是<b>"推送什么内容"</b>的问题（文案生成），STEPS解决的是<b>"什么时候推送"</b>的问题（时机决策）。两者互补：STEPS决定了推送给谁、什么时候推，LLM文案决定了推送怎么写。</p>
+    <p style="margin-top:8px">结合起来的理想系统：STEPS规划好"下午3点给用户A检查是否推送"→ 执行官决定"推"→ <b>LLM生成最适合用户A当前状态的文案</b> → 发送。</p>
+  </div>
+</div>
+
+<div class="s">
+  <h2>五、总结</h2>
+  <ol>
+    <li><b>问题：</b>推送文案千篇一律，用户疲劳，点击率低</li>
+    <li><b>方案：</b>用LLM理解用户上下文，生成个性化说服文案</li>
+    <li><b>创新：</b>从静态模板到动态上下文感知，千人千面</li>
+    <li><b>保障：</b>多层安全机制确保文案准确、得当、不越界</li>
+    <li><b>定位：</b>与STEPS互补——一个管"什么时候推"，一个管"怎么说"</li>
+  </ol>
+</div>
+
+<div class="tags">
+  <span>LLM</span><span>Push Notification</span><span>Content Generation</span>
+  <span>Context-Aware</span><span>Persuasion</span><span>Personalization</span>
+</div>
+
+<p class="footer">
+  📄 <a href="https://arxiv.org/abs/2605.16264" target="_blank">arxiv.org/abs/2605.16264</a><br>
+  <a href="push-index.html">← 返回索引</a>
+</p>
+
+</div>
+</body>
+</html>
