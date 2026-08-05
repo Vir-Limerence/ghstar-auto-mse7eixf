@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HGenPush 深度解读 · 快手如何用生成式模型统一推荐内容与作者</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
+.s{margin-top:52px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
+p{font-size:14px;color:var(--t2);margin-bottom:14px}
+b{color:var(--t1)}
+.em{color:var(--blue)}
+.em2{color:var(--orange)}
+.em3{color:var(--green)}
+.em4{color:var(--purple)}
+.em5{color:var(--red)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
+.tech p{font-size:13px;margin-bottom:6px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+td.up{color:var(--green)}td.down{color:var(--red)}
+.high{background:rgba(126,231,135,.04)}.high td{color:var(--green);font-weight:600}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:20px 0}
+.flow-step{display:flex;align-items:center;gap:10px;width:100%;max-width:500px}
+.flow-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.flow-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;flex:1}
+.flow-arrow{color:var(--t2);font-size:16px;text-align:center}
+.flow-split{display:flex;gap:12px;width:100%;max-width:500px}
+.flow-split .flow-box{flex:1;text-align:center;font-size:12px}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 8px}
+.tag-item{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 0;color:var(--t2);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>HGenPush：快手如何统一生成视频推文和作者推文</h1>
+<p class="sub">A Heterogeneous Generative Recommendation Architecture for Industrial Push Notification Systems</p>
+<p class="sub" style="margin-top:4px">
+  <span class="tag-item">2026.07</span>
+  <span class="tag-item">快手 (Kuaishou)</span>
+  <span class="tag-item">工业级部署</span>
+</p>
+
+<div class="hero">
+  <div class="big">核心思路：<b class="em">一个模型同时生成"推什么视频"和"推哪个作者"</b>，不用自回归逐个生成，<b class="em3">一次并行产出所有 token</b>。</div>
+  <div class="sml">四层架构：行为理解 → 双分支生成 → 多 token 并行预测 → 用户偏好对齐，全端到端训练。</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.181%</div><div class="l">日活用户 DAU ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">统一生成</div><div class="l">视频 + 作者双类型</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">端到端</div><div class="l">全流程可微</div></div>
+</div>
+
+<hr>
+
+<!-- 1. 背景 -->
+<div class="s">
+  <h2>一、为什么需要异构生成式推送</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>刷短视频时，你既关心<b>"内容好不好看"</b>，也关心<b>"这人靠不靠谱"</b>。一个你信任的创作者发的内容，哪怕题材不熟悉你也愿意点开。但现有的 AI 推荐系统只能推荐<b>单一类型</b>——要么推荐视频，要么推荐作者，做不到两者兼顾。而且它们用<b>自回归</b>方式一个一个 token 地生成，太慢了。</p>
+  </div>
+
+  <div class="compare">
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 单类型推荐</h4><p>只能推荐视频或只能推荐作者。用户"想看好内容"和"想关注好作者"是两个需求，分开满足效率低。</p></div>
+    <div class="cc bad"><h4 style="color:var(--orange)">❌ 自回归生成</h4><p>一次生成一个 token，N 个 token 就要 N 轮推理。工业场景下用户量太大，延迟扛不住。</p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">关键洞察</span>
+    <p>传统生成式推荐把物品编码成<b>语义 ID</b>（semantic ID），然后像 GPT 写作文一样从左到右自回归生成。但推荐任务和文本生成不一样——推荐 token 之间没有强因果依赖，<b>完全可以一次性并行预测所有 token</b>。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">技术表述：</b>短视频平台的推送系统需要同时满足用户对<b>高质量内容</b>和<b>可信作者</b>的双重需求。现有生成式推荐方法（如 TIGER、P5）仅生成单一类型的推荐内容，且采用自回归范式逐个生成语义 ID，效率低下。HGenPush 首次将<b>异构生成</b>（heterogeneous generation）引入推送推荐——在一个统一框架内同时生成视频推荐和作者推荐。</p>
+  </div>
+</div>
+
+<!-- 2. 核心方法 -->
+<div class="s">
+  <h2>二、HGenPush 四层架构</h2>
+
+  <div class="plain">
+    <span class="tag b">白话</span>
+    <p>HGenPush 像一条流水线：<b>① 理解用户</b>→<b>② 双路生成</b>→<b>③ 并行预测</b>→<b>④ 用户反馈对齐</b>。每一步都有专门的设计来解决一个具体问题。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">🔍 混合行为理解：融合同一用户在搜索/关注/点赞/观看等多个场景的行为</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🔀 双分支生成：视频分支 + 作者分支，共享底层表征各走各路</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--green)">⚡ 多 token 并行预测：一次性输出所有语义 ID，抛弃自回归</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--orange)">🎯 消费偏好对齐：用点击/观看时长等反馈信号微调</div></div>
+  </div>
+</div>
+
+<!-- 3. 模块一：行为理解 -->
+<div class="s">
+  <h2>三、模块一：混合用户行为理解</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>你在快手上的行为不是孤立的——你搜过什么、点赞过谁、在哪个视频上多看了一会儿，这些都有关系。传统方法只看单一维度的历史，比如只看"点过哪些视频"，但忽略了搜索意图和作者偏好。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">设计：</b>混合用户行为理解模块整合<b>多场景</b>（搜索、推荐流、关注流）和<b>多视角</b>（点击、点赞、分享、完播、搜索词、关注关系）的行为数据。通过跨场景的特征交叉网络，将不同粒度的行为信号统一成一个稠密向量，作为后续生成模块的输入。</p>
+    <p>关键优势：不是把所有行为简单拼一起，而是学习<b>行为之间的交互</b>——比如"搜了某关键词然后点赞了某个视频"这样的序列关系。</p>
+  </div>
+</div>
+
+<!-- 4. 模块二：双分支生成 -->
+<div class="s">
+  <h2>四、模块二：双分支异构生成</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>这是 HGenPush 的核心创新：<b>一个模型同时输出两条推荐</b>——"推荐这个视频"和"推荐这个作者"。两条路共享对用户的理解（用户喜欢什么），但各自走不同的专家网络来生成各自的语义 ID。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em4">架构细节：</b>双分支生成模块共享底层用户表征编码器，但使用<b>独立的生成头</b>（generation head）：</p>
+    <div class="formula">P(video) = Head_video(E_user)<br>P(author) = Head_author(E_user)</div>
+    <p>视频和作者各自有独立的语义 ID 空间（RQ-VAE 量化的码本），两个头的输出分别对应视频码本和作者码本。训练时两个损失联合优化：</p>
+    <div class="formula">L = L_video + α·L_author</div>
+    <p>α 是平衡系数。两种推荐共享对用户的深层理解，<b>互相增强</b>——从你关注的作者中推断你喜欢的视频类型，反之亦然。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">为什么不用一条路同时输出？</span>
+    <p>视频和作者的语义空间完全不同。视频关注的是内容主题、风格、时长；作者关注的是可信度、垂直领域、更新频率。混合在一起会让模型在两个任务之间左右摇摆（互斥梯度），分开走各自的专家网络反而各精其业。</p>
+  </div>
+</div>
+
+<!-- 5. 模块三：多 token 并行预测 -->
+<div class="s">
+  <h2>五、模块三：轻量多 Token 并行预测</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>自回归生成就像你写作文一个一个写字——写完第一个字才知道第二个字写什么。但推荐场景里，视频的第1层语义ID和第2层语义ID <b>没有严格的先后因果关系</b>——完全可以同时预测。HGenPush 把 N 个 token 一次并行输出，推理速度提升 N 倍。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em3">技术细节：</b>传统自回归范式逐个生成语义 ID：</p>
+    <div class="formula">P(c₁, c₂, ..., c_K | u) = Π<sub>k=1</sub><sup>K</sup> P(c_k | c_{< k}, u)</div>
+    <p>HGenPush 改为<b>并行多 token 预测</b>（multi-token prediction）：</p>
+    <div class="formula">P(c₁, c₂, ..., c_K | u) ≈ Π<sub>k=1</sub><sup>K</sup> P(c_k | u)</div>
+    <p>即每个位置独立预测，K 个 token 一次推理完成。虽然理论上损失了 token 间的条件依赖，但实验表明推荐场景下<b>这一信息损失几乎不影响效果</b>，而推理延迟大幅降低。</p>
+    <p>实现上，用<b>独立的轻量预测头</b>（轻量 MLP）挂载在共享编码器上，每个预测头负责一个 token 位置，所有头并行计算。</p>
+  </div>
+</div>
+
+<!-- 6. 模块四：偏好对齐 -->
+<div class="s">
+  <h2>六、模块四：消费偏好对齐</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>模型生成的推荐不一定符合你的口味——可能给你推了你从来不看的类型。这个模块用<b>你真实的反馈</b>（点击了没、看了多久）作为奖励信号，<b>微调模型往你真正喜欢的方向走</b>。类似 RLHF 但更轻量。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em2">方法：</b>用户消费偏好对齐模块将用户反馈（点击、观看时长、有效播放、分享等）转化为奖励信号 R(u, item)，然后通过策略梯度方法微调生成模型：</p>
+    <div class="formula">∇<sub>θ</sub> J = E[ R(u, item) · ∇<sub>θ</sub> log P<sub>θ</sub>(item | u) ]</div>
+    <p>这本质是一种<b>离线策略优化</b>：用已收集的曝光日志作为行为数据，对生成模型做偏好对齐，使之偏向生成高互动率的推荐。由于推荐 token 空间有限（码本大小可控），不需要像 LLM 那样用复杂的 PPO，简单的 REINFORCE 就够用。</p>
+  </div>
+</div>
+
+<!-- 7. 实验 -->
+<div class="s">
+  <h2>七、实验（快手线上 A/B）</h2>
+
+  <h3>整体效果</h3>
+  <table>
+    <tr><th>指标</th><th>HGenPush vs 基线</th><th>解读</th></tr>
+    <tr class="high"><td>日活用户 (DAU)</td><td>+0.181%</td><td>千万级用户基数，绝对增量显著</td></tr>
+    <tr><td>推送点击率 (CTR)</td><td class="up">显著提升</td><td>双分支推荐更精准匹配兴趣</td></tr>
+    <tr><td>用户留存</td><td class="up">正向</td><td>内容+作者双维度满足增强粘性</td></tr>
+  </table>
+
+  <h3>消融实验</h3>
+  <table>
+    <tr><th>消融项</th><th>效果影响</th></tr>
+    <tr><td>去掉作者分支</td><td class="down">DAU 提升下降</td></tr>
+    <tr><td>去掉多 token 并行（改自回归）</td><td class="down">推理延迟 3-5x 增加，效果无提升</td></tr>
+    <tr><td>去掉偏好对齐</td><td class="down">CTR 下降</td></tr>
+    <tr><td>去掉多场景行为融合</td><td class="down">冷启动用户推荐质量下降</td></tr>
+  </table>
+  <blockquote>四个模块各自独立贡献，缺一不可。尤其多 token 并行在保持效果的同时大幅降低延迟，是工业落地的关键。</blockquote>
+
+  <h3>vs 单类型生成系统</h3>
+  <table>
+    <tr><th>对比维度</th><th>单类型（基线）</th><th>HGenPush</th></tr>
+    <tr><td>推荐类型</td><td>仅视频</td><td class="up">视频 + 作者</td></tr>
+    <tr><td>生成范式</td><td>自回归</td><td class="up">多 token 并行</td></tr>
+    <tr><td>行为理解</td><td>单场景</td><td class="up">多场景多视角融合</td></tr>
+    <tr><td>用户反馈学习</td><td>无</td><td class="up">偏好对齐微调</td></tr>
+  </table>
+</div>
+
+<!-- 8. 总结 -->
+<div class="s">
+  <h2>八、总结</h2>
+
+  <div class="plain">
+    <p><b class="em">1. 异构生成：</b>首次在推送场景统一生成视频和作者两类推荐，一个模型覆盖双需求。</p>
+    <p><b class="em2">2. 多 token 并行：</b>抛弃自回归，K 个 token 一次并行预测，推理效率大幅提升。</p>
+    <p><b class="em3">3. 多场景行为融合：</b>搜索+推荐流+关注流多视角行为整合，精准画像。</p>
+    <p><b class="em4">4. 偏好对齐：</b>用用户真实反馈做离线微调，生成更贴合口味的推荐。</p>
+    <p><b class="em5">5. 工业验证：</b>快手推送系统全量部署，DAU +0.181%，千万级用户受益。</p>
+  </div>
+</div>
+
+<div class="tags">
+  <span class="tag-item">Generative Recommendation</span>
+  <span class="tag-item">Push Notification</span>
+  <span class="tag-item">Heterogeneous Generation</span>
+  <span class="tag-item">Multi-Token Prediction</span>
+  <span class="tag-item">Kuaishou</span>
+  <span class="tag-item">User Preference Alignment</span>
+  <span class="tag-item">Dual-Branch</span>
+</div>
+
+<p class="footer">
+  📄 <a href="https://arxiv.org/abs/2607.03362">arxiv.org/abs/2607.03362</a><br>
+  Liang X, Feng J, Feng X, et al. · 2026
+</p>
+
+</div>
+</body>
+</html>

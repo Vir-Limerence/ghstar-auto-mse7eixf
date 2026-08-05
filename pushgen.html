@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PushGen 深度解读 · LLM 如何写出不烦人的推送文案</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:22px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
+.s{margin-top:52px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
+p{font-size:14px;color:var(--t2);margin-bottom:14px}
+b{color:var(--t1)}
+.em{color:var(--blue)}
+.em2{color:var(--orange)}
+.em3{color:var(--green)}
+.em4{color:var(--purple)}
+.em5{color:var(--red)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
+.tech p{font-size:13px;margin-bottom:6px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+td.up{color:var(--green)}td.down{color:var(--red)}
+.high{background:rgba(126,231,135,.04)}.high td{color:var(--green);font-weight:600}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:20px 0}
+.flow-step{display:flex;align-items:center;gap:10px;width:100%;max-width:500px}
+.flow-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.flow-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;flex:1}
+.flow-arrow{color:var(--t2);font-size:16px;text-align:center}
+.flow-split{display:flex;gap:12px;width:100%;max-width:500px}
+.flow-split .flow-box{flex:1;text-align:center;font-size:12px}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 8px}
+.tag-item{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 0;color:var(--t2);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>PushGen：让 LLM 写推送文案，但别放飞自我</h1>
+<p class="sub">Push Notifications Generation with LLM</p>
+<p class="sub" style="margin-top:4px">
+  <span class="tag-item">2025.12</span>
+  <span class="tag-item">快手 (Kuaishou)</span>
+  <span class="tag-item">数亿用户</span>
+  <span class="tag-item">LLM 内容生成</span>
+</p>
+
+<div class="hero">
+  <div class="big">核心思路：<b class="em">让大模型写推送文案</b>，但用<b class="em2">可控类别提示</b>拴住风格，用<b class="em3">奖励模型</b>挑出最好的。</div>
+  <div class="sml">LLM 写文案又快又便宜，但不加约束容易跑偏——PushGen 解决了"风格控制"和"质量筛选"两个核心问题。</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--green)">媲美人工</div><div class="l">推送内容质量</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">可控风格</div><div class="l">类别 Prompt 约束</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--orange)">自动筛选</div><div class="l">奖励模型排序</div></div>
+</div>
+
+<hr>
+
+<!-- 1. 背景 -->
+<div class="s">
+  <h2>一、推送文案为什么值得用 LLM 写</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>推送通知就几十个字，但写好了用户点开，写烂了用户直接关推送权限。传统做法是<b>运营人员手写</b>——但一个平台每天要发<b>海量推送</b>（不同用户不同内容不同场景），人工根本写不过来，只能套模板。模板文案千篇一律，用户看一眼就划走。</p>
+  </div>
+
+  <div class="compare">
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 人工撰写</h4><p>质量高但产能低。每天几百万条推送需要成千上万的运营，不现实。</p></div>
+    <div class="cc bad"><h4 style="color:var(--orange)">❌ 模板填充</h4><p>产能高但千篇一律。"你关注的XX更新了"每天发十几遍，用户麻木。</p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">LLM 的优势</span>
+    <p>大语言模型可以<b>低成本、大规模</b>地生成多样化的推送文案。但带来两个新问题：① <b>风格不可控</b>——LLM 可能写出过于正式、过于随意、或者完全不符合品牌调性的文案；② <b>质量不稳定</b>——同一篇 LLM 可能写出惊艳的文案，也能写出废话。</p>
+  </div>
+</div>
+
+<!-- 2. 方法 -->
+<div class="s">
+  <h2>二、PushGen 的双组件方案</h2>
+
+  <div class="plain">
+    <span class="tag b">白话</span>
+    <p>PushGen 就两个核心部件：<b>一个管写什么风格（类别 Prompt），一个管挑哪个最好（奖励模型）</b>。LLM 先生成一堆候选文案，然后奖励模型打分，选最高分的发。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📋 输入：视频信息（标题、作者、类别）+ 用户画像</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--purple)">🎨 类别 Prompt：指定风格（幽默/悬念/热点/情感…）</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--blue)">🤖 LLM 生成：一次产出 N 条候选文案</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--orange)">🏆 奖励模型打分：预测每条文案的用户互动率</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">5</span><div class="flow-box" style="border-color:var(--green)">✅ 最高分文案 → 推送给用户</div></div>
+  </div>
+</div>
+
+<!-- 3. 类别 Prompt -->
+<div class="s">
+  <h2>三、可控类别 Prompt：给 LLM 戴上"风格面具"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>直接对 LLM 说"写一条推送"，它会随机发挥。有时候写得很正式像新闻联播，有时候写得太随意像朋友圈。PushGen 的做法是：<b>先定义几种推送风格类别（幽默型、好奇心型、紧迫感型、情感共鸣型…），然后用类别标签控制 LLM 的输出方向。</b></p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em4">类别 Prompt 结构：</b></p>
+    <div class="formula">Prompt = "[类别标签] + [视频元信息] + [用户兴趣标签] + [风格指示]"</div>
+    <p>例如对于"幽默型"推送：</p>
+    <div class="formula">[幽默类] 视频标题：XXX，作者：YYY<br>用户偏好：搞笑内容<br>请生成一条轻松幽默的推送文案，模仿脱口秀语气，15-25字</div>
+    <p><b>类别体系：</b>PushGen 定义了多类推送风格，覆盖悬疑悬念、热点跟进、情感共鸣、幽默段子、实用干货等场景。每个类别有专门的<b>风格指示模板</b>，确保同类别的文案在调性上一致。</p>
+    <p><b>为什么这样做有效：</b>LLM 擅长"角色扮演"。给定明确的风格指令后，模型会稳定地在该风格范围内创作，而不是在不同风格间随机跳变。这解决了<b>品牌调性一致性</b>的核心诉求。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">多类别生成 + 后筛选</span>
+    <p>一次输入会生成多个类别的候选文案，然后奖励模型从中选出预期互动率最高的。既保证了风格多样性，又避免了"赌单枪"的风险。</p>
+  </div>
+</div>
+
+<!-- 4. 奖励模型 -->
+<div class="s">
+  <h2>四、奖励模型：用历史数据学会"预判爆款"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>LLM 生成 10 条候选，哪条最好？不能每次都上线 A/B 测试——太慢了。PushGen 训练了一个<b>奖励模型</b>，用历史推送的点击数据训练，让它学会"什么样的文案用户会点"。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em2">训练目标：</b>奖励模型 R(text, user, context) 预测给定用户和上下文下，某条推送文案的预期点击率（CTR）或互动概率。训练数据来自历史推送曝光日志：</p>
+    <div class="formula">L<sub>reward</sub> = −[ y·logσ(R) + (1−y)·log(1−σ(R)) ]</div>
+    <p>其中 y = 1 表示用户点击，y = 0 表示未点击或滑走。</p>
+    <p><b>模型结构：</b>基于预训练语言模型的 encoder，输入 = 推送文案 + 用户特征 + 上下文特征（时间、设备等），输出标量分数。</p>
+    <p><b>关键细节：</b></p>
+    <ul>
+      <li>训练数据包含<b>位置偏差校正</b>：同一条推送在不同时间/位置曝光率不同，需去偏。</li>
+      <li>奖励模型不追求绝对 CTR 精度，只需要能<b>相对排序</b>——候选 A 比候选 B 好就行。</li>
+      <li>上线后持续用新数据微调，形成<b>飞轮效应</b>：越用越准。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5. 实验 -->
+<div class="s">
+  <h2>五、实验（离线 + 在线 A/B）</h2>
+
+  <h3>离线评估</h3>
+  <table>
+    <tr><th>方法</th><th>文案多样性</th><th>预测 CTR 相关性</th><th>人工评分</th></tr>
+    <tr><td>模板填充（基线）</td><td>低</td><td>—</td><td>基准</td></tr>
+    <tr><td>LLM 直接生成（无约束）</td><td>高</td><td>不稳定</td><td>波动大</td></tr>
+    <tr class="high"><td>PushGen（类别 Prompt + 奖励模型）</td><td>高</td><td>稳定正向</td><td>接近人工</td></tr>
+  </table>
+
+  <h3>在线 A/B（数亿用户）</h3>
+  <table>
+    <tr><th>指标</th><th>vs 模板基线</th></tr>
+    <tr class="high"><td>推送点击率 (CTR)</td><td class="up">显著提升</td></tr>
+    <tr><td>用户活跃度</td><td class="up">正向</td></tr>
+    <tr><td>推送关闭率</td><td class="up">无显著增加</td></tr>
+  </table>
+  <blockquote>PushGen 在不骚扰用户的前提下提升点击，验证了"写好文案"本身就是一种用户体验优化。</blockquote>
+
+  <h3>奖励模型消融</h3>
+  <table>
+    <tr><th>筛选方式</th><th>线上 CTR</th></tr>
+    <tr><td>随机选择</td><td>基准</td></tr>
+    <tr><td>规则过滤（含关键词）</td><td class="up">小幅提升</td></tr>
+    <tr class="high"><td>奖励模型排序</td><td class="up">显著提升</td></tr>
+  </table>
+  <blockquote>奖励模型是 PushGen 的关键——光靠 LLM 生成不够，需要有质量的筛选器。</blockquote>
+</div>
+
+<!-- 6. 总结 -->
+<div class="s">
+  <h2>六、总结</h2>
+
+  <div class="plain">
+    <p><b class="em">1. LLM 生成推送：</b>低成本、大规模替代人工撰写，文案多样性远超模板。</p>
+    <p><b class="em2">2. 类别 Prompt：</b>用风格标签控制 LLM 输出方向，保证品牌调性一致性。</p>
+    <p><b class="em3">3. 奖励模型：</b>从候选文案中自动筛选预期互动最高的，闭环优化。</p>
+    <p><b class="em4">4. 工业量产：</b>已部署在快手推送系统，服务数亿用户，质量接近人工水平。</p>
+    <p><b class="em5">5. 核心洞察：</b>推送内容的"写好"不是纯技术问题，而是"风格约束 + 效果筛选"的系统工程。</p>
+  </div>
+</div>
+
+<div class="tags">
+  <span class="tag-item">LLM</span>
+  <span class="tag-item">Push Notification</span>
+  <span class="tag-item">Content Generation</span>
+  <span class="tag-item">Reward Model</span>
+  <span class="tag-item">Prompt Engineering</span>
+  <span class="tag-item">Kuaishou</span>
+</div>
+
+<p class="footer">
+  📄 <a href="https://arxiv.org/abs/2512.14490">arxiv.org/abs/2512.14490</a><br>
+  Bie S, Cao J, Luo Z, et al. · 2025
+</p>
+
+</div>
+</body>
+</html>
