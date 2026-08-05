@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>推送通知研究文献汇总 · Push Notification Research</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.8;padding:24px 16px 80px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,30px);font-weight:800;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:32px}
+.s{margin-top:40px}
+.s h2{font-size:18px;font-weight:700;margin-bottom:16px;border-bottom:2px solid var(--border);padding-bottom:8px}
+.paper{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0;transition:border-color .2s}
+.paper:hover{border-color:var(--blue)}
+.paper h3{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--t1)}
+.paper h3 a{color:var(--blue);text-decoration:none}
+.paper h3 a:hover{text-decoration:underline}
+.paper .meta{font-size:12px;color:var(--t2);margin-bottom:10px}
+.paper .meta span{display:inline-block;margin-right:12px}
+.paper .tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px}
+.tag-year{background:rgba(121,192,255,.12);color:var(--blue)}
+.tag-venue{background:rgba(126,231,135,.12);color:var(--green)}
+.tag-method{background:rgba(255,166,87,.12);color:var(--orange)}
+.paper .abs{font-size:13px;color:var(--t2);line-height:1.7}
+.paper .kw{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.paper .kw span{font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--t2)}
+.toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:32px}
+.toc ol{margin:0;padding-left:20px}
+.toc li{color:var(--t2);font-size:13px;margin:6px 0}
+.toc a{color:var(--blue);text-decoration:none}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>📚 推送通知研究文献汇总</h1>
+<p class="sub">Push Notification Research · 推送开关、时机优化、用户疲劳、长期价值</p>
+
+<div class="toc">
+  <h3 style="margin-bottom:12px;font-size:15px">📑 目录</h3>
+  <ol>
+    <li><a href="#p1">Should I send this notification? (2022)</a> — RL优化推送决策</li>
+    <li><a href="#p2">24 Hours Without Push Notifications (2016)</a> — 关闭推送实验</li>
+    <li><a href="#p3">Generative Sequential Notification Optimization (2025)</a> — 多目标DT</li>
+    <li><a href="#p4">HGenPush (2026)</a> — 异构生成式推送架构</li>
+    <li><a href="#p5">TIM: Temporal Interaction Model (2024)</a> — 时间交互建模</li>
+    <li><a href="#p6">PushGen (2025)</a> — LLM生成推送内容</li>
+    <li><a href="#p7">Learning to Rank for Push Notifications (2022)</a> — 推送排序</li>
+    <li><a href="#p8">A Snooze-less User-Aware Notification System (2020)</a></li>
+    <li><a href="#p9">E-Commerce Push Notifications (2017)</a> — 电商推送</li>
+    <li><a href="#p10">Mood & Notification Response Time (2022)</a></li>
+  </ol>
+</div>
+
+<!-- Paper 1 -->
+<div class="s" id="p1">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2202.08812" target="_blank">Should I send this notification? Optimizing Push Notifications Decision Making by Modeling the Future</a></h3>
+    <div class="meta">
+      <span>📅 2022-02</span>
+      <span class="tag tag-method">RL · Model-based</span>
+      <span class="tag tag-venue">Industry</span>
+    </div>
+    <p class="abs">大多数推荐系统是短视的——只优化即时反馈。这篇论文用<strong>基于模型的强化学习</strong>来决策是否发送推送，建模发送通知对用户未来行为的长期影响。在大型社交网络A/B测试中证明：<strong>发送更少通知，获得更高打开率，同时维持相同用户参与度</strong>。核心思想：贪心系统总会选择发推送（因为负面效果在未来才出现），但RL能学习何时不发。</p>
+    <div class="kw"><span>Push Notification</span><span>Reinforcement Learning</span><span>Long-term Value</span><span>Model-based RL</span><span>A/B Testing</span></div>
+  </div>
+</div>
+
+<!-- Paper 2 -->
+<div class="s" id="p2">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/1612.02314" target="_blank">Productive, Anxious, Lonely — 24 Hours Without Push Notifications</a></h3>
+    <div class="meta">
+      <span>📅 2016-12</span>
+      <span class="tag tag-method">User Study</span>
+      <span class="tag tag-venue">HCI</span>
+    </div>
+    <p class="abs">经典实验：<strong>30名志愿者关闭所有设备的推送通知24小时</strong>。发现：参与者报告<strong>更高的生产力</strong>，但同时也感到<strong>焦虑和被孤立</strong>——担心错过重要信息。定量数据显示通知关闭后，人们会更频繁地主动检查手机。这篇论文首次系统性地量化了<strong>推送通知的双面性</strong>：既是干扰源，也是社会连接感的重要来源。</p>
+    <div class="kw"><span>Notification Disable</span><span>User Study</span><span>FOMO</span><span>Productivity</span><span>HCI</span></div>
+  </div>
+</div>
+
+<!-- Paper 3 -->
+<div class="s" id="p3">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2509.02458" target="_blank">Generative Sequential Notification Optimization via Multi-Objective Decision Transformers</a></h3>
+    <div class="meta">
+      <span>📅 2025-09</span>
+      <span class="tag tag-method">Decision Transformer</span>
+    </div>
+    <p class="abs">用<strong>多目标Decision Transformer</strong>优化通知序列决策。在消息效用和用户疲劳等约束下解决复杂的序列决策问题。与STEPS方法论接近，都采用生成式序列建模替代传统RL。</p>
+    <div class="kw"><span>Decision Transformer</span><span>Multi-Objective</span><span>Sequential Decision</span><span>User Fatigue</span></div>
+  </div>
+</div>
+
+<!-- Paper 4 -->
+<div class="s" id="p4">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2607.03362" target="_blank">HGenPush: A Heterogeneous Generative Recommendation Architecture for Industrial Push Notification Systems</a></h3>
+    <div class="meta">
+      <span>📅 2026-07</span>
+      <span class="tag tag-method">Generative · Industrial</span>
+    </div>
+    <p class="abs">针对短视频平台等内容的<strong>异构生成式推送架构</strong>。一种工业级方案，处理推荐系统中不同类型内容的推送决策。与STEPS（抖音）属于同一赛道，但架构不同。</p>
+    <div class="kw"><span>Heterogeneous</span><span>Generative</span><span>Industrial</span><span>Short Video</span></div>
+  </div>
+</div>
+
+<!-- Paper 5 -->
+<div class="s" id="p5">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2406.07067" target="_blank">TIM: Temporal Interaction Model in Notification System</a></h3>
+    <div class="meta">
+      <span>📅 2024-06</span>
+      <span class="tag tag-method">Temporal Modeling</span>
+    </div>
+    <p class="abs">专注通知系统中的<strong>时间交互建模</strong>。现代移动应用严重依赖通知系统获取DAU，系统必须决定<strong>何时发送通知</strong>。TIM提出了一个时序模型来捕捉用户-通知之间的时间动态。</p>
+    <div class="kw"><span>Temporal Model</span><span>Interaction</span><span>DAU</span><span>Mobile</span></div>
+  </div>
+</div>
+
+<!-- Paper 6 -->
+<div class="s" id="p6">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2512.14490" target="_blank">PushGen: Push Notifications Generation with LLM</a></h3>
+    <div class="meta">
+      <span>📅 2025-12</span>
+      <span class="tag tag-method">LLM · Generation</span>
+    </div>
+    <p class="abs">用<strong>大语言模型自动生成推送通知内容</strong>，质量可媲美人工撰写。生成模型用于推送内容创作是一个新兴方向，解决了推送文案人工成本高的问题。</p>
+    <div class="kw"><span>LLM</span><span>Content Generation</span><span>Text Quality</span></div>
+  </div>
+</div>
+
+<!-- Paper 7 -->
+<div class="s" id="p7">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2201.07681" target="_blank">Learning to Rank For Push Notifications Using Pairwise Expected Regret</a></h3>
+    <div class="meta">
+      <span>📅 2022-01</span>
+      <span class="tag tag-method">Learning to Rank</span>
+    </div>
+    <p class="abs">用<strong>成对期望遗憾(Pairwise Expected Regret)</strong>方法做推送通知排序。解决了推荐系统在新内容消费范式下的排序挑战——不是所有内容都适合推送，需要同时考虑相关性和推送成本。</p>
+    <div class="kw"><span>Learning to Rank</span><span>Expected Regret</span><span>Pairwise</span></div>
+  </div>
+</div>
+
+<!-- Paper 8 -->
+<div class="s" id="p8">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2003.02097" target="_blank">A Snooze-less User-Aware Notification System for Proactive Conversational Agents</a></h3>
+    <div class="meta">
+      <span>📅 2020-03</span>
+      <span class="tag tag-method">User-Aware</span>
+    </div>
+    <p class="abs">提出一个<strong>用户感知的通知系统</strong>，不需要用户手动"snooze"（延迟提醒）。系统自动学习用户的通知偏好和上下文，在不打扰用户的前提下适时推送。核心挑战：如何在合适的时间发送合适的内容。</p>
+    <div class="kw"><span>User-Aware</span><span>Context-Aware</span><span>Conversational Agent</span></div>
+  </div>
+</div>
+
+<!-- Paper 9 -->
+<div class="s" id="p9">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/1707.08113" target="_blank">Recommending Complementary Products in E-Commerce Push Notifications with a Mixture Model Approach</a></h3>
+    <div class="meta">
+      <span>📅 2017-07</span>
+      <span class="tag tag-method">Mixture Model</span>
+    </div>
+    <p class="abs">电商场景下的推送优化，用<strong>混合模型</strong>推荐互补商品。推送是电商App获取用户增长和参与度的关键手段，推送效果直接影响转化率。</p>
+    <div class="kw"><span>E-Commerce</span><span>Complementary Products</span><span>Mixture Model</span></div>
+  </div>
+</div>
+
+<!-- Paper 10 -->
+<div class="s" id="p10">
+  <div class="paper">
+    <h3><a href="https://arxiv.org/abs/2207.03405" target="_blank">Investigating the Effects of Mood & Usage Behaviour on Notification Response Time</a></h3>
+    <div class="meta">
+      <span>📅 2022-07</span>
+      <span class="tag tag-method">User Behavior</span>
+    </div>
+    <p class="abs">研究<strong>情绪和使用行为</strong>如何影响通知响应时间。智能手机通知虽然能传递重要信息，但也会造成压力和挫败感。这篇论文量化了用户状态对通知响应的影响。</p>
+    <div class="kw"><span>Mood</span><span>Response Time</span><span>User Behavior</span><span>HCI</span></div>
+  </div>
+</div>
+
+<hr>
+
+<div class="s">
+  <h2>📊 研究方向总结</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:13px">
+    <tr><th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2)">研究方向</th><th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2)">代表论文</th><th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2)">核心方法</th></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">推送时机优化</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">STEPS, TIM, Sequential Opt</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">DT, RL, 自触发</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">长期价值建模</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">Should I send? (2022)</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">Model-based RL</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">用户疲劳与关闭</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">24h Without (2016)</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">用户实验, HCI</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">推送内容生成</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">PushGen (2025)</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">LLM</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">推送排序</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">Expected Regret (2022)</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">Learning to Rank</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid var(--border)">上下文感知</td><td style="padding:8px 12px;border-bottom:1px solid var(--border)">Snooze-less (2020), Mood (2022)</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t2)">User Context</td></tr>
+  </table>
+</div>
+
+<p class="footer">
+  数据来源：<a href="https://arxiv.org">arXiv.org</a> · 检索时间：2026-08-05<br>
+  关键词：push notification, permission, disable, opt-in, fatigue, timing, recommendation
+</p>
+
+</div>
+</body>
+</html>
