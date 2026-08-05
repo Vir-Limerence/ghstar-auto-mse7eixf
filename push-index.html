@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>推送通知研究 · 论文深度解读汇总</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--font:-apple-system,BlinkMacSystemFont,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.8;padding:24px 16px 80px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,30px);font-weight:800;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero p{font-size:14px;color:var(--t2);margin:0}
+.grid{display:grid;grid-template-columns:1fr;gap:16px;margin:32px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color .2s;text-decoration:none;display:block;color:inherit}
+.card:hover{border-color:var(--blue)}
+.card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.card .meta{font-size:12px;color:var(--t2);margin-bottom:12px}
+.card .meta span{display:inline-block;margin-right:10px}
+.card .abs{font-size:13px;color:var(--t2);line-height:1.7}
+.card .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 4px}
+.tag-b{background:rgba(121,192,255,.12);color:var(--blue)}
+.tag-g{background:rgba(126,231,135,.12);color:var(--green)}
+.tag-o{background:rgba(255,166,87,.12);color:var(--orange)}
+.tag-p{background:rgba(210,168,255,.12);color:var(--purple)}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.s h2{font-size:18px;font-weight:700;margin:32px 0 16px;border-bottom:2px solid var(--border);padding-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>📚 推送通知研究深度解读</h1>
+<p class="sub">Push Notification Research · 2024–2026</p>
+<div class="hero">
+  <p>每篇论文独立成页，采用<b>白话+技术细节双层结构</b>——先用通俗比喻讲清楚直觉，再给出公式和实验数据。</p>
+</div>
+
+<div class="s">
+  <h2>🔬 深度解读（已发布）</h2>
+  <div class="grid">
+    <a href="steps-paper.html" class="card">
+      <h3>🧠 STEPS：自触发智能推送推荐系统</h3>
+      <div class="meta"><span>📅 2026-08</span><span>字节跳动 × 北大</span><span class="tag tag-b">RecSys 2026</span></div>
+      <div class="abs">抖音10亿用户全量部署。把推送从"被动等唤醒"变成"主动自触发闭环"，三个智能体（规划-执行-过滤）端到端优化。活跃+0.28%，骚扰-1.9%，算力-79%。</div>
+    </a>
+  </div>
+</div>
+
+<div class="s">
+  <h2>📄 即将发布</h2>
+  <div class="grid">
+    <div class="card" style="opacity:.7">
+      <h3>HGenPush：异构生成式工业推送架构</h3>
+      <div class="meta"><span>📅 2026-07</span><span class="tag tag-o">Generative</span><span class="tag tag-g">Industrial</span></div>
+      <div class="abs">针对短视频等异构内容平台的推送架构，一种工业级生成式方案。</div>
+    </div>
+    <div class="card" style="opacity:.7">
+      <h3>PushGen：LLM生成推送内容</h3>
+      <div class="meta"><span>📅 2025-12</span><span class="tag tag-p">LLM</span><span class="tag tag-b">Generation</span></div>
+      <div class="abs">用大语言模型自动生成推送文案，质量媲美人工撰写。</div>
+    </div>
+    <div class="card" style="opacity:.7">
+      <h3>多目标DT生成式序列通知优化</h3>
+      <div class="meta"><span>📅 2025-09</span><span class="tag tag-b">Decision Transformer</span></div>
+      <div class="abs">多目标Decision Transformer优化通知序列，在效用和疲劳之间权衡。</div>
+    </div>
+    <div class="card" style="opacity:.7">
+      <h3>TIM：通知系统时间交互模型</h3>
+      <div class="meta"><span>📅 2024-06</span><span class="tag tag-o">Temporal</span></div>
+      <div class="abs">建模用户-通知之间的时间动态，解决"何时发送"的核心问题。</div>
+    </div>
+  </div>
+</div>
+
+<p class="footer">
+  页面生成中，完成后自动更新 · <a href="https://github.com/Vir-Limerence/ghstar-auto-mse7eixf">GitHub</a>
+</p>
+
+</div>
+</body>
+</html>
