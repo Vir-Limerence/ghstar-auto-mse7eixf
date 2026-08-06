@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LinkedIn 跨域GNN 深度解读 · 1000亿边的通知推荐系统</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:20px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px}
+.s{margin-top:52px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--t1)}
+p{font-size:14px;color:var(--t2);margin-bottom:14px}
+b{color:var(--t1)}
+.em{color:var(--blue)}
+.em2{color:var(--orange)}
+.em3{color:var(--green)}
+.em4{color:var(--purple)}
+.em5{color:var(--red)}
+.em6{color:var(--pink)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
+.tech p{font-size:13px;margin-bottom:6px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.compare{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,1fr)}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+td.up{color:var(--green)}td.down{color:var(--red)}
+.high{background:rgba(126,231,135,.04)}.high td{color:var(--green);font-weight:600}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:20px 0}
+.flow-step{display:flex;align-items:center;gap:10px;width:100%;max-width:500px}
+.flow-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.flow-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;flex:1}
+.flow-arrow{color:var(--t2);font-size:16px;text-align:center}
+.flow-split{display:flex;gap:12px;width:100%;max-width:500px}
+.flow-split .flow-box{flex:1;text-align:center;font-size:12px}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 8px}
+.tag-item{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 0;color:var(--t2);font-size:13px}
+.schematic{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center;font-size:13px}
+.schematic .row{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.schematic .node{background:rgba(121,192,255,.1);border:1px solid rgba(121,192,255,.3);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:12px;display:inline-block}
+.schematic .node.green{background:rgba(126,231,135,.1);border-color:rgba(126,231,135,.3)}
+.schematic .node.purple{background:rgba(210,168,255,.1);border-color:rgba(210,168,255,.3)}
+.schematic .node.orange{background:rgba(255,166,87,.1);border-color:rgba(255,166,87,.3)}
+.schematic .edge{color:var(--t2);font-size:11px}
+.schematic .arrow{font-size:18px;color:var(--t2)}
+.graph-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+@media(max-width:480px){.graph-stats{grid-template-columns:1fr}}
+.graph-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center}
+.graph-stat .val{font-size:24px;font-weight:800;font-family:var(--mono)}
+.graph-stat .desc{font-size:11px;color:var(--t2);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>LinkedIn跨域GNN：用1000亿条边做通知推荐</h1>
+<p class="sub">Large Scalable Cross-Domain Graph Neural Networks for Personalized Notification at LinkedIn</p>
+<p class="sub" style="margin-top:4px">
+  <span class="tag-item">arXiv 2506.12700</span>
+  <span class="tag-item">LinkedIn 生产级部署</span>
+  <span class="tag-item">2025年6月</span>
+</p>
+
+<div class="hero">
+  <div class="big">核心思路：把LinkedIn多个产品的<b class="em">所有用户行为</b>揉成一张<b class="em3">异质大图</b>（8.6B节点+1000亿边），用GNN在上面学出每个人和每条内容的<b class="em4">跨域嵌入</b>，再结合<b class="em2">时序</b>与<b class="em5">多任务学习</b>精准推送通知。</div>
+  <div class="sml">不是"每个产品各自建模"，而是"一张图、一套嵌入、多点复用"——Email里点了什么，通知里也该知道。</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.10%</div><div class="l">周活跃用户 WAU ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.62%</div><div class="l">应用内 CTR ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">+0.30%</div><div class="l">推送 CTR ↑</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">+8.09%</div><div class="l">离线 AUC 提升 ↑</div></div>
+</div>
+
+<hr>
+
+<!-- ===== 一、背景 ===== -->
+<div class="s">
+  <h2>一、为什么要把多个产品揉成一张图？</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>LinkedIn有<b>Feed</b>（帖子流）、<b>Notification</b>（通知）、<b>Email</b>（邮件）、<b>Jobs</b>（工作推荐）等多个产品。每个产品各自记录用户行为——你在Feed上看了一篇AI文章、在Email里点开了某个内推链接、在通知里忽略了某条新闻。传统做法：<b>每个产品各建各的模型</b>。</p>
+    <p style="margin-top:8px">问题来了：<b class="em5">Email里暴露的兴趣，通知系统完全不知道</b>。就像你告诉咖啡师"我要冰美式"，三天后去隔壁寿司店，人家应该不用你再说一遍——但传统系统就是"说了等于白说"。</p>
+  </div>
+
+  <div class="compare">
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 单域建图</h4><p>通知领域自己建一张图、Feed领域自己建一张图、Email也建一张。用户在各域的行为像三本独立的日记，模型只读其中一本。</p></div>
+    <div class="cc good"><h4 style="color:var(--green)">✅ 跨域统一建图</h4><p>把通知、Feed、Email揉成一张大图，用户所有跨域行为都编码在图中，GNN消息传递时自然融合全域信号。</p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">三大挑战</span>
+    <p>① <b class="em">跨域信号碎片化</b>：用户在Feed、Email、通知里的行为分散在多个数据孤岛，传统模型看不到全貌。<br>
+    ② <b class="em2">时序敏感性</b>：通知的价值与"距用户上次活跃多久"强相关，刚打开过App就不该再打扰。<br>
+    ③ <b class="em5">多目标冲突</b>：既要CTR高（短期），又要用户不关通知（长期），还要专业互动（深层价值）——三者经常打架。</p>
+  </div>
+</div>
+
+<!-- ===== 二、统一图构建 ===== -->
+<div class="s">
+  <h2>二、统一图构建：8.6B 节点 × 1000亿边的超级异质图</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>这章是整个系统的<b>地基</b>。LinkedIn把所有产品域的用户行为收集起来，按统一框架分类，揉成一张15TB的巨型异质图。什么叫异质？节点类型不一样——有"人"节点、"公司"节点、"通知"节点、"帖子"节点——边类型也不一样——有"点击了"、有"有社交关系"、有"包含属性"。</p>
+  </div>
+
+  <div class="graph-stats">
+    <div class="graph-stat"><div class="val" style="color:var(--blue)">8.6B</div><div class="desc">总节点数</div></div>
+    <div class="graph-stat"><div class="val" style="color:var(--green)">100B+</div><div class="desc">总边数</div></div>
+    <div class="graph-stat"><div class="val" style="color:var(--orange)">15TB</div><div class="desc">磁盘占用</div></div>
+  </div>
+
+  <h3>2.1 三种边类型：行为、关系、属性</h3>
+
+  <div class="plain">
+    <span class="tag b">第一类：Engagement Edges（行为边）</span>
+    <p>用户实际做过的动作。比如"M1<b class="em3">点击了</b>通知N"，是最直接的监督信号。每条行为边还带着<b>时间戳</b>，后续时序建模全靠它。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag p">第二类：Affinity Edges（关系边）</span>
+    <p>行为边很稀疏——大多数人看了通知也不点。所以加关系边：<b>"M1长期关注M2发布的内容"</b>形成双向边。这让信息可以在人与人之间流动，即使没有直接点击也能传播偏好。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">第三类：Intrinsic Edges（属性边）</span>
+    <p>静态/缓慢变化的属性。比如"M1有职位头衔T"、"通知N提到了帖子P"。这些边让GNN理解"这个节点是干嘛的"，辅助推理。</p>
+  </div>
+
+  <div class="schematic">
+    <div style="color:var(--t2);font-size:12px;margin-bottom:10px">三种边的示意（以成员M1为中心）</div>
+    <div class="row">
+      <span class="node">M1（成员）</span>
+    </div>
+    <div class="row" style="gap:20px;margin-top:8px">
+      <div style="text-align:center"><span class="node orange">N（通知）</span><br><span class="edge">Type 1: 点击/忽略</span></div>
+      <div style="text-align:center"><span class="node purple">M2（成员）</span><br><span class="edge">Type 2: 长期关注</span></div>
+      <div style="text-align:center"><span class="node green">T（职位）</span><br><span class="edge">Type 3: 拥有头衔</span></div>
+    </div>
+  </div>
+
+  <h3>2.2 图规模统计</h3>
+  <table>
+    <tr><th>节点类型</th><th>数量</th><th>说明</th></tr>
+    <tr><td>member</td><td>10亿</td><td>LinkedIn会员</td></tr>
+    <tr><td>company</td><td>2000万</td><td>公司主页</td></tr>
+    <tr class="high"><td>notification</td><td>30亿</td><td>历史通知记录</td></tr>
+    <tr><td>post</td><td>30亿</td><td>帖子内容</td></tr>
+    <tr><td>email</td><td>3亿</td><td>邮件交互记录</td></tr>
+  </table>
+
+  <table style="margin-top:0">
+    <tr><th>边类型</th><th>数量</th><th>说明</th></tr>
+    <tr class="high"><td>notification-member-affinity</td><td>440亿</td><td>通知-成员关系（最大！）</td></tr>
+    <tr><td>feed-member-affinity</td><td>330亿</td><td>Feed-成员关系</td></tr>
+    <tr><td>member-click-post</td><td>80亿</td><td>成员点击帖子</td></tr>
+    <tr><td>member-click-notification</td><td>9.18亿</td><td>成员点击通知</td></tr>
+    <tr><td>member-click-email</td><td>3亿</td><td>成员点击邮件</td></tr>
+  </table>
+
+  <div class="tech">
+    <p><b class="em">节点特征设计：</b>每个节点有<b>稠密特征</b>（BERT生成的文本嵌入，如帖子向量、通知向量）和<b>离散特征</b>（行业、资历、内容类型等one-hot）。这些初始状态喂给GNN做消息传递。</p>
+    <p><b class="em2">时序图化：</b>给每条Engagement边加上时间戳，让后续的Transformer时序模块能按时间顺序建模行为序列。同时保证训练时不泄漏未来信息（只采样标签时间前的边）。</p>
+    <p><b class="em3">数据划分：</b>图构建35天 → 训练数据14天 → 验证数据7天 → 测试7天。严格时序切分，模拟真实部署。</p>
+  </div>
+
+  <blockquote>这1000亿条边不是凭空来的——大部分是affinity边（关系边），作用是把稀疏的click信号"扩散"到全图，让信息能在没有直接点击的节点间流动。</blockquote>
+</div>
+
+<!-- ===== 三、异质消息传递 ===== -->
+<div class="s">
+  <h2>三、异质消息传递：GraphSAGE遇上R-GCN</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>有了图，怎么从图上"学"东西？核心操作是<b>消息传递</b>。想象你在一个大型社交晚宴上，你想了解一个陌生人。你不会直接去问他——而是问他的朋友们："这人平时做什么？关注什么？" 每个朋友给你一句话，你把所有话<b>加权汇总</b>，形成对这个人的认知。</p>
+    <p style="margin-top:8px">这就是GNN做的事。每个节点先把自己当前的"自我认知"（特征向量）发给邻居，邻居们把自己的特征传过来，然后聚合。问题是在异质图里，<b class="em5">不同类型的边传递的信息含义完全不同</b>——"点击过某条通知"跟"拥有某个职位头衔"能一样处理吗？</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">解法：扩展GraphSAGE + R-GCN，支持多节点类型 + 多边类型的异质消息传递。</b></p>
+    <div class="formula">m<sup>(l)</sup><sub>u→v</sub> = f( h<sup>(l−1)</sup><sub>u</sub>, h<sup>(l−1)</sup><sub>v</sub>, t(u,v) )</div>
+    <div class="formula">h<sup>(l)</sup><sub>v</sub> = σ( AGG({ m<sup>(l)</sup><sub>u→v</sub> : u ∈ N(v) }) )</div>
+    <p>其中 t(u,v) 是边的类型（engagement/affinity/intrinsic），<b>不同类型的边用不同的消息函数 f</b>。AGG可以是均值、加权求和、或注意力机制。</p>
+    <p><b class="em4">为什么重要？</b>"M1点击了通知N"这条边携带的信息，和"M1有职位头衔T"是完全不同的语义。如果共用同一个变换矩阵，就像用洗洁精洗水果和洗衣服一样——功能搞混了。边类型感知的消息传递确保<b>每种关系有自己的专属权重</b>。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">双塔架构</span>
+    <p>GNN采用<b>双塔架构</b>：一塔专门编码"成员节点"（member encoder），另一塔编码"物品节点"（item encoder，这里的物品=通知）。两塔各自经过消息传递后，产出成员嵌入和通知嵌入，最后用点积或MLP预测点击概率。这个拆分还有个工程好处——在线只跑成员塔，物品塔离线算好存着。</p>
+  </div>
+</div>
+
+<!-- ===== 四、时序建模 ===== -->
+<div class="s">
+  <h2>四、时序建模：通知不是越新越好，而是"该新的时候新"</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>链接预测（判断"这个用户会不会点这条通知"）如果只看静态图，就像你问"张三喜欢吃火锅吗"，但不知道他<b class="em5">昨天刚吃完火锅</b>。通知推荐特别依赖时效性——用户5分钟前刚打开过App，现在再推一条大概率骚扰；用户三天没登陆了，推一条关键动态可能让他回来。</p>
+    <p style="margin-top:8px">LinkedIn的方法是：在标准消息传递之外，额外建一个<b class="em2">时序聚合模块</b>，专门捕捉"用户最近干了什么，以及什么时候干的"。</p>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">直觉类比</span>
+    <p>正常的消息传递就像看一个人的<b>社交档案</b>（朋友是谁、做什么工作、什么学历）。时序模块就像翻他的<b>最近微信聊天记录</b>（最近跟谁聊了、聊了什么、什么时候聊的）。两者结合起来，才知道"他现在可能对什么感兴趣"。</p>
+  </div>
+
+  <h3>4.1 Time2Vec：让模型看懂钟表</h3>
+
+  <div class="tech">
+    <p>直接把Unix时间戳喂给神经网络很难——大数字、非线性周期（周/日）。Time2Vec把时间戳映射到一个<b>混合周期-线性表示</b>空间：</p>
+    <div class="formula">
+      Time2Vec(t)<sub>i</sub> = <br>
+      { ω<sub>i</sub>·t + φ<sub>i</sub>, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i = 0 &nbsp;&nbsp;（线性分量：捕捉"越近越重要"）<br>
+      { sin(ω<sub>i</sub>·t + φ<sub>i</sub>), &nbsp;if i > 0 &nbsp;&nbsp;（周期分量：捕捉"每天/每周模式"）
+    </div>
+    <p>ω<sub>i</sub> 和 φ<sub>i</sub> 是可学习参数。模型自动发现哪些频率最重要——比如某些ω学会捕捉"工作日vs周末"的24小时周期。</p>
+  </div>
+
+  <h3>4.2 Transformer时序聚合</h3>
+
+  <div class="tech">
+    <p>时序模块的完整流程：</p>
+    <p>① 对每个成员，采样<b>最近K条通知交互</b>（按时间排序）</p>
+    <p>② 每条交互的特征 = 通知邻居的Sage嵌入 + Time2Vec(交互时间戳)</p>
+    <p>③ 把所有K条拼接，送进<b>Transformer Encoder</b>（利用自注意力捕捉序列模式）</p>
+    <p>④ Transformer输出与标准消息传递的成员嵌入<b>拼接</b>，形成最终嵌入</p>
+    <div class="formula">h<sub>member</sub> = h<sub>sage</sub> ∥ Transformer( Sage(N<sub>1</sub>) + T2V(t<sub>1</sub>), ..., Sage(N<sub>K</sub>) + T2V(t<sub>K</sub>) )</div>
+    <p>离线实验：加入时序建模后，通知pClick的AUC提升 <b class="em3">+0.265%</b>——在通知这种高时效领域，这个增益非常显著。</p>
+  </div>
+
+  <table>
+    <tr><th>模型变体</th><th>pClick AUC 提升</th><th>说明</th></tr>
+    <tr><td>基础 Sage</td><td>—</td><td>无时序</td></tr>
+    <tr class="high"><td>Sage + 时序建模</td><td class="up">+0.265%</td><td>Time2Vec + Transformer</td></tr>
+  </table>
+</div>
+
+<!-- ===== 五、多任务学习 ===== -->
+<div class="s">
+  <h2>五、多任务学习（MMoE）：一箭三雕</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>LinkedIn要预测的不只是"会不会点"（pClick）——还要预测"点了之后会不会做深度互动"（pPI: 点赞/评论/长时间阅读）。这两个目标<b>相关但不同</b>：一条"你的连接升职了"的通知，点击率可能一般，但点进去后用户很可能留言祝贺（高pPI）。相反，一条标题党通知点击率高，但点完秒关（低pPI）。</p>
+    <p style="margin-top:8px">单独为每个目标训练一个模型，维护成本翻倍，还不能共享底层知识。多任务学习让一个模型同时输出多个预测，<b>共享底层特征提取，各自保留专用头</b>。</p>
+  </div>
+
+  <h3>5.1 MMoE：专家各司其职</h3>
+
+  <div class="plain">
+    <span class="tag b">白话类比</span>
+    <p>一家医院有多个科室：内科、外科、儿科。每个病人来，挂号处（Gate）决定该找哪个科室，各科室的医生（Expert）各自诊断。有些病人需要多个科室会诊（Shared Expert）。</p>
+    <p>MMoE里，每个任务有自己的Gate（门控网络），决定"我这任务需要哪些专家的知识，各取多少"。各专家是独立的GNN编码器，Shared Expert是所有任务共享的。这样pClick任务可以侧重"点击模式专家"，pPI任务可以侧重"深度互动专家"，同时都能用共享的底层图表示。</p>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">MMoE的门控机制：</b></p>
+    <div class="formula">G<sub>k</sub>(v) = Softmax( W<sub>gk</sub> · N(v) )</div>
+    <p>N(v)是节点v通过节点编码器后的输出，W<sub>gk</sub> 是任务k的可训练门控矩阵。G<sub>k</sub>(v) 输出一个n维向量（n=专家数），表示每个专家的使用权重。</p>
+    <p>任务k的最终节点嵌入 = 各专家嵌入的加权和（门控权重控制），再送入任务k专属的MLP解码器：</p>
+    <div class="formula">ŷ<sub>k</sub>(m,i) = MLP<sub>k</sub>( h<sup>k</sup><sub>m</sub>, h<sup>k</sup><sub>i</sub> )</div>
+    <p>总损失 = 各任务的BCE损失加权求和：</p>
+    <div class="formula">L = Σ<sub>k</sub> α<sub>k</sub> · L<sub>k</sub></div>
+  </div>
+
+  <h3>5.2 MTL实验效果</h3>
+  <table>
+    <tr><th>模型</th><th>pClick AUC</th><th>pPI AUC</th></tr>
+    <tr><td>单任务 Sage（pClick）</td><td>—</td><td>—</td></tr>
+    <tr><td>单任务 Sage（pPI）</td><td>—</td><td>—</td></tr>
+    <tr class="high"><td>Sage + MMoE（MTL）</td><td class="up">+0.063%</td><td class="up">+0.327%</td></tr>
+  </table>
+
+  <div class="plain">
+    <span class="tag o">关键发现</span>
+    <p>pPI（专业互动）的提升 <b class="em3">远大于</b> pClick（点击率）的提升（0.327% vs 0.063%）。这说明<b>深度互动信号更依赖跨任务知识</b>——只靠点击数据很难学会"什么是深度互动"，但MTL让pPI也能从点击信号中获益。换个角度：pClick容易学（行为明确），pPI难学（行为模糊），MTL的共享参数主要解决了"难任务"的特征不足问题。</p>
+  </div>
+</div>
+
+<!-- ===== 六、生产架构 ===== -->
+<div class="s">
+  <h2>六、生产架构：每天刷新，毫秒级推理</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>GNN再牛，如果在线推理要10秒，也用不了。LinkedIn把GNN拆成<b>离线重计算 + 在线快读取</b>两段：每天凌晨用最新图重建所有成员的嵌入向量，存到特征库；白天用户打开App时，决策模型从特征库直接捞嵌入——<b class="em3">毫秒级</b>。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">📅 <b>每日建图</b>：汇总最新交互，重建15TB跨域异质图</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box" style="border-color:var(--orange)">🧮 <b>成员塔离线生成嵌入</b>：只跑member encoder，不跑item encoder</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box" style="border-color:var(--green)">💾 <b>写入在线特征库</b>：嵌入向量 + 原始特征</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box" style="border-color:var(--purple)">🚀 <b>通知决策模型实时读取</b>：SPR排序器检索嵌入 → 决定推送与否</div></div>
+  </div>
+
+  <div class="tech">
+    <p><b class="em">关键设计决策：</b></p>
+    <p>① <b>成员-物品塔拆分：</b>成员塔离线跑，物品塔也离线算好。在线只需要做点积，不需要重跑GNN。训练需要<b>32 GPU-天/轮</b>，但在线推理几乎零成本。</p>
+    <p>② <b>每日刷新：</b>嵌入每24小时更新一次。对大部分用户够用了——行为模式不会秒变。对极端实时需求，靠补充的轻量特征。</p>
+    <p>③ <b>跨产品复用：</b>同一套成员嵌入可被Email排序、Feed推荐、工作推荐等所有产品线使用——一次计算，多点受益。</p>
+    <p>④ <b>SPR集成点：</b>GNN嵌入注入第二遍排序器（SPR），这是决定"最终发不发"的关键关口，嵌入在这里发挥最大价值。</p>
+  </div>
+</div>
+
+<!-- ===== 七、在线A/B实验 ===== -->
+<div class="s">
+  <h2>七、14天在线A/B实验：全面正向</h2>
+
+  <div class="plain">
+    <span class="tag b">实验设计</span>
+    <p>6%流量用跨域GNN嵌入（实验组），8%用旧决策模型（对照组）。控制变量：会员活跃度分层、通知类型分布、设备类型、地域——全部平衡。持续14天，覆盖完整的周级参与模式。</p>
+  </div>
+
+  <h3>7.1 全局指标</h3>
+  <table>
+    <tr><th>指标</th><th>提升</th><th>含义</th></tr>
+    <tr><td>Sessions（会话数）</td><td class="up">+0.07%</td><td>用户打开App的频率增加</td></tr>
+    <tr class="high"><td>WAU（周活跃用户）</td><td class="up">+0.10%</td><td>每周至少来一次的人数↑</td></tr>
+    <tr><td>CTR-InApp（应用内点击率）</td><td class="up">+0.62%</td><td>通知栏内点击率大幅提升</td></tr>
+    <tr><td>CTR-Push（推送点击率）</td><td class="up">+0.30%</td><td>锁屏推送也有提升</td></tr>
+  </table>
+  <blockquote>所有提升均<b>统计显著（p < 0.01）</b>。WAU +0.10% 看似微小，但在LinkedIn亿级用户尺度上极其可观。</blockquote>
+
+  <h3>7.2 分群效果：中活跃用户受益最大</h3>
+  <table>
+    <tr><th>用户群</th><th>Sessions</th><th>WAU</th><th>CTR</th></tr>
+    <tr><td>高活跃（每日使用）</td><td class="up">+0.10%</td><td>—</td><td>—</td></tr>
+    <tr class="high"><td>中活跃（每周几次）</td><td class="up">+0.36%</td><td class="up">+0.23%</td><td class="up">+1.16%</td></tr>
+    <tr><td>低活跃/沉睡</td><td>—</td><td>WAU提升</td><td>—</td></tr>
+  </table>
+
+  <div class="plain">
+    <span class="tag o">解读</span>
+    <p>中活跃用户是<b class="em2">最大赢家</b>。为什么？因为他们有足够的行为信号但又不"过载"——高活跃用户行为已经很多、提升空间小；低活跃用户信号太稀疏。跨域GNN恰恰解决了"中活跃用户"的痛点：他们在单个域（如通知）里信号不足，但跨域聚合（Feed+Email）后信号就丰富了。</p>
+  </div>
+
+  <h3>7.3 通知类型细分</h3>
+  <table>
+    <tr><th>通知类型</th><th>CTR 提升</th><th>说明</th></tr>
+    <tr><td>内容型（新闻/热门帖）</td><td class="up">+0.93%</td><td>GNN捕捉跨域话题兴趣</td></tr>
+    <tr class="high"><td>关系型（升职/生日/新连接）</td><td class="up">+2.62%</td><td>GNN最强项：社交关系建模</td></tr>
+  </table>
+  <blockquote>关系型通知CTR暴涨+2.62%——这正好是GNN的<b>天然主场</b>：图结构本身就是社交关系的完美表达。你和你前同事的连接强弱、互动频率，全是图上的边。</blockquote>
+</div>
+
+<!-- ===== 八、离线实验 ===== -->
+<div class="s">
+  <h2>八、离线消融实验：每个创新的贡献</h2>
+
+  <h3>8.1 跨域图 vs 单域图</h3>
+  <table>
+    <tr><th>图类型</th><th>AUC 提升</th></tr>
+    <tr><td>域特定图（通知单独建图）</td><td>—</td></tr>
+    <tr class="high"><td>跨域统一图（通知+Feed+Email）</td><td class="up">+8.089%</td></tr>
+  </table>
+  <blockquote>这是整篇论文最震撼的数字。跨域信号的价值不是零点几，而是<b class="em3">+8%</b>！说明通知推荐极度依赖跨域信息——只看通知域的历史行为，根本不足以做好推荐。</blockquote>
+
+  <h3>8.2 消融实验总览</h3>
+  <table>
+    <tr><th>创新点</th><th>pClick AUC</th><th>pPI AUC</th><th>贡献</th></tr>
+    <tr><td>基础 Sage（单域）</td><td>—</td><td>—</td><td>基线</td></tr>
+    <tr class="high"><td>+ 跨域统一图</td><td class="up">+8.089%</td><td>—</td><td>🏆 最大贡献</td></tr>
+    <tr><td>+ 时序建模</td><td class="up">+0.265%</td><td>—</td><td>时效性信号</td></tr>
+    <tr><td>+ MTL（MMoE）</td><td class="up">+0.063%</td><td class="up">+0.327%</td><td>深层互动信号</td></tr>
+  </table>
+</div>
+
+<!-- ===== 九、与STEPS对比 ===== -->
+<div class="s">
+  <h2>九、与STEPS的对比：两条不同的路线</h2>
+
+  <div class="plain">
+    <span class="tag b">说明</span>
+    <p>STEPS（Douyin/字节跳动）和本论文都是<b>工业级推送系统的顶级研究</b>，但走的路线截然不同。STEPS着眼于"<b class="em2">什么时候发、发不发、怎么省算力</b>"（时机调度问题），而LinkedIn跨域GNN着眼于"<b class="em">发给谁、发什么</b>"（内容-用户匹配问题）。两者互补而非竞争。</p>
+  </div>
+
+  <table>
+    <tr><th>维度</th><th>STEPS（字节/抖音）</th><th>LinkedIn 跨域GNN</th></tr>
+    <tr><td><b>核心问题</b></td><td>何时推送、是否推送（时机+频率）</td><td>推送什么内容给谁（内容-用户匹配）</td></tr>
+    <tr><td><b>建模方法</b></td><td>强化学习 + Decision Transformer</td><td>GNN + 时序 + 多任务学习</td></tr>
+    <tr><td><b>图结构</b></td><td>无需建图（序列决策）</td><td>8.6B节点 × 1000亿边的异质图</td></tr>
+    <tr><td><b>时序处理</b></td><td>有序回归（100等频桶预测Δt）</td><td>Time2Vec + Transformer序列建模</td></tr>
+    <tr><td><b>多目标</b></td><td>λ参数调节正负Reward权重</td><td>MMoE多任务学习（pClick + pPI）</td></tr>
+    <tr><td><b>跨域信号</b></td><td>不涉及（单产品抖音）</td><td>核心创新：Feed+Email+Notif全域融合</td></tr>
+    <tr><td><b>算力优化</b></td><td>过滤智能体（3层MLP拦80%请求）</td><td>双塔拆分（离线算嵌入，在线仅点积）</td></tr>
+    <tr><td><b>在线效果</b></td><td>UAD +0.28%, NE −1.91%</td><td>WAU +0.10%, CTR +0.62%</td></tr>
+    <tr><td><b>部署规模</b></td><td>10亿用户全量</td><td>数亿用户 × 通知系统</td></tr>
+    <tr><td><b>训练成本</b></td><td>未明确</td><td>32 GPU-天/轮</td></tr>
+  </table>
+
+  <div class="compare" style="margin-top:16px">
+    <div class="cc good">
+      <h4 style="color:var(--green)">✅ STEPS 的优势</h4>
+      <p>• 端到端闭环优化（自触发智能体）<br>• 不依赖固定检查间隔<br>• 算力降低79.4%<br>• 10亿用户全量部署</p>
+    </div>
+    <div class="cc good" style="border-color:var(--blue)">
+      <h4 style="color:var(--blue)">✅ LinkedIn GNN 的优势</h4>
+      <p>• 跨域信号融合（AUC +8%）<br>• 关系型社交媒体天然适配<br>• 一套嵌入多产品复用<br>• 专业社交场景深度优化</p>
+    </div>
+  </div>
+
+  <div class="plain" style="margin-top:16px">
+    <span class="tag p">互操作畅想</span>
+    <p>如果把这两套方案合在一起：LinkedIn的<b>跨域GNN</b>产出高质量的"用户-内容匹配分数"，STEPS式的<b>自触发智能体</b>根据这个分数决定"要不要推、现在推还是等会儿推"。GNN负责"推什么"、智能体负责"何时推"——完全互补。事实上，LinkedIn论文里的SPR排序器就是一个候选位置，如果把STEPS的自触发逻辑加进去，可能进一步提升推送时机的精准度。</p>
+  </div>
+</div>
+
+<!-- ===== 十、总结 ===== -->
+<div class="s">
+  <h2>十、总结：为什么这篇值得读</h2>
+
+  <div class="plain">
+    <p><b class="em">1. 跨域建图是最大贡献：</b>把多个产品域揉成一张异质图，AUC暴涨8.089%。这验证了一个核心直觉——在超级App/平台时代，单域建模是"自己给自己盖天花板"。</p>
+    <p><b class="em2">2. 异质消息传递不可忽视：</b>不同类型的边必须用不同的变换（engagement/affinity/intrinsic），混在一起会丢失语义。GraphSAGE + R-GCN的扩展方案简单但有效。</p>
+    <p><b class="em3">3. 时序建模锦上添花：</b>Time2Vec + Transformer给pClick +0.265%。在通知这种时效敏感场景，这个增益不容小觑。</p>
+    <p><b class="em4">4. MMoE多任务学习解耦目标：</b>点击率（短期）和专业互动（深层价值）两个矛盾目标，用门控专家各学各的。<b>深层目标收益更大</b>（+0.327% vs +0.063%），再次印证"难任务最需要共享知识"。</p>
+    <p><b class="em5">5. 工业级工程落地：</b>15TB图、1000亿边、每日训练32 GPU-天、在线毫秒级推理——这不是纸面实验，是实打实的生产系统。拆双塔、特征库、SPR集成，每一环都是工程决策。</p>
+    <p><b class="em">6. 关系型通知是GNN的杀手场景：</b>关系型通知CTR +2.62%！社交图+通知=完美匹配。你的前同事升职了、你的连接发新贴了——这些信息的推荐天然是图问题。</p>
+  </div>
+</div>
+
+<div class="tags">
+  <span class="tag-item">Graph Neural Networks</span>
+  <span class="tag-item">Cross-Domain Learning</span>
+  <span class="tag-item">Notification Recommendation</span>
+  <span class="tag-item">Heterogeneous Graph</span>
+  <span class="tag-item">Temporal Modeling</span>
+  <span class="tag-item">Time2Vec</span>
+  <span class="tag-item">MMoE</span>
+  <span class="tag-item">Multi-Task Learning</span>
+  <span class="tag-item">GraphSAGE</span>
+  <span class="tag-item">Production-Scale</span>
+  <span class="tag-item">LinkedIn</span>
+</div>
+
+<p class="footer">
+  📄 <a href="https://arxiv.org/abs/2506.12700">arxiv.org/abs/2506.12700</a> · June 2025<br>
+  <a href="push-index.html">← 返回论文索引</a>
+</p>
+
+</div>
+</body>
+</html>
