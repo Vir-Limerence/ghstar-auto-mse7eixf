@@ -5,15 +5,51 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>⚡ 热度仪表盘</title>
 <style>
-:root{--bg:#f8f9fa;--surface:#fff;--border:#e5e7eb;--text:#111827;--text-muted:#6b7280;--accent:#2563eb;--accent-hover:#1d4ed8;--red:#ef4444;--amber:#f59e0b;--green:#10b981;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-mono:'SF Mono',Menlo,monospace;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);--shadow-hover:0 4px 12px rgba(0,0,0,.08)}
-@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--text-muted:#8b949e;--shadow:0 1px 3px rgba(0,0,0,.3);--shadow-hover:0 4px 12px rgba(0,0,0,.4)}}
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V5 */
+:root {
+  --bg: #f8f9fa;
+  --surface: #fff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --green: #10b981;
+  --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono: 'SF Mono',Menlo,monospace;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,.08);
+}
+@media (prefers-color-scheme:dark) {
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --shadow: 0 1px 3px rgba(0,0,0,.3);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,.4);
+  }
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip}
-body{background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6;padding:clamp(12px,3vw,32px);-webkit-font-smoothing:antialiased}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--font-sans);line-height:1.6;
+  padding:clamp(12px,3vw,32px);
+  -webkit-font-smoothing:antialiased
+}
 h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-bottom:4px;letter-spacing:-.02em}
 .subtitle{text-align:center;color:var(--text-muted);font-size:13px;margin-bottom:20px}
 .tabs{display:flex;justify-content:center;gap:2px;margin-bottom:24px;flex-wrap:wrap}
-.tab-btn{padding:8px 20px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;font-family:var(--font-sans)}
+.tab-btn{
+  padding:8px 20px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text-muted);cursor:pointer;font-size:13px;font-weight:500;
+  transition:all .15s;font-family:var(--font-sans)
+}
 .tab-btn:first-child{border-radius:8px 0 0 8px}
 .tab-btn:last-child{border-radius:0 8px 8px 0}
 .tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -22,12 +58,24 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .tab-content.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:16px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:box-shadow .2s
+}
 .card:hover{box-shadow:var(--shadow-hover)}
-.card-head{padding:14px 18px;font-size:14px;font-weight:600;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.card-head{
+  padding:14px 18px;font-size:14px;font-weight:600;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px
+}
 .card-head .icon{font-size:18px}
 .rank-list{list-style:none;padding:0}
-.rank-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px;transition:background .12s}
+.rank-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  font-size:13px;transition:background .12s
+}
 .rank-list li:last-child{border-bottom:none}
 .rank-list li:hover{background:var(--bg)}
 .rank-num{font-weight:700;min-width:22px;text-align:center;font-size:12px;padding-top:2px}
@@ -41,22 +89,45 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 .accent-ks .card-head{border-left:3px solid #ff4906}
 .accent-gh .card-head{border-left:3px solid var(--accent)}
 .news-list{list-style:none;max-width:800px;margin:0 auto}
-.news-list li{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px}
-.news-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap;min-width:44px;text-align:center}
+.news-list li{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 18px;
+  border-bottom:1px solid var(--border);font-size:13px
+}
+.news-badge{
+  font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;
+  white-space:nowrap;min-width:44px;text-align:center
+}
 .badge-tech{background:#dbeafe;color:#1e40af}.badge-biz{background:#fef3c7;color:#92400e}
-.badge-intl{background:#fce7f3;color:#9d174d}.badge-ai{background:#d1fae5;color:#065f46}.badge-sec{background:#fee2e2;color:#991b1b}
 .news-link{flex:1;color:var(--text);text-decoration:none;line-height:1.4}
 .news-link:hover{color:var(--accent)}
 .xhs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}
+.xhs-item{
+  position:relative;border-radius:8px;overflow:hidden;
+  aspect-ratio:3/4;cursor:pointer;background:var(--border)
+}
+.xhs-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.xhs-item:hover img{transform:scale(1.04)}
+.xhs-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));
+  padding:10px 8px 8px;color:#fff;font-size:11px;line-height:1.3
+}
 .analysis{max-width:700px;margin:0 auto}
-.analysis-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.analysis-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;margin-bottom:12px;
+  box-shadow:var(--shadow)
+}
 .analysis-item h3{font-size:15px;margin-bottom:6px}
 .analysis-item h3 a{color:var(--accent);text-decoration:none}
 .analysis-item h3 a:hover{text-decoration:underline}
 .analysis-item .meta{font-size:12px;color:var(--text-muted);margin-bottom:8px}
 .analysis-item .desc{font-size:13px;line-height:1.6;color:var(--text)}
 .analysis-item .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.tag{padding:2px 8px;border-radius:4px;font-size:11px;background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
+.tag{
+  padding:2px 8px;border-radius:4px;font-size:11px;
+  background:var(--bg);color:var(--text-muted);border:1px solid var(--border)
+}
 .footer{text-align:center;margin-top:36px;color:var(--text-muted);font-size:12px}
 .footer a{color:var(--accent);text-decoration:none}
 .update-time{text-align:center;color:var(--text-muted);font-size:11px;margin:6px 0}
@@ -76,40 +147,44 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 <!-- APP热榜 -->
 <div id="tab-app" class="tab-content active">
 <div class="grid">
+  <!-- 抖音 -->
   <div class="card accent-douyin">
     <div class="card-head"><span class="icon">🎵</span> 抖音热点</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.douyin.com/search/DeepSeek%E6%8B%9F%E4%B8%8A%E8%B0%83API%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%BB%B7" target="_blank">DeepSeek拟上调API服务定价</a></li>
-      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.douyin.com/search/2026%E5%B9%B4%E7%9A%84%E5%A4%8F%E5%A4%A9%E8%A6%81%E7%BB%93%E6%9D%9F%E4%BA%86" target="_blank">2026年的夏天要结束了</a></li>
-      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.douyin.com/search/%E6%95%B0%E5%AD%97%E6%8A%80%E6%9C%AF%E8%B5%8B%E8%83%BD%E5%85%A8%E6%B0%91%E5%81%A5%E8%BA%AB%E5%86%8D%E5%8D%87%E7%BA%A7" target="_blank">数字技术赋能全民健身再升级</a></li>
-      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.douyin.com/search/%E4%BA%BA%E8%B4%A9%E5%AD%90%E2%80%9C%E6%A2%85%E5%A7%A8%E2%80%9D%E7%9C%9F%E5%AE%9E%E5%A7%93%E5%90%8D%E6%9B%9D%E5%85%89" target="_blank">人贩子"梅姨"真实姓名曝光</a></li>
-      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.douyin.com/search/%E6%8C%91%E6%88%98100%E4%B8%AA%E5%B0%8F%E6%97%B6%E4%B8%BE%E5%8A%9E%E4%B8%80%E5%9C%BA%E5%A9%9A%E7%A4%BC" target="_blank">挑战100个小时举办一场婚礼</a></li>
-      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.douyin.com/search/%E9%9A%BE%E5%BF%98%E7%AB%A5%E5%B9%B4%E7%BB%8F%E5%85%B8%E5%9C%BA%E6%99%AF" target="_blank">难忘童年经典场景</a></li>
-      <li><span class="rank-num ">7</span><a class="rank-title" href="https://www.douyin.com/search/2026%E6%8A%96%E9%9F%B3%E5%88%9B%E4%BD%9C%E8%80%85%E5%A4%A7%E4%BC%9A%E6%9D%A5%E4%BA%86" target="_blank">2026抖音创作者大会来了</a></li>
-      <li><span class="rank-num ">8</span><a class="rank-title" href="https://www.douyin.com/search/%E5%92%8C%E5%B9%B3%E5%89%91%E4%BF%AE%E9%9B%86%E7%BB%93%E6%B8%85%E6%98%8E%E4%B8%8A%E6%B2%B3%E5%9B%AD" target="_blank">和平剑修集结清明上河园</a></li>
-      <li><span class="rank-num ">9</span><a class="rank-title" href="https://www.douyin.com/search/%E4%B8%AD%E6%96%B9%E5%AF%B96%E5%AE%B6%E7%BE%8E%E5%9B%BD%E5%AE%9E%E4%BD%93%E9%87%87%E5%8F%96%E5%8F%8D%E5%88%B6%E6%8E%AA%E6%96%BD" target="_blank">中方对6家美国实体采取反制措施</a></li>
-      <li><span class="rank-num ">10</span><a class="rank-title" href="https://www.douyin.com/search/%E7%8E%B0%E8%B4%A7%E9%BB%84%E9%87%91%E7%AA%81%E7%A0%B44300%E7%BE%8E%E5%85%83%E5%85%B3%E5%8F%A3" target="_blank">现货黄金突破4300美元关口</a></li>
+      <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.douyin.com/search/%E6%9D%A5%E5%85%B0%E5%B7%9E%E5%BF%85%E5%90%83%E4%BA%8C%E7%BB%86%E7%89%9B%E8%82%89%E9%9D%A2" target="_blank">来兰州必吃二细牛肉面</a></li>
+      <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.douyin.com/search/%E7%A7%8B%E5%A4%A9%E7%9A%84%E7%AC%AC%E4%B8%80%E5%A5%97%E5%A5%B6%E8%8C%B6%E9%A3%8E%E7%A9%BF%E6%90%AD" target="_blank">秋天的第一套奶茶风穿搭</a></li>
+      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E4%BC%98%E8%B4%A8%E6%9C%8D%E5%8A%A1%E5%8A%A0%E5%BF%AB%E8%B5%B0%E5%90%91%E5%85%A8%E7%90%83" target="_blank">中国优质服务加快走向全球</a></li>
+      <li><span class="rank-num">4</span><a class="rank-title" href="https://www.douyin.com/search/%E6%80%BB%E4%BB%A5%E4%B8%BA%E6%97%B6%E9%97%B4%E5%BE%88%E6%85%A2%20%E5%8F%AF%E5%91%A8%E4%BA%94%E5%B0%B1%E8%A6%81%E7%AB%8B%E7%A7%8B%E4%BA%86" target="_blank">总以为时间很慢 可周五就要立秋了</a></li>
+      <li><span class="rank-num">5</span><a class="rank-title" href="https://www.douyin.com/search/%E6%8E%89%E5%85%A5%E5%A5%B6%E6%B2%B9%E9%A3%8E%E6%B2%BB%E6%84%88%E4%B8%96%E7%95%8C" target="_blank">掉入奶油风治愈世界</a></li>
+      <li><span class="rank-num">6</span><a class="rank-title" href="https://www.douyin.com/search/%E6%8C%91%E6%88%98100%E4%B8%AA%E5%B0%8F%E6%97%B6%E4%B8%BE%E5%8A%9E%E4%B8%80%E5%9C%BA%E5%A9%9A%E7%A4%BC" target="_blank">挑战100个小时举办一场婚礼</a></li>
+      <li><span class="rank-num">7</span><a class="rank-title" href="https://www.douyin.com/search/%E8%97%8F%E5%9C%A8%E7%81%AB%E6%8A%8A%E8%8A%82%E9%87%8C%E7%9A%84%E9%9D%9E%E9%81%97%E7%BE%8E%E5%AD%A6" target="_blank">藏在火把节里的非遗美学</a></li>
+      <li><span class="rank-num">8</span><a class="rank-title" href="https://www.douyin.com/search/2026%E5%B9%B4%E7%9A%84%E5%A4%8F%E5%A4%A9%E8%A6%81%E7%BB%93%E6%9D%9F%E4%BA%86" target="_blank">2026年的夏天要结束了</a></li>
+      <li><span class="rank-num">9</span><a class="rank-title" href="https://www.douyin.com/search/%E9%9A%BE%E5%BF%98%E7%AB%A5%E5%B9%B4%E7%BB%8F%E5%85%B8%E5%9C%BA%E6%99%AF" target="_blank">难忘童年经典场景</a></li>
+      <li><span class="rank-num">10</span><a class="rank-title" href="https://www.douyin.com/search/%E8%AF%B7%E6%94%B6%E4%B8%8B%E8%BF%99%E4%BB%BD%E7%81%AB%E6%8A%8A%E8%8A%82%E6%94%BB%E7%95%A5" target="_blank">请收下这份火把节攻略</a></li>
     </ol>
   </div>
+  <!-- 快手 -->
   <div class="card accent-ks">
     <div class="card-head"><span class="icon">⚡</span> 快手热搜</div>
     <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8">⚡ 快手网页版不展示热搜<br><span style="font-size:11px">需移动端API，等待适配</span></div>
   </div>
+  <!-- B站 -->
   <div class="card accent-bili">
     <div class="card-head"><span class="icon">📺</span> B站全站排行</div>
     <ol class="rank-list">
       <li><span class="rank-num rank-1">1</span><a class="rank-title" href="https://www.bilibili.com/video/BV1RoMf6mEra" target="_blank">当我被外星人取代</a></li>
       <li><span class="rank-num rank-2">2</span><a class="rank-title" href="https://www.bilibili.com/video/BV1KduF6ME4b" target="_blank">《最讨厌复联の一集》</a></li>
-      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.bilibili.com/video/BV1bz3Q6oEMP" target="_blank">大家还想看我搬空什么店</a></li>
-      <li><span class="rank-num ">4</span><a class="rank-title" href="https://www.bilibili.com/video/BV1uPMZ6NEBb" target="_blank">完蛋！我被男同学包围了</a></li>
-      <li><span class="rank-num ">5</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Vo3C6VE1B" target="_blank">几十块入手世界级顶尖好物——居家用品篇</a></li>
-      <li><span class="rank-num ">6</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Lg3R65EZn" target="_blank">当黑客入侵我家摄像头将看到……</a></li>
-      <li><span class="rank-num ">7</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xwMQ6GEix" target="_blank">还来！！！！！！！！！！！</a></li>
-      <li><span class="rank-num ">8</span><a class="rank-title" href="https://www.bilibili.com/video/BV1fGuc6xEmp" target="_blank">你说偷吃零食被发现会死是吗？</a></li>
-      <li><span class="rank-num ">9</span><a class="rank-title" href="https://www.bilibili.com/video/BV1TY3o6TEqR" target="_blank">完全看不懂中国网络梗的日本人，被40位中国人一人一句写出了一首神曲</a></li>
-      <li><span class="rank-num ">10</span><a class="rank-title" href="https://www.bilibili.com/video/BV17vuw68E58" target="_blank">《雾海之下》首曝PV｜贪吃无罪，撤离万岁！</a></li>
+      <li><span class="rank-num rank-3">3</span><a class="rank-title" href="https://www.bilibili.com/video/BV1uPMZ6NEBb" target="_blank">完蛋！我被男同学包围了</a></li>
+      <li><span class="rank-num">4</span><a class="rank-title" href="https://www.bilibili.com/video/BV1fGuc6xEmp" target="_blank">你说偷吃零食被发现会死是吗？</a></li>
+      <li><span class="rank-num">5</span><a class="rank-title" href="https://www.bilibili.com/video/BV1bz3Q6oEMP" target="_blank">大家还想看我搬空什么店</a></li>
+      <li><span class="rank-num">6</span><a class="rank-title" href="https://www.bilibili.com/video/BV17vuw68E58" target="_blank">《雾海之下》首曝PV｜贪吃无罪，撤离万岁！</a></li>
+      <li><span class="rank-num">7</span><a class="rank-title" href="https://www.bilibili.com/video/BV1xwMQ6GEix" target="_blank">还来！！！！！！！！！！！</a></li>
+      <li><span class="rank-num">8</span><a class="rank-title" href="https://www.bilibili.com/video/BV1Vo3C6VE1B" target="_blank">几十块入手世界级顶尖好物——居家用品篇</a></li>
+      <li><span class="rank-num">9</span><a class="rank-title" href="https://www.bilibili.com/video/BV1wZMy6DE31" target="_blank">《原神》奥黛塔角色PV——「柔雪的幻象」</a></li>
+      <li><span class="rank-num">10</span><a class="rank-title" href="https://www.bilibili.com/video/BV1JmMf69EZY" target="_blank">美利坚糖门黄油大胃袋VS国产味真族良子板面长老</a></li>
     </ol>
   </div>
+  <!-- 小红书 -->
   <div class="card accent-xhs">
     <div class="card-head"><span class="icon">📕</span> 小红书热门</div>
     <div class="xhs-grid">
@@ -119,85 +194,93 @@ h1{font-size:clamp(20px,4vw,28px);font-weight:700;text-align:center;margin-botto
 </div>
 </div>
 
+<!-- GitHub 排行榜 -->
 <div id="tab-github" class="tab-content">
-<p class="update-time">数据来源 GitHub Search API · 每小时更新</p>
+<p class="update-time">数据来源 GitHub Trending · 每小时更新</p>
 <div class="grid">
   <div class="card accent-gh">
     <div class="card-head">📅 今日涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a><span class="rank-meta">⭐1.2K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Binaryify/open-kimi-ppt-skill" target="_blank">Binaryify/open-kimi-ppt-skill</a><span class="rank-meta">⭐797</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">非官方 Kimi Slides Skill：让 AI Agent 生成可编辑 PPTD + PPTX，并附带本地浏览器编</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/mikiarlo3/awesome-growth-hacking-skills" target="_blank">mikiarlo3/awesome-growth-hacking-skills</a><span class="rank-meta">⭐451</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Find agentic growth hacking skills for Claude, ChatGPT, Manu</p></div></li>
-      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/criptogus/HermesOffice" target="_blank">criptogus/HermesOffice</a><span class="rank-meta">⭐361</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">HermesOffice — AI-native office suite forked from GenOffice </p></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/fuxicodex/Fuxi" target="_blank">fuxicodex/Fuxi</a><span class="rank-meta">⭐335</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FuXi is a fast, self-contained AI developer terminal</p></div></li>
-      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/SandAI-org/MAGI-2-preview" target="_blank">SandAI-org/MAGI-2-preview</a><span class="rank-meta">⭐333</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">MAGI-2-preview: Scaling Video Generation Models Efficiently</p></div></li>
-      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/0xwilliamortiz/claude-red" target="_blank">0xwilliamortiz/claude-red</a><span class="rank-meta">⭐332</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">claude-red is a curated library of offensive security skills</p></div></li>
-      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/ZzzLc0405/photo-abstract-editorial" target="_blank">ZzzLc0405/photo-abstract-editorial</a><span class="rank-meta">⭐326</span></div></li>
-      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/AMAP-ML/LongHorizon-Harness" target="_blank">AMAP-ML/LongHorizon-Harness</a><span class="rank-meta">⭐291</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">The long-horizon computer-use harness. Run AI agents across </p></div></li>
-      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/cristicretu/diri" target="_blank">cristicretu/diri</a><span class="rank-meta">⭐207</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Native macOS orchestrator for coding agents — run Claude Cod</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai / crm</a><span class="rank-meta">⭐6,864</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl / anydoc</a><span class="rank-meta">⭐6,205</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">⚙️ 系统编程</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt / decimen-optical-transfer</a><span class="rank-meta">⭐4,793</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">☁️ DevOps</p></div></li>
+      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash / FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3,449</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南（基于范冰《增长黑客》原书框架）</p></div></li>
+      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev / kimi-k3-in-c</a><span class="rank-meta">⭐2,704</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">6</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh / zhuzhiliao</a><span class="rank-meta">⭐2,225</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 一转就哇哇叫的传统玩具，Web 模拟版。零依赖单文件，真实录音采样，移动端优先。</p></div></li>
+      <li><span class="rank-num">7</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai / genoffice</a><span class="rank-meta">⭐1,943</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">8</span><div><a class="rank-title" href="https://github.com/thebuggeddev/anatomy" target="_blank">thebuggeddev / anatomy</a><span class="rank-meta">⭐1,753</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">9</span><div><a class="rank-title" href="https://github.com/DannyMac180/sol-advisor" target="_blank">DannyMac180 / sol-advisor</a><span class="rank-meta">⭐1,597</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">💻 Shell</p></div></li>
+      <li><span class="rank-num">10</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix / human-writing</a><span class="rank-meta">⭐1,419</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</p></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
     <div class="card-head">📆 本周涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11.8K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai/crm</a><span class="rank-meta">⭐6.5K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An open-source, agentic-first CRM.</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl/anydoc</a><span class="rank-meta">⭐5.5K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CS</p></div></li>
-      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/bashalarmistalt/decimen-optical-transfer" target="_blank">bashalarmistalt/decimen-optical-transfer</a><span class="rank-meta">⭐4.7K</span></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer" target="_blank">xdash/FDE-the-Guidance-Book-of-Forward-Deployed-Engineer</a><span class="rank-meta">⭐3.4K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">FDE（前沿部署工程师）从零入门指南（基于范冰《增长黑客》原书框架）</p></div></li>
-      <li><span class="rank-num ">6</span><div><a class="rank-title" href="https://github.com/FareedKhan-dev/kimi-k3-in-c" target="_blank">FareedKhan-dev/kimi-k3-in-c</a><span class="rank-meta">⭐2.6K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">A 2.78-trillion-parameter Kimi K3 running inference on a sin</p></div></li>
-      <li><span class="rank-num ">7</span><div><a class="rank-title" href="https://github.com/imsai-sh/zhuzhiliao" target="_blank">imsai-sh/zhuzhiliao</a><span class="rank-meta">⭐2.1K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">竹知了 —— 一转就哇哇叫的传统玩具，Web 模拟版。零依赖单文件，真实录音采样，移动端优先。</p></div></li>
-      <li><span class="rank-num ">8</span><div><a class="rank-title" href="https://github.com/microsoft/skill-recorder" target="_blank">microsoft/skill-recorder</a><span class="rank-meta">⭐2.0K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Desktop app that records your on-screen work session and use</p></div></li>
-      <li><span class="rank-num ">9</span><div><a class="rank-title" href="https://github.com/genspark-ai/genoffice" target="_blank">genspark-ai/genoffice</a><span class="rank-meta">⭐1.8K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An AI-native office suite for macOS and Windows: word proces</p></div></li>
-      <li><span class="rank-num ">10</span><div><a class="rank-title" href="https://github.com/thebuggeddev/anatomy" target="_blank">thebuggeddev/anatomy</a><span class="rank-meta">⭐1.6K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">An interactive 3D human anatomy explorer built using threejs</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org / grok-build</a><span class="rank-meta">⭐24,271</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away / Codex-Dream-Skin</a><span class="rank-meta">⭐13,309</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">📜 JavaScript</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/andrewyng/openworker" target="_blank">andrewyng / openworker</a><span class="rank-meta">⭐13,237</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🐍 Python</p></div></li>
+      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software / qm</a><span class="rank-meta">⭐11,888</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs / img2threejs</a><span class="rank-meta">⭐9,984</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">6</span><div><a class="rank-title" href="https://github.com/openai/codex-security" target="_blank">openai / codex-security</a><span class="rank-meta">⭐8,967</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">7</span><div><a class="rank-title" href="https://github.com/unicity-aos/aos-ce" target="_blank">unicity-aos / aos-ce</a><span class="rank-meta">⭐8,574</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">8</span><div><a class="rank-title" href="https://github.com/MoonshotAI/Kimi-K3" target="_blank">MoonshotAI / Kimi-K3</a><span class="rank-meta">⭐8,126</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">📦 开源项目</p></div></li>
+      <li><span class="rank-num">9</span><div><a class="rank-title" href="https://github.com/trycompai/crm" target="_blank">trycompai / crm</a><span class="rank-meta">⭐6,864</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">10</span><div><a class="rank-title" href="https://github.com/firecrawl/anydoc" target="_blank">firecrawl / anydoc</a><span class="rank-meta">⭐6,205</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">⚙️ 系统编程</p></div></li>
     </ol>
   </div>
   <div class="card accent-gh">
-    <div class="card-head">📊 本月涨星 TOP5</div>
+    <div class="card-head">📊 本月涨星 TOP10</div>
     <ol class="rank-list">
-      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a><span class="rank-meta">⭐24.2K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">SpaceXAI's coding agent harness and TUI. Fullscreen, mouse i</p></div></li>
-      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a><span class="rank-meta">⭐13.3K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Codex Dream Skin</p></div></li>
-      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a><span class="rank-meta">⭐13.2K</span></div></li>
-      <li><span class="rank-num ">4</span><div><a class="rank-title" href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a><span class="rank-meta">⭐11.8K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Multiplayer agent harness for work</p></div></li>
-      <li><span class="rank-num ">5</span><div><a class="rank-title" href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a><span class="rank-meta">⭐9.9K</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">Rebuild the object in a reference image as a code-only, proc</p></div></li>
+      <li><span class="rank-num rank-1">1</span><div><a class="rank-title" href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix / human-writing</a><span class="rank-meta">⭐1,419</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</p></div></li>
+      <li><span class="rank-num rank-2">2</span><div><a class="rank-title" href="https://github.com/Binaryify/open-kimi-ppt-skill" target="_blank">Binaryify / open-kimi-ppt-skill</a><span class="rank-meta">⭐1,034</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">非官方 Kimi Slides Skill：让 AI Agent 生成可编辑 PPTD + PPTX，并附带本地浏览器编</p></div></li>
+      <li><span class="rank-num rank-3">3</span><div><a class="rank-title" href="https://github.com/0xwilliamortiz/claude-red" target="_blank">0xwilliamortiz / claude-red</a><span class="rank-meta">⭐341</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">4</span><div><a class="rank-title" href="https://github.com/pengchujin/tower" target="_blank">pengchujin / tower</a><span class="rank-meta">⭐126</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">塔台 — 原生 SwiftUI iOS App，在本机管理机场订阅与自有节点，生成 Surge / Clash / Sh</p></div></li>
+      <li><span class="rank-num">5</span><div><a class="rank-title" href="https://github.com/mika50000/gpt-link" target="_blank">mika50000 / gpt-link</a><span class="rank-meta">⭐122</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">6</span><div><a class="rank-title" href="https://github.com/Zirakin/airport-recommendation" target="_blank">Zirakin / airport-recommendation</a><span class="rank-meta">⭐82</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">2026年最新高性价比机场推荐 | 科学上网 | 梯子推荐 | VPN推荐 | 支持 Clash | V2Ray | S</p></div></li>
+      <li><span class="rank-num">7</span><div><a class="rank-title" href="https://github.com/432539/gpt" target="_blank">432539 / gpt</a><span class="rank-meta">⭐81</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">GPT 账号注册机 / 管理  协议  无头 有头 多种模式 , 交流QQ群 19302577</p></div></li>
+      <li><span class="rank-num">8</span><div><a class="rank-title" href="https://github.com/1038lab/ComfyUI-MiniMax-H3-Promptor" target="_blank">1038lab / ComfyUI-MiniMax-H3-Promptor</a><span class="rank-meta">⭐74</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">9</span><div><a class="rank-title" href="https://github.com/ZestfulPulse/ios-app-store-submit" target="_blank">ZestfulPulse / ios-app-store-submit</a><span class="rank-meta">⭐69</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">🤖 AI/大模型</p></div></li>
+      <li><span class="rank-num">10</span><div><a class="rank-title" href="https://github.com/fberrez/towncenter" target="_blank">fberrez / towncenter</a><span class="rank-meta">⭐64</span><p style="font-size:11px;color:var(--text-muted);margin-top:2px">📜 TypeScript</p></div></li>
     </ol>
   </div>
 </div>
 </div>
 
+<!-- AI新闻 -->
 <div id="tab-news" class="tab-content">
-<p class="update-time">来源 vicoman.top · 实时更新</p>
+<p class="update-time">来源 vicoman.top · 每小时更新</p>
 <ul class="news-list">
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">印尼拟放宽主要矿山配额致镍价跌至七月以来低点</a></li>
-  <li><span class="news-badge badge-intl">国际</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">韩国生物科技公司推人体脂肪填充剂应对减肥药副作用</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">影石Insta360 Luna Pro单摄版曝光：徕卡联合设计配1英寸传感器</a></li>
-  <li><span class="news-badge badge-sec">安全</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">俄无人机工厂负责人遭遇汽车爆炸袭击重伤，司机身亡</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">BP退出北海油气业务警示苏格兰能源转型困境</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">多名NHS高层与Palantir存在关联引发数据合同审查</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">Citadel对冲基金通过收购SitAw股票簿获利数十亿</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">Ares因估值分歧缩减大规模私人信贷延续基金规模</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">英特尔股价翻倍但制造能力仍难撼动台积电地位</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">欧盟推出银行竞争力新战略但仍需解决英国关系等关键问题</a></li>
-  <li><span class="news-badge badge-intl">国际</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">诈骗分子冒充监管机构利用欧盟加密新规实施欺诈</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">香港证监会警示小盘股股权高度集中风险</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">中国推进「太阳能长城」计划助力荒漠治理</a></li>
-  <li><span class="news-badge badge-intl">国际</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">哥伦比亚贩毒集团寻求乌克兰无人机技术</a></li>
-  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">欧洲卡车司机短缺五十万危及供应链</a></li>
-  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://vicoman.top/tools/ai-news/" target="_blank">美取消海地人保护身份引发驱逐恐惧及经济冲击担忧</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.theregister.com/os-platforms/2026/08/06/windows-10-ltsc-2021-has-five-months-before-security-updates-cost-extra/5283904" target="_blank">Windows 10 LTSC扩展安全更新即将收费</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://www.theverge.com/games/976054/nintendo-earnings-q1-2027-tariff-refund" target="_blank">任天堂一季度营业利润激增150%至1425亿日元</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://www.bloomberg.com/news/articles/2026-08-06/blackstone-bdc-profit-drops-94-while-loan-performance-steadies" target="_blank">黑石集团BDC二季度利润暴跌94%</a></li>
+  <li><span class="news-badge badge-tech">国际</span><a class="news-link" href="https://www.bloomberg.com/news/articles/2026-08-06/india-s-new-auction-passes-sensex-expiry-test-after-chaotic-week" target="_blank">印度Sensex指数新收盘机制首周平稳过渡</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.ft.com/content/9d38db74-98a5-46ee-b9ed-4e553ff41025?syn-25a6b1a6=1" target="_blank">美养老金与商界就SEC气候披露新规产生分歧</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://www.cnbc.com/2026/08/06/restaurant-brands-international-q2-2026-earnings.html" target="_blank">汉堡王美国业务增长带动RBI财报超预期</a></li>
+  <li><span class="news-badge badge-tech">国际</span><a class="news-link" href="https://www.ft.com/content/53920df1-f6b4-4214-9936-b9eed83d3548" target="_blank">民调显示特朗普与Z世代对华合作意愿上升</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://www.ithome.com/0/986/684.htm" target="_blank">谷歌印度150亿美元数据中心项目遭环保诉讼挑战</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.wired.com/story/chevron-williams-driving-data-center-boom" target="_blank">雪佛龙与威廉姆斯公司布局数据中心能源供应</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.ithome.com/0/986/683.htm" target="_blank">华为享界G9预售24小时小订破万，高配版占比九成</a></li>
+  <li><span class="news-badge badge-tech">AI</span><a class="news-link" href="https://www.theregister.com/ai-and-ml/2026/08/06/meta-latest-to-tell-world-its-ai-agent-wandered-out-of-test-pen/5283947" target="_blank">Meta AI模型在测试中再次越狱访问互联网</a></li>
+  <li><span class="news-badge badge-tech">AI</span><a class="news-link" href="https://www.scmp.com/news/china/science/article/3363193/chinese-ai-tail-tracking-robot-delivers-needle-free-pig-vaccinations-93-accuracy" target="_blank">中国AI机器人实现无针头猪疫苗注射，准确率达93%</a></li>
+  <li><span class="news-badge badge-biz">财经</span><a class="news-link" href="https://www.theguardian.com/games/2026/aug/06/trump-tariffs-refund-fuels-profit-spike-nintendo" target="_blank">任天堂季度利润激增53%，获特朗普关税退款提振</a></li>
+  <li><span class="news-badge badge-tech">国际</span><a class="news-link" href="https://www.france24.com/en/france/20260806-france-bans-unsolicited-telemarketing-calls-protect-consumers" target="_blank">法国实施新法禁止未经请求的电话营销以保护消费者</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.france24.com/en/video/20260806-who-calls-for-intensified-response-as-dr-congo-ebola-cases-near-4-000" target="_blank">世卫组织呼吁加强应对刚果（金）埃博拉疫情</a></li>
+  <li><span class="news-badge badge-tech">科技</span><a class="news-link" href="https://www.ithome.com/0/986/678.htm" target="_blank">通用汽车回应雪佛兰停产传闻：将继续在华生产</a></li>
 </ul>
 </div>
 
+<!-- 解读 -->
 <div id="tab-intro" class="tab-content">
 <div class="analysis">
-  <div class="analysis-item"><h3>🥇 <a href="https://github.com/xai-org/grok-build" target="_blank">xai-org/grok-build</a></h3><div class="meta">⭐24.2K 本月</div><div class="desc">SpaceXAI's coding agent harness and TUI. Fullscreen, mouse i</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3>🥈 <a href="https://github.com/Fei-Away/Codex-Dream-Skin" target="_blank">Fei-Away/Codex-Dream-Skin</a></h3><div class="meta">⭐13.3K 本月</div><div class="desc">Codex Dream Skin</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3>🥉 <a href="https://github.com/andrewyng/openworker" target="_blank">andrewyng/openworker</a></h3><div class="meta">⭐13.2K 本月</div><div class="desc">热门开源项目</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3> <a href="https://github.com/yc-software/qm" target="_blank">yc-software/qm</a></h3><div class="meta">⭐11.8K 本月</div><div class="desc">Multiplayer agent harness for work</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
-  <div class="analysis-item"><h3> <a href="https://github.com/img2threejs/img2threejs" target="_blank">img2threejs/img2threejs</a></h3><div class="meta">⭐9.9K 本月</div><div class="desc">Rebuild the object in a reference image as a code-only, proc</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥇 <a href="https://github.com/KKKKhazix/human-writing" target="_blank">KKKKhazix/human-writing</a></h3><div class="meta">⭐1,419 本月</div><div class="desc">让 AI 写的中文读起来像一个具体的人在说话。通用创作与改稿 Skill，开箱即用。</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥈 <a href="https://github.com/Binaryify/open-kimi-ppt-skill" target="_blank">Binaryify/open-kimi-ppt-skill</a></h3><div class="meta">⭐1,034 本月</div><div class="desc">非官方 Kimi Slides Skill：让 AI Agent 生成可编辑 PPTD + PPTX，并附带本地浏览器编辑器 Unofficial Kim...</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3>🥉 <a href="https://github.com/0xwilliamortiz/claude-red" target="_blank">0xwilliamortiz/claude-red</a></h3><div class="meta">⭐341 本月</div><div class="desc">claude-red is a curated library of offensive security skills designed for the...</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3> <a href="https://github.com/pengchujin/tower" target="_blank">pengchujin/tower</a></h3><div class="meta">⭐126 本月</div><div class="desc">塔台 — 原生 SwiftUI iOS App，在本机管理机场订阅与自有节点，生成 Surge / Clash / Shadowrocket / Loon...</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
+  <div class="analysis-item"><h3> <a href="https://github.com/mika50000/gpt-link" target="_blank">mika50000/gpt-link</a></h3><div class="meta">⭐122 本月</div><div class="desc">Standalone ChatGPT Session/accessToken link extractor</div><div class="tags"><span class="tag">GitHub</span><span class="tag">热门项目</span></div></div>
 </div>
 </div>
 
-<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-06 12:48 CST</p>
+<p class="footer">Powered by <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a> · 每小时自动抓取 · 更新于 2026-08-06 19:09 CST</p>
 
 <script>
 function switchTab(tab){
