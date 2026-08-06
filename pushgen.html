@@ -305,6 +305,17 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
     <tr><td>关键指标</td><td>UAD +0.28%, 资源-79%</td><td>CTR +14%, DAU +0.067%</td></tr>
   </table>
   <blockquote>两者解决推送系统的不同环节：STEPS管timing（合理时刻），PushGen管copy（吸引人的文案）。一个完整的工业推送系统需要两者的结合——用PushGen生成高CTR文案 + 用STEPS在最佳时机发送。</blockquote>
+
+  <h3>与HGenPush的关系</h3>
+  <table>
+    <tr><th>维度</th><th>HGenPush</th><th>PushGen</th></tr>
+    <tr><td>做什么</td><td>"选什么内容推荐"——视频+作者的语义ID生成</td><td>"推送文案怎么写"——标题+正文的文本生成</td></tr>
+    <tr><td>技术</td><td>生成式推荐 + RL对齐</td><td>LLM SFT + Reward Model</td></tr>
+    <tr><td>输出</td><td>语义ID（离散token）</td><td>自然语言（标题+正文）</td></tr>
+    <tr><td>RL使用</td><td>核心（GSISPO对齐消费偏好）</td><td>放弃（reward hacking风险）</td></tr>
+    <tr><td>平台</td><td>快手</td><td>快手</td></tr>
+  </table>
+  <blockquote>HGenPush和PushGen是快手的"双引擎"推送系统：HGenPush决定推哪个视频/作者（语义级推荐），PushGen决定用怎样的文案描述（表达级生成）。两者上下衔接——HGenPush选出候选后，PushGen为其生成吸引人的推送文案。</blockquote>
 </div>
 
 <!-- ===== 9. 总结 ===== -->

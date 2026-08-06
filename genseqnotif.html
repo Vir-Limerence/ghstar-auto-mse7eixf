@@ -290,6 +290,18 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
     <tr><td>核心场景</td><td>推送通知 (push)</td><td>推送+应用内通知</td></tr>
   </table>
   <blockquote>两者都用DT，但路线不同：STEPS将DT细分为三个专用智能体（分工明确），GenSeqNotif用一个统一DT+分位数回归（灵活性高）。STEPS的守门员解决了算力问题（57倍节省），GenSeqNotif的环形缓冲区解决了生产持久化问题（150K QPS）。两者都证明了DT在工业通知系统中的实用性。</blockquote>
+
+  <h3>与TIM的关系</h3>
+  <table>
+    <tr><th>维度</th><th>TIM</th><th>GenSeqNotif</th></tr>
+    <tr><td>方法</td><td>监督学习（TAU预测slot CTR）</td><td>回报条件监督学习（DT）</td></tr>
+    <tr><td>优化</td><td>凸优化显式求解</td><td>隐式（DT从数据中学策略）</td></tr>
+    <tr><td>时间表示</td><td>离散时间片（K=48）</td><td>连续序列（context steps）</td></tr>
+    <tr><td>多目标</td><td>单一CTR目标+约束</td><td>多目标reward向量</td></tr>
+    <tr><td>平台</td><td>快手</td><td>LinkedIn</td></tr>
+    <tr><td>年份</td><td>2024</td><td>2025</td></tr>
+  </table>
+  <blockquote>TIM(2024)用监督学习预测slot-wise CTR+凸优化分配，GenSeqNotif(2025)用DT的回报条件推理直接输出动作。两者的进化路线：TIM证明了"时序预测+优化求解"范式可行，GenSeqNotif则走向了更端到端的"序列建模+return条件"路线。TIM对日期类型（工作日/休息日）的显式建模是GenSeqNotif未处理的维度。</blockquote>
 </div>
 
 <!-- ===== 9. 总结 ===== -->
@@ -321,7 +333,9 @@ blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 
 <p class="footer">
   📄 <a href="https://arxiv.org/abs/2509.02458">arxiv.org/abs/2509.02458</a> · LinkedIn · 150K QPS<br>
   决策Transformer + 分位数回归 + 多目标通知优化<br>
+  离线验证：96.7%动作准确率 · 分位数损失0.358 · 上下文长度4最优<br>
   <a href="index.html">← 返回论文索引</a>
+  <br><span style="color:var(--t2);font-size:11px">📊 离线指标: 动作准确率96.7% | 分位数损失0.358 | 3x候选模型减少 | 10x特征维度扩展</span>
 </p>
 
 </div>
