@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Prime Agent 详解 · 自我改进的 RLM 智能体</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:800px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:6px}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:24px 0}
+.hero .big{font-size:15px;margin-bottom:6px}
+.hero .sml{font-size:13px;color:var(--t2)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+@media(max-width:600px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:20px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px;line-height:1.3}
+.s{margin-top:52px}
+.s h2{font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:16px;font-weight:600;margin:24px 0 12px}
+p{font-size:14px;color:var(--t2);margin-bottom:14px}
+b{color:var(--t1)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:14px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+.tech{background:rgba(121,192,255,.03);border:1px solid rgba(121,192,255,.15);border-radius:10px;padding:14px 18px;margin:10px 0 16px;font-size:13px}
+.tech p{font-size:13px;margin-bottom:6px}
+.tech .formula{font-family:var(--mono);font-size:13px;color:var(--t1);background:rgba(0,0,0,.3);border-radius:6px;padding:10px 14px;margin:8px 0;overflow-x:auto;line-height:1.8}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+td.up{color:var(--green)}td.down{color:var(--red)}
+.highlight-row{background:rgba(126,231,135,.04)}.highlight-row td{color:var(--green);font-weight:600}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:20px 0}
+.flow-step{display:flex;align-items:center;gap:10px;width:100%;max-width:520px}
+.flow-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.flow-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;flex:1}
+.flow-arrow{color:var(--t2);font-size:16px;text-align:center}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.compare{grid-template-columns:1fr}}
+.cc{background:var(--card);border-radius:10px;padding:14px 16px;border-left:3px solid}
+.cc.bad{border-color:var(--red)}.cc.good{border-color:var(--green)}
+.cc h4{font-size:14px;margin-bottom:6px}
+.cc p{font-size:13px;color:var(--t2);margin:0}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 8px}
+.tags span{padding:3px 10px;border-radius:6px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--t2)}
+blockquote{border-left:3px solid var(--blue);padding:4px 0 4px 14px;margin:12px 0;color:var(--t2);font-size:13px}
+.codeblock{background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:12px;line-height:1.7;overflow-x:auto;margin:10px 0;color:var(--t1)}
+.codeblock .c{color:var(--t2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>🤖 Prime Agent</h1>
+<p class="sub">Self-Improving RLM Agent · 自我改进的递归语言模型智能体</p>
+
+<div class="hero">
+  <div class="big">让 Agent <b style="color:var(--blue)">用代码创建 Agent</b>，并<b style="color:var(--green)">在实战中不断改进自己</b>。</div>
+  <div class="sml">PrimeIntellect 出品 · 2026年5月开源 · 3个月冲到 9,000+ 星</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">9.1k</div><div class="l">GitHub 星标</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">0.7.1</div><div class="l">当前版本</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--orange)">MIT</div><div class="l">开源协议</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--purple)">30+</div><div class="l">支持的模型提供商</div></div>
+</div>
+
+<hr>
+
+<!-- 1. 是什么 -->
+<div class="s">
+  <h2>一、它是什么</h2>
+
+  <div class="plain">
+    <span class="tag g">白话</span>
+    <p>Prime Agent 是一个开源的<b>编码和研究智能体</b>。它的特别之处在于：<b>不是"给你一个 AI 助手"，而是"给你一个会自我进化的 AI 助手"</b>——它能用 Python 代码创建子 Agent、能在工作中复盘并改进自己的行为方式。</p>
+  </div>
+
+  <div class="tech">
+    <p><b>两大核心抽象：</b></p>
+    <ol>
+      <li><b>RLM（递归语言模型）：</b>把"提示词"当变量，把"子 Agent"当函数调用——在持久 REPL 里，用代码编排 Agent 网络</li>
+      <li><b>Continual Harness（持续装备）：</b>提示词、记忆、技能、子 Agent 配置存为持久状态，Agent 可以小步改进它们</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 2. 为什么火 -->
+<div class="s">
+  <h2>二、为什么突然爆火</h2>
+
+  <div class="compare">
+    <div class="cc bad"><h4 style="color:var(--red)">❌ 传统 Agent</h4><p>你一句我一句对话<br>工具是"插件"<br>每次会话从零开始<br>不会自己变强</p></div>
+    <div class="cc good"><h4 style="color:var(--green)">✅ Prime Agent</h4><p>编程式编排 Agent 网络<br>一切皆代码（IPython）<br>状态持久，跨会话保留<br><b>/refine 自我改进</b></p></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag b">爆火原因</span>
+    <p>行业共识是"Agent 的差距在技能不在模型"。Prime Agent 把这一点做到了极致：<b>Agent 自己写技能、自己创建子 Agent、自己复盘改进</b>——它不只是用技能的 Agent，而是<b>会制造技能的 Agent</b>。</p>
+  </div>
+</div>
+
+<!-- 3. 核心特性 -->
+<div class="s">
+  <h2>三、核心特性</h2>
+
+  <div class="tech">
+    <table>
+      <tr><th>特性</th><th>说明</th></tr>
+      <tr><td><b>一切皆代码</b></td><td>持久 IPython 是内建工具：文件、shell、子Agent、上下文全通过 Python</td></tr>
+      <tr class="highlight-row"><td><b>rlm(...) 创建子Agent</b></td><td>像调函数一样创建真实子 Agent，并行/后台执行并拿回结果</td></tr>
+      <tr><td><b>/refine 自我改进</b></td><td>复盘工作轨迹，小步更新记忆/技能/子Agent配置，可回滚</td></tr>
+      <tr><td><b>技能即代码</b></td><td>技能是可导入的 Python 包，可自动把重复工作流变成技能</td></tr>
+      <tr><td><b>后台守护运行</b></td><td>终端断开 Agent 继续跑，可随时重连（daemon 架构）</td></tr>
+      <tr><td><b>Agent 间直连</b></td><td>运行中的 Agent 互相发现、互发消息、互相编排</td></tr>
+      <tr><td><b>长任务不死</b></td><td>自动上下文压缩、持久目标、心跳、定时唤醒、自主模式</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 4. 工作方式 -->
+<div class="s">
+  <h2>四、工作方式</h2>
+
+  <div class="flow">
+    <div class="flow-step"><span class="flow-num">1</span><div class="flow-box">你在 IPython REPL 里发指令</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">2</span><div class="flow-box">Agent 用代码操作文件/shell/工具</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">3</span><div class="flow-box">复杂任务用 rlm(...) 创建子 Agent 并行处理</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">4</span><div class="flow-box">子 Agent 返回结果，主 Agent 汇总决策</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">5</span><div class="flow-box">/refine 复盘轨迹，改进记忆与技能</div></div>
+    <div class="flow-arrow">⬇</div>
+    <div class="flow-step"><span class="flow-num">6</span><div class="flow-box">状态持久化，下次会话接着变强</div></div>
+  </div>
+</div>
+
+<!-- 5. 安装使用 -->
+<div class="s">
+  <h2>五、安装与使用</h2>
+
+  <div class="tech">
+    <p><b>安装（macOS/Linux 一行）：</b></p>
+    <div class="codeblock">curl -fsSL https://app.primeintellect.ai/prime-agent/install.sh | sh</div>
+    <p><b>常用命令：</b></p>
+    <div class="codeblock"><span class="c"># 交互模式</span>
+prime-agent
+
+<span class="c"># 单次问答</span>
+prime-agent -p "你的问题" --provider opencode-go --model deepseek-v4-flash
+
+<span class="c"># 会话管理</span>
+prime-agent agents     <span class="c"># 浏览运行中的会话</span>
+prime-agent attach     <span class="c"># 重连会话</span>
+prime-agent --resume   <span class="c"># 恢复保存的会话</span>
+prime-agent status     <span class="c"># 后台服务状态</span></div>
+  </div>
+
+  <div class="plain">
+    <span class="tag o">配置模型</span>
+    <p>支持 <b>30+ 提供商</b>：OpenAI、DeepSeek、Gemini、Claude、Groq，以及原生支持 <b>OpenCode Go</b>（用 `OPENCODE_API_KEY` 环境变量）。用户实测：OpenCode Go 会员额度可直接驱动。</p>
+  </div>
+</div>
+
+<!-- 6. 与Hermes对比 -->
+<div class="s">
+  <h2>六、Prime Agent vs Hermes</h2>
+
+  <table>
+    <tr><th>维度</th><th>Prime Agent</th><th>Hermes Agent</th></tr>
+    <tr><td>核心哲学</td><td>编程式编排（Agent 创建 Agent）</td><td>技能体系扩展（Skills）</td></tr>
+    <tr><td>自我改进</td><td>/refine 复盘改进</td><td>记忆 + 技能沉淀</td></tr>
+    <tr><td>子 Agent</td><td>rlm() 函数式创建</td><td>delegate_task 并行派发</td></tr>
+    <tr><td>后台运行</td><td>daemon 守护，断连不丢</td><td>cron 定时任务</td></tr>
+    <tr><td>技能</td><td>Python 包（可导入）</td><td>SKILL.md（文档式）</td></tr>
+    <tr><td>消息平台</td><td>终端为主</td><td>微信/Telegram/多平台</td></tr>
+    <tr class="highlight-row"><td>共同点</td><td colspan="2">都认同"技能是 Agent 核心竞争力"，都支持多模型提供商</td></tr>
+  </table>
+</div>
+
+<!-- 7. 安全 -->
+<div class="s">
+  <h2>七、安全提示</h2>
+
+  <div class="plain">
+    <span class="tag r">⚠️ 重要</span>
+    <p>Prime Agent <b>会以你的用户权限执行模型生成的 Python 代码</b>。worker/kernel 进程提供生命周期隔离和恢复，但<b>不是安全沙箱</b>。官方建议：</p>
+    <ul>
+      <li>使用可丢弃的克隆/工作树（方便回滚）</li>
+      <li>只运行可信的仓库、指令、技能和扩展</li>
+      <li>不可信代码放到外部沙箱执行</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 8. 未来 -->
+<div class="s">
+  <h2>八、总结与展望</h2>
+
+  <div class="plain">
+    <span class="tag p">一句话</span>
+    <p>Prime Agent 是<b>"会编程的 Agent"</b>——把 Agent 编排从对话式升级为编程式，让 Agent 能创建 Agent、改进自己。它是 2026 年"Agent 竞争"浪潮中最具代表性的开源项目之一。</p>
+  </div>
+
+  <div class="tech">
+    <p><b>适合谁：</b></p>
+    <ul>
+      <li>研究人员：跑大规模 AI 评测（内置 verifiers 体系）</li>
+      <li>开发者：长期自主编码任务、多 Agent 协作</li>
+      <li>好奇者：体验"自我进化 Agent"的前沿形态</li>
+    </ul>
+  </div>
+</div>
+
+<div class="tags">
+  <span>Agent</span><span>RLM</span><span>自我改进</span><span>Open Source</span>
+  <span>TypeScript</span><span>PrimeIntellect</span><span>IPython</span><span>多Agent</span>
+</div>
+
+<p class="footer">
+  🔗 <a href="https://github.com/PrimeIntellect-ai/prime-agent" target="_blank">github.com/PrimeIntellect-ai/prime-agent</a><br>
+  📄 <a href="https://arxiv.org/abs/2605.09998" target="_blank">Continual Harness 论文</a> · <a href="https://www.primeintellect.ai/blog/rlm" target="_blank">RLM 博客</a><br>
+  Hermes Agent 生成 · 2026-08-09 · <a href="index.html">← 返回主页</a>
+</p>
+
+</div>
+</body>
+</html>
