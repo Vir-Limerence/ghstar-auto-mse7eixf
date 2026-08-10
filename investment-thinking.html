@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>《对投资的一些思考》核心解读 · riba2534</title>
+<style>
+:root{--bg:#0a0e14;--card:#131820;--border:#1e293b;--t1:#e6edf3;--t2:#8b949e;--blue:#79c0ff;--green:#7ee787;--orange:#ffa657;--purple:#d2a8ff;--pink:#ff7bce;--red:#ff938a;--font:-apple-system,BlinkMacSystemFont,sans-serif;--mono:'SF Mono',Menlo,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.85;padding:24px 16px 80px}
+.wrap{max-width:800px;margin:0 auto}
+h1{font-size:clamp(22px,5vw,30px);font-weight:800;text-align:center;margin-bottom:6px;line-height:1.3}
+.sub{text-align:center;color:var(--t2);font-size:13px;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,rgba(121,192,255,.06),rgba(210,168,255,.06));border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center;margin:22px 0}
+.hero .big{font-size:15px;line-height:1.8}
+.hero .sml{font-size:12px;color:var(--t2);margin-top:8px}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+@media(max-width:600px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.kpi-item .n{font-size:18px;font-weight:800;font-family:var(--mono)}
+.kpi-item .l{font-size:10px;color:var(--t2);margin-top:4px;line-height:1.4}
+.s{margin-top:48px}
+.s h2{font-size:19px;font-weight:700;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.s h3{font-size:15px;font-weight:600;margin:20px 0 10px}
+p{font-size:14px;color:var(--t2);margin-bottom:12px}
+b{color:var(--t1)}
+.plain{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:12px 0}
+.plain .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px}
+.plain .tag.g{background:rgba(126,231,135,.15);color:var(--green)}
+.plain .tag.b{background:rgba(121,192,255,.15);color:var(--blue)}
+.plain .tag.o{background:rgba(255,166,87,.15);color:var(--orange)}
+.plain .tag.p{background:rgba(210,168,255,.15);color:var(--purple)}
+.plain .tag.r{background:rgba(255,147,138,.15);color:var(--red)}
+.plain p{margin:0;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--t2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t1)}
+.highlight-row{background:rgba(126,231,135,.04)}.highlight-row td{color:var(--green);font-weight:600}
+ul,ol{margin:8px 0 12px 20px;color:var(--t2);font-size:14px}
+li{margin:6px 0}
+li b{color:var(--t1)}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.footer{text-align:center;color:var(--t2);font-size:12px;margin-top:48px;line-height:2}
+.footer a{color:var(--blue)}
+.quote{border-left:3px solid var(--orange);padding:4px 0 4px 14px;margin:12px 0;color:var(--t1);font-size:14px;font-style:italic}
+.timeline{position:relative;padding-left:24px;margin:16px 0}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:var(--border)}
+.tl-item{position:relative;margin:16px 0}
+.tl-item::before{content:'';position:absolute;left:-21px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.tl-item .yr{font-size:12px;color:var(--blue);font-family:var(--mono);font-weight:700}
+.tl-item p{font-size:13px;margin-top:4px}
+.steps{counter-reset:st;margin:14px 0}
+.step{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.step::before{counter-increment:st;content:counter(st);min-width:24px;height:24px;border-radius:50%;background:var(--green);color:#000;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;margin-top:2px}
+.step div{font-size:13px;color:var(--t2)}
+.step b{color:var(--t1)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>📈 《对投资的一些思考》</h1>
+<p class="sub">作者：riba2534（字节系程序员）· 2024-11 · 深度解读与核心思路提取</p>
+
+<div class="hero">
+  <div class="big">一篇程序员用<b style="color:var(--blue)">真金白银交学费</b>换来的投资认知——从韭菜到定投者的完整心路，核心就一句话：<b style="color:var(--green)">Time, Not Timing（时间，而非择时）</b></div>
+  <div class="sml">原文 58 分钟阅读量 · 本文提取核心思路 + 关键数据 + 可执行建议</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-item"><div class="n" style="color:var(--blue)">4年</div><div class="l">M2增 52.9%</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--green)">100万</div><div class="l">作者第一桶金</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--orange)">25000$</div><div class="l">LaunchPool 利润</div></div>
+  <div class="kpi-item"><div class="n" style="color:var(--purple)">20%</div><div class="l">巴菲特年化(60年)</div></div>
+</div>
+
+<hr>
+
+<!-- 1. 作者背景 -->
+<div class="s">
+  <h2>一、作者是谁</h2>
+  <div class="plain">
+    <span class="tag b">背景</span>
+    <p>字节系程序员（ACM 竞赛出身），2020 年毕业。经历：<b>基金 → 港美股 → 山寨币/合约（亏掉半年工资）→ 反思学习 → 定投BTC + 套利（赚回第一桶金 100万）</b>。文章是"交了学费后的复盘"，不是理论说教。</p>
+  </div>
+</div>
+
+<!-- 2. 为什么投资 -->
+<div class="s">
+  <h2>二、为什么必须投资</h2>
+  <div class="plain">
+    <span class="tag r">核心论据</span>
+    <p>法币一直在贬值，<b>存钱 = 财富被悄悄掠夺</b>。关键数据：</p>
+  </div>
+  <table>
+    <tr><th>指标</th><th>数据</th><th>含义</th></tr>
+    <tr><td>中国 M2（2020→2024）</td><td>202万亿→309万亿</td><td><b>4年增 52.9%</b>，印钱速度远超工资涨幅</td></tr>
+    <tr><td>黄金（20年）</td><td>十几倍涨幅</td><td>粗浅衡量通胀的"尺子"</td></tr>
+    <tr><td>土耳其里拉（2024）</td><td>兑美元 −17.5%</td><td>金融风险国家：储蓄被瞬间掠夺</td></tr>
+    <tr><td>埃及镑（2024）</td><td>兑美元 −36.6%</td><td>努力工作也拦不住货币贬值</td></tr>
+    <tr class="highlight-row"><td>结论</td><td colspan="2">单纯储蓄无法保值 → 必须把劳动价值转化为<b>资产</b></td></tr>
+  </table>
+</div>
+
+<!-- 3. 核心概念 -->
+<div class="s">
+  <h2>三、四个核心概念</h2>
+
+  <h3>1️⃣ 资产 vs 负债</h3>
+  <div class="plain">
+    <span class="tag g">定义</span>
+    <p><b>资产</b>= 源源不断往你钱包放钱的东西；<b>负债</b> = 源源不断从你钱包拿钱的东西。资产三属性：有流动市场、代表先进生产力（优质股权）、有稀缺共识（黄金/比特币）。</p>
+  </div>
+
+  <h3>2️⃣ 投资 vs 投机 vs 交易 vs 赌博</h3>
+  <div class="plain">
+    <span class="tag b">四件事</span>
+    <p><b>投资</b>=买入资产等现金流和增值；<b>投机</b>=低买高卖赚差价（极难，99.9%的人不适合）；<b>交易</b>=高频操作；<b>赌博</b>=杠杆押注。作者强调：<b>先认清自己在做哪件事</b>。</p>
+  </div>
+
+  <h3>3️⃣ 年化收益率（APR）直觉表</h3>
+  <table>
+    <tr><th>APR</th><th>风险等级</th><th>对应产品</th></tr>
+    <tr><td>1-3%</td><td>无风险</td><td>银行存款/余额宝</td></tr>
+    <tr><td>4-5%</td><td>小风险</td><td>债券/美债</td></tr>
+    <tr><td>6-8%</td><td>中小风险</td><td>保守基金</td></tr>
+    <tr><td>9-12%</td><td>中等风险</td><td>指数基金（标普500）</td></tr>
+    <tr><td>15-20%</td><td>中高风险</td><td>巴菲特60年平均</td></tr>
+    <tr class="highlight-row"><td>20%+</td><td>高风险</td><td>极强认知+强心态</td></tr>
+  </table>
+
+  <h3>4️⃣ 套利者（Arbitrageur）</h3>
+  <div class="plain">
+    <span class="tag p">市场搬运工</span>
+    <p>套利者让同一资产在不同市场价格趋同——"低买高卖抹平价差"。2024年8月全球股市大跌的元凶就是<b>日元套利交易平仓</b>：日本加息→国际资本卖出美元还日元→流动性被抽走。</p>
+  </div>
+</div>
+
+<!-- 4. 三个反思 -->
+<div class="s">
+  <h2>四、三个关键反思</h2>
+
+  <h3>🧠 认清自己（三种韭菜画像）</h3>
+  <ul>
+    <li><b>交易天才型</b>：盯K线每分每秒，大量交易 → 99.9%不适合</li>
+    <li><b>急不可耐型</b>：买了就盯盘，情绪起伏，用光本金</li>
+    <li><b>永赚大师型</b>：不持仓只嘴炮，"我早说了吧"</li>
+  </ul>
+
+  <h3>🎯 管理预期（决策前问自己4个问题）</h3>
+  <ul>
+    <li><b>能投多少钱、想赚多少？</b>——本金10万想年赚10万=归零风险</li>
+    <li><b>投资占比多少？</b>——蚂蚁仓无意义；占比过重心态畸形</li>
+    <li><b>研究标的花了多久？</b>——不了解就冲=给市场交学费</li>
+    <li><b>决策是自己深思熟虑的吗？</b>——没有主见=逃避责任</li>
+  </ul>
+
+  <h3>💰 你只赚认知范围内的钱</h3>
+  <div class="plain">
+    <span class="tag o">认知上限</span>
+    <p>比特币例子：1000买的人 1500 就卖（赚50%止盈），能拿到 1万/10万的凤毛麟角。<b>下车太早，是因为愿景太小；认知决定上限</b>。遇到陌生事物：先学十分钟，再决定否定还是研究（十分钟定律）。</p>
+  </div>
+</div>
+
+<!-- 5. 怎么做 -->
+<div class="s">
+  <h2>五、普通人应该怎么做</h2>
+
+  <div class="steps">
+    <div class="step"><div><b>选择正确的市场</b>——美股（创新驱动+监管稳定+20年长牛）优于A股（政策干预+"无形的大手"）</div></div>
+    <div class="step"><div><b>选择优质资产，越少越好</b>——SPY(标普500)、QQQ(纳指100)、GLD(黄金ETF)、IBIT(比特币ETF)</div></div>
+    <div class="step"><div><b>持续定投，不看价格</b>——用闲钱定时定量买入，只关心手续费</div></div>
+    <div class="step"><div><b>长期持有，不择时不卖出</b>——跟大经济周期一起波动，留足2年生活费的buffer</div></div>
+    <div class="step"><div><b>拒绝杠杆</b>——高杠杆=赌博，赌徒输光定理：只有无限本金期望才为正</div></div>
+  </div>
+
+  <div class="quote">"投资是一辈子的事。放水是永恒的，时间越长，确定性越高。"</div>
+</div>
+
+<!-- 6. 作者历程 -->
+<div class="s">
+  <h2>六、作者的时间线（2020-2024）</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <span class="yr">2020</span>
+      <p>毕业，买基金（张坤/葛兰时代）→ 年底亏损，结论："把握不住，再见"</p>
+    </div>
+    <div class="tl-item">
+      <span class="yr">2021</span>
+      <p>开港美股账户：买特斯拉/拼多多，高买低卖；转战加密货币：山寨币+合约，<b>亏掉半年工资</b>——PIG币6000$→800$，FEG直接归零</p>
+    </div>
+    <div class="tl-item">
+      <span class="yr">2022</span>
+      <p><b>停止一切投资</b>，每天0-3点学习"赎罪"，复盘五大错误：没目标/没认清自己/韭菜心态/易受影响/高杠杆</p>
+    </div>
+    <div class="tl-item">
+      <span class="yr">2023.5</span>
+      <p>攒到第一个100万；买入第一个BTC（$25,000），写定投程序每天$100，黑天鹅日加倍买入；开始套利</p>
+    </div>
+    <div class="tl-item">
+      <span class="yr">2024</span>
+      <p>套利案例：BUSD/FDUSD闪兑（半小时+$3000）、AEUR错误定价（+$2000）、USDE搬砖（+$3000）、LaunchPool打新（+$25000）；结论：<b>所有套利策略利润加起来，赶不上定投</b></p>
+    </div>
+  </div>
+</div>
+
+<!-- 7. 金句建议 -->
+<div class="s">
+  <h2>七、作者的建议（原文金句）</h2>
+  <div class="plain">
+    <span class="tag p">建议清单</span>
+    <ul>
+      <li><b>积累资产，而不是积累钱</b>——法币不断贬值</li>
+      <li><b>投资往时间里倾注金钱，学习往时间里倾注注意力</b>——多数人搞反了</li>
+      <li><b>投资是对性格和认知的补偿，不是努力的奖赏</b>——钱从内心急躁的人流向内心平静的人</li>
+      <li><b>每次不科学的胜利，都在为下次大亏埋下伏笔</b></li>
+      <li><b>风险、门槛、收益不可能三角</b>——高收益必然高门槛</li>
+      <li><b>十分钟定律</b>——遇到新概念先花10分钟了解，再决定是否研究</li>
+      <li><b>为工具和知识付费</b>——AI订阅是"让人类智慧结晶为你服务"的最划算投资</li>
+      <li><b>努力工作是最快最安全的第一桶金</b>——投资的前提是有资</li>
+    </ul>
+  </div>
+
+  <div class="quote">"坚持做难而正确的事。Don't Trust, Verify! Time, Not Timing!"</div>
+</div>
+
+<!-- 8. 我的点评 -->
+<div class="s">
+  <h2>八、解读点评</h2>
+  <div class="plain">
+    <span class="tag b">值得借鉴</span>
+    <ul>
+      <li>✅ 定投+长期主义的实操路径清晰（数据回测支撑）</li>
+      <li>✅ 套利案例真实可复现（信息差=钱）</li>
+      <li>✅ "认清投资/投机/交易/赌博"四分类非常清醒</li>
+      <li>✅ 反思式写作，每个亏钱经历都提炼成原则</li>
+    </ul>
+  </div>
+  <div class="plain">
+    <span class="tag r">需要批判看</span>
+    <ul>
+      <li>⚠️ 高比例押注比特币是"社会实验"判断——个体案例，回撤承受力因人而异</li>
+      <li>⚠️ 套利经验部分已不可复制（平台漏洞被修复）</li>
+      <li>⚠️ 美股永远优于A股的判断，忽略市场风格切换可能</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  原文：<a href="https://blog.riba2534.cn/blog/2024/%E5%AF%B9%E6%8A%95%E8%B5%84%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" target="_blank">blog.riba2534.cn →</a><br>
+  Hermes Agent 解读 · 2026-08-10 · <a href="index.html">← 返回主页</a>
+</div>
+
+</div>
+</body>
+</html>
