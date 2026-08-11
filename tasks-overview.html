@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 Hermes 定时任务总览</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --txt: #e6edf3; --dim: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --red: #f85149; --yellow: #d29922;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--txt); font: 15px/1.65 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; padding: 28px 16px 60px; max-width: 860px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 26px; }
+  h1 { font-size: 24px; letter-spacing: 1px; }
+  header p { color: var(--dim); font-size: 13px; margin-top: 6px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .card-off { opacity: .55; }
+  .card summary { display: flex; align-items: center; gap: 10px; padding: 13px 16px; cursor: pointer; list-style: none; user-select: none; flex-wrap: wrap; }
+  .card summary::-webkit-details-marker { display: none; }
+  .card summary:hover { background: rgba(88,166,255,.06); }
+  .card-icon { font-size: 20px; }
+  .card-name { font-weight: 600; flex: 1; min-width: 120px; }
+  .card-sched { color: var(--dim); font-size: 12px; }
+  .card-time { color: var(--dim); font-size: 12px; }
+  .card-en { font-size: 11px; color: var(--dim); border: 1px solid var(--border); border-radius: 10px; padding: 1px 8px; }
+  .badge { font-size: 11px; padding: 2px 9px; border-radius: 10px; font-weight: 600; }
+  .badge.ok { background: rgba(63,185,80,.15); color: var(--green); }
+  .badge.err { background: rgba(248,81,73,.15); color: var(--red); }
+  .badge.warn { background: rgba(210,153,34,.15); color: var(--yellow); }
+  .card-body { padding: 4px 18px 16px; border-top: 1px solid var(--border); }
+  .card-body p { margin: 8px 0; }
+  .card-body h2 { font-size: 16px; margin: 14px 0 6px; color: var(--accent); }
+  .card-body h3 { font-size: 14px; margin: 12px 0 4px; }
+  .card-body h4 { font-size: 13px; margin: 10px 0 4px; }
+  .card-body ul { padding-left: 20px; margin: 6px 0; }
+  .card-body li { margin: 3px 0; }
+  .card-body blockquote { border-left: 3px solid var(--accent); padding: 6px 12px; color: var(--dim); margin: 8px 0; background: rgba(88,166,255,.05); border-radius: 0 8px 8px 0; }
+  .card-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+  .card-body th, .card-body td { border: 1px solid var(--border); padding: 5px 8px; text-align: left; }
+  .card-body th { background: rgba(88,166,255,.08); color: var(--accent); }
+  .card-body code, .card-body pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; }
+  .card-body code { padding: 1px 5px; font-size: 12.5px; }
+  .card-body pre { padding: 10px 12px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+  .card-body .empty { color: var(--dim); font-style: italic; }
+  footer { text-align: center; color: var(--dim); font-size: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📡 Hermes 定时任务总览</h1>
+  <p>生成时间 2026-08-11 22:23 · 8 个任务 · 6 运行 / 2 停用</p>
+</header>
+<div class="grid">
+
+<details class="card " open>
+  <summary>
+    <span class="card-icon">💓</span>
+    <span class="card-name">智能心跳检测</span>
+    <span class="card-sched">每小时 :45</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 21-45</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><p>🚨 心跳异常 [2026-08-11 21:45]</p>
+<p>❌ Qwen3.5 离线(端口8080)</p>
+<p>正常项: 4</p></div>
+</details>
+<details class="card " open>
+  <summary>
+    <span class="card-icon">💰</span>
+    <span class="card-name">每日金价快手行情</span>
+    <span class="card-sched">每小时 :15</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 22-15</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><p>💰 每日行情 [08-11 22:15]</p>
+<p>🥇 黄金: $4443/盎司 (+0.53%)</p>
+<p>   高$4495.000 低$4415.700 | 约 ¥964/克</p>
+<p>⚡ 快手(1024.HK): HK$42.64 (-3.79%)</p>
+<p>💱 美元/人民币: 6.7473</p></div>
+</details>
+<details class="card " open>
+  <summary>
+    <span class="card-icon">📊</span>
+    <span class="card-name">仪表盘统一更新</span>
+    <span class="card-sched">每小时 :05</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 22-10</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><p>✅ 仪表盘更新完成并已推送</p>
+<table>
+<tr><th>数据源</th><th>条数</th></tr>
+</table>
+<p>|---|---|</p>
+<table>
+<tr><th>抖音热点</th><th>10</th></tr>
+<tr><td>GitHub Trending（今/周/月）</td><td>10×3</td></tr>
+<tr><td>B站排行</td><td>10</td></tr>
+<tr><td>vicoman 新闻</td><td>20</td></tr>
+</table>
+<ul>
+<li>index.html + star-rank.html 已生成（26946 bytes）</li>
+<li>commit <code>12de647</code> 已推送到 GitHub Pages</li>
+<li>工作区干净，无异常</li>
+</ul></div>
+</details>
+<details class="card " open>
+  <summary>
+    <span class="card-icon">🚒</span>
+    <span class="card-name">消防员招录名单监控</span>
+    <span class="card-sched">每日 10:00/18:00</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 18-10</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><p>[SILENT]</p></div>
+</details>
+<details class="card " open>
+  <summary>
+    <span class="card-icon">📋</span>
+    <span class="card-name">每日聊天面板</span>
+    <span class="card-sched">每日 21:00</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 22-14</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><h2>📋 每日面板 · 2026-08-11</h2>
+<h3>🔑 关键话题</h3>
+<ul>
+<li><b>微信推送全天限流</b>：iLink 通道风控，今日 756 次限流、0 次成功发送，非 cron 撞车，需重启 gateway 刷会话</li>
+<li><b>新增 Telegram 通道</b>：配置 @maqi_agent_bot 成功，无频率限制，绕开微信限流</li>
+<li><b>每日聊天面板 cron 修复</b>：因创建时 pin 的模型漂移（deepseek-v4-pro→flash/opencode-go）被安全机制跳过，已用 CLI pin 修复并手动补跑</li>
+<li><b>仪表盘</b>：全天每小时正常更新（抖音/GitHub/B站/vicoman 4 源），多次 commit 推送成功</li>
+<li><b>股票分析</b>：16:00 正常运行但 deliver=local 只存本地未推送</li>
+</ul>
+<h3>✅ 待办</h3>
+<ul>
+<li>用户手动执行 <code>hermes gateway restart</code> 刷新微信会话（已切换 Telegram 后为非紧急）</li>
+<li>股票分析如要推送需改 deliver 目标</li>
+</ul>
+<h3>💡 决策</h3>
+<ul>
+<li><b>5 个推送 cron 全部改到 Telegram</b>（心跳/金价快手/仪表盘/聊天面板/消防员），微信仅保留日常对话</li>
+<li>聊天面板任务 pin 到 deepseek-v4-flash + opencode-go，防止再漂移</li>
+</ul>
+<h3>🔗 会话链接</h3>
+<ul>
+<li>@session:default/20260811_214431_cc4aba1c（Telegram 任务修复）</li>
+<li>@session:default/20260804_171615_3ab77922（微信限流诊断+Telegram 迁移，今日收尾）</li>
+</ul></div>
+</details>
+<details class="card " open>
+  <summary>
+    <span class="card-icon">📈</span>
+    <span class="card-name">股票智能分析</span>
+    <span class="card-sched">工作日 16:00</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-11 16-02</span>
+    <span class="card-en">启用</span>
+  </summary>
+  <div class="card-body"><p>[dsa-market-region]: # (cn)</p>
+<h2>🎯 大盘复盘</h2>
+<h3>2026-08-11 大盘复盘</h3>
+<blockquote>今日市场呈现权重补跌、题材局部活跃的分化状态，上证指数在石油与权重拖累下走弱，创业板逆势收红但科创50大跌反映高位科技分歧加剧。核心矛盾是资金从前期拥挤的有色与科技权重撤出，转向低估值石油及防御性方向，明日优先观察权重能否止跌、量能是否维持2.3万亿之上。</blockquote>
+<h4>一、盘面总览</h4>
+<p>今日市场整体偏弱，指数层面出现明显分化：上证指数下跌0.82%，深证成指跌0.40%，创业板指逆势收涨0.34%，但科创50重挫1.63%，权重蓝筹表现拖累明显。全市场涨跌家数为1614涨对3777跌，市场宽度较差，赚钱效应集中在少数板块；涨停58家、跌停仅2家，情绪并未完全冰冻，但跌多涨少说明风险偏好收缩。两市成交额23341亿元，体量维持高位，属于存量博弈下的结构性调整。</p>
+<ul>
+<li><b>盘面信号</b>：46/100（震荡，需观察）</li>
+<li><b>信号依据</b>：上涨家数占比 30%，亏钱效应较强；主要指数平均涨跌幅 -0.77%；涨跌停差 +56</li>
+<li><b>操作建议</b>：信号分化，控制仓位并等待量价确认。</li>
+</ul>
+<table>
+<tr><th>指标</th><th>数值</th><th>观察</th></tr>
+</table>
+<p>|------|------|------|</p>
+<table>
+<tr><th>上涨/下跌/平盘</th><th>1614 / 3777 / 147</th><th>上涨占比(不含平盘) 29.9%</th></tr>
+<tr><td>涨停/跌停</td><td>58 / 2</td><td>涨跌停差 +56</td></tr>
+<tr><td>两市成交额</td><td>23341 亿</td><td>高活跃度</td></tr>
+</table>
+<h4>二、指数结构</h4>
+<p>从指数结构看，今日走势泾渭分明：上证50和沪深300分别下跌1.27%和0.81%，是拖累大盘的主要力量，权重蓝筹集体走弱；科创50大跌1.63%，显示高位科技成长股遭遇集中抛压；创业板指逆势上涨0.34%，但更多是少数权重和部分题材股支撑，并非全面强势。石油天然气开采领涨，带有明显的防御属性，对冲了一部分下跌压力。上证指数3934点附近仍处于震荡区间中轴偏上，短期支撑关注3900点整数关口和前期平台上沿；创业板指虽然收红，但若后续科创50继续走弱，创业板也难以独立走强。整体看，指数之间未形成向上共振，市场处于震荡偏防御阶段。</p>
+<table>
+<tr><th>指数</th><th>最新</th><th>涨跌幅</th><th>开盘</th><th>最高</th><th>最低</th><th>振幅</th><th>成交额(亿)</th></tr>
+</table>
+<p>|------|------|--------|------|------|------|------|-----------|</p>
+<table>
+<tr><th>上证指数</th><th>3934.09</th><th>🔴 -0.82%</th><th>3950.71</th><th>3966.39</th><th>3930.64</th><th>0.90%</th><th>10667</th></tr>
+<tr><td>深证成指</td><td>14259.44</td><td>🔴 -0.40%</td><td>14266.44</td><td>14447.10</td><td>14201.29</td><td>1.72%</td><td>12542</td></tr>
+<tr><td>创业板指</td><td>3549.16</td><td>🟢 +0.34%</td><td>3533.89</td><td>3601.59</td><td>3517.57</td><td>2.38%</td><td>5975</td></tr>
+<tr><td>科创50</td><td>1709.50</td><td>🔴 -1.63%</td><td>1713.26</td><td>1753.14</td><td>1699.92</td><td>3.06%</td><td>1104</td></tr>
+<tr><td>上证50</td><td>2929.93</td><td>🔴 -1.27%</td><td>2956.60</td><td>2971.40</td><td>2928.19</td><td>1.46%</td><td>1815</td></tr>
+<tr><td>沪深300</td><td>4663.79</td><td>🔴 -0.81%</td><td>4689.45</td><td>4715.88</td><td>4660.47</td><td>1.18%</td><td>6454</td></tr>
+</table>
+<h4>三、板块主线</h4>
+<p>今日板块主线非常清晰：资金大幅流向石油和天然气开采业，板块涨幅高达3.82%，属于典型的事件驱动叠加低估值防御逻辑；研究和试验发展上涨2.19%，偏向创新药或科研服务方向，但缺乏扩散；广播、电视、电影和影视录音制作业上涨1.59%，或受暑期档及内容产业预期影响，但持续性存疑。跌幅端，有色金属矿采选业大跌4.84%，有色金属冶炼及压延加工业下跌3.84%，黑色金属矿采选业下跌2.53%，资源股集体重挫，是今日拖累市场的主要板块。有色大跌大概率是前期涨幅过大后的获利回吐，叠加商品价格或需求预期扰动，需要警惕该板块是否形成中期调整趋势。当前没有明确的新主线，石油是防御性选择而非进攻方向，科技内部分化严重，市场缺乏合力。</p>
+<h5>行业板块领涨 Top 5</h5>
+<table>
+<tr><th>排名</th><th>行业板块</th><th>涨跌幅</th></tr>
+</table>
+<p>|------|------|--------|</p>
+<table>
+<tr><th>1</th><th>石油和天然气开采业</th><th>+3.82%</th></tr>
+<tr><td>2</td><td>研究和试验发展</td><td>+2.19%</td></tr>
+<tr><td>3</td><td>广播、电视、电影和影视录音制作业</td><td>+1.59%</td></tr>
+<tr><td>4</td><td>林业</td><td>+1.24%</td></tr>
+<tr><td>5</td><td>通用设备制造业</td><td>+1.06%</td></tr>
+</table>
+<h5>行业板块领跌 Top 5</h5>
+<table>
+<tr><th>排名</th><th>行业板块</th><th>涨跌幅</th></tr>
+</table>
+<p>|------|------|--------|</p>
+<table>
+<tr><th>1</th><th>有色金属矿采选业</th><th>-4.84%</th></tr>
+<tr><td>2</td><td>有色金属冶炼和压延加工业</td><td>-3.84%</td></tr>
+<tr><td>3</td><td>黑色金属矿采选业</td><td>-2.53%</td></tr>
+<tr><td>4</td><td>农业</td><td>-2.40%</td></tr>
+<tr><td>5</td><td>水利管理业</td><td>-2.26%</td></tr>
+</table>
+<h4>四、资金与情绪</h4>
+<p>成交额维持2.33万亿，表明交投活跃度仍高，但指数不涨反跌，说明资金在分歧中换手而非一致性做多。涨跌家数比接近1:2.3，下跌家数远多于上涨家数，市场赚钱效应明显收敛；涨停58家而跌停仅2家，说明短线游资仍在小盘题材中寻找机会，但涨停分布散乱，未形成明显板块效应。科创50大跌伴随创业板微涨，显示高位科技股出现内部大分化，资金从高位品种撤出，向低位防御品种切换。整体风险偏好偏防守，短线情绪温度约为中性偏冷。</p>
+<h4>五、消息催化</h4>
+<p>今日暂无相关新闻数据，无法从消息面确认石油大涨或有色大跌的具体催化。从盘面行为推断，石油板块的异动可能与市场预期地缘局势或供应端扰动相关，但该信息未获验证；有色板块的重挫更像技术性调整或商品价格联动，也缺少明确的新闻佐证。因此在交易层面，应更多以价格行为为准，不建议根据未证实的传闻进行追涨杀跌。后续需关注是否有关于资源品价格、宏观政策或重要产业规划的正式消息落地。</p>
+<h4>六、明日交易计划</h4>
+<p>当前指数分化、主线防御、赚钱效应收缩，综合判断处于“均衡偏防守”阶段。仓位建议控制在五成以内，不宜激进加仓，也不宜完全空仓，把握结构性机会即可。关注方向：一是石油天然气板块能否延续强势并带动低位资源股修复，但需注意追高风险；二是影视传媒、科研服务等独立方向是否出现连板龙头，形成短线共识；三是创业板权重能否在科技分化中继续充当稳定器。回避方向：有色金属矿采选、有色冶炼加工、黑色金属矿采选等今日领跌板块，若明日继续放量下杀，坚决不抄底；同时注意规避高位科创50成分股中破位下跌的标的。</p>
+<p>触发失效条件：若明日上证指数跌破3900点且成交额萎缩至2万亿以下，或跌幅进一步扩大并伴随跌停家数显著增加，则防守逻辑失效，仓位应进一步降至三成以下，停止开新仓，以控制回撤为第一要务。</p>
+<h4>七、风险提示</h4>
+<p>需要警惕以下风</p>
+<p>…(完整报告见 reports/)</p></div>
+</details>
+<details class="card card-off" >
+  <summary>
+    <span class="card-icon">⚙️</span>
+    <span class="card-name">Gateway心跳检测</span>
+    <span class="card-sched">每5分钟(已停用)</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-01 13-55</span>
+    <span class="card-en">停用</span>
+  </summary>
+  <div class="card-body"><p>💓 心跳检测 - 2026-08-01 13:55:31 - 系统运行正常</p></div>
+</details>
+<details class="card card-off" >
+  <summary>
+    <span class="card-icon">⬇️</span>
+    <span class="card-name">模型下载进度</span>
+    <span class="card-sched">每1分钟(已暂停)</span>
+    <span class='badge ok'>✅ 正常</span>
+    <span class="card-time">2026-08-01 15-34</span>
+    <span class="card-en">停用</span>
+  </summary>
+  <div class="card-body"><p>📥 模型下载进度</p>
+<p>🔴 27B 编码: 90.0% (11070.2MB / 11.1GB)</p>
+<p>🟢 9B Agent: 110.0% (5689.7MB / 5.4GB)</p></div>
+</details>
+</div>
+<footer>由 Hermes Agent 自动生成 · 数据来自 cron 输出目录</footer>
+</body>
+</html>
