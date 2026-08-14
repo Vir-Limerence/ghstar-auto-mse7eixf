@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>成语肉鸽 · 墨韵</title>
 <script>p5.disableFriendlyErrors = true;</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script src="p5.min.js"></script>
 <style>
   html, body { margin: 0; padding: 0; overflow: hidden; background: #2c2416; touch-action: none; }
   canvas { display: block; margin: 0 auto; }
@@ -79,6 +79,11 @@ function sfx(type) {
 
 // ========== 状态 ==========
 let state, particles, hoveredCard, animQueue, draftCards, floatTexts = [], bestFloor = 0;
+// localStorage 防护（隐私模式/禁用存储时降级为内存）
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch(e) {} },
+};
 
 function resetGame() {
   state = {
@@ -310,7 +315,7 @@ function onEnemyDefeated() {
   if (state.enemy.isBoss) {
     state.screen = 'win';
     bestFloor = max(bestFloor, state.floor);
-    localStorage.setItem('chengyuBest', bestFloor);
+    store.set('chengyuBest', bestFloor);
     gameLog = [`🏆 击败墨魔！通关第 ${state.floor} 层`];
   } else {
     state.screen = 'draft';
@@ -359,7 +364,7 @@ function setup() {
     particles.push({ x: Math.random()*width, y: Math.random()*height, vx:(Math.random()-0.5)*0.3, vy:Math.random()*0.3+0.1, size:Math.random()*2+1, alpha:Math.random()*30+10 });
   }
   try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e) {}
-  bestFloor = parseInt(localStorage.getItem('chengyuBest')||'0') || 0;
+  bestFloor = parseInt(store.get('chengyuBest')||'0') || 0;
 }
 
 function draw() {
