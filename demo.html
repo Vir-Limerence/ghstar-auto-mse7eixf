@@ -91,15 +91,40 @@ function resetGame() {
     floor: 1, level: 0,
     player: { hp:80, maxHp:80, shield:0, energy:3, maxEnergy:5, dmgMul:1, dodge:false, reflect:false, burn:0, atkBuff:1 },
     enemy: null,
-    deck: IDIOMS.slice(0, 5).map(c => ({...c})),
-    hand: [], turn: 1, selectedCard: null,
+    deck: [], discard: [], hand: [], turn: 1, selectedCard: null,
     runScore: 0,
   };
+  // 起始牌组：5 张基础成语
+  state.deck = IDIOMS.slice(0, 5).map(c => ({...c}));
+  state.discard = [];
+  shuffleDeck();
   gameLog = [];
   animQueue = [];
   draftCards = [];
   floatTexts = [];
   drawCards(true);
+}
+
+// Fisher-Yates 洗牌
+function shuffleDeck() {
+  for (let i = state.deck.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [state.deck[i], state.deck[j]] = [state.deck[j], state.deck[i]];
+  }
+}
+
+// 抽牌：deck 空时把 discard 洗回 deck（经典循环）
+function drawFromDeck(n) {
+  let drawn = [];
+  for (let k = 0; k < n; k++) {
+    if (state.deck.length === 0) {
+      if (state.discard.length === 0) break; // 全空
+      state.deck = state.discard.splice(0);
+      shuffleDeck();
+    }
+    drawn.push(state.deck.pop());
+  }
+  return drawn;
 }
 
 function spawnEnemy() {
@@ -115,14 +140,14 @@ function spawnEnemy() {
 }
 
 function drawCards(firstTurn) {
-  state.hand = [];
-  let pool = [...state.deck];
-  let n = 5;
-  if (firstTurn) n = 5;
-  for (let i = 0; i < n && pool.length > 0; i++) {
-    let idx = Math.floor(Math.random() * pool.length);
-    state.hand.push(pool.splice(idx, 1)[0]);
+  // 回合结束：手牌进弃牌堆
+  if (!firstTurn && state.hand) {
+    state.discard.push(...state.hand);
   }
+  state.hand = [];
+  let n = 5;
+  let drawn = drawFromDeck(n);
+  state.hand = drawn;
   state.player.energy = min(state.player.maxEnergy, state.player.energy + 3);
   state.player.dmgMul = 1; state.player.dodge = false; state.player.reflect = false;
   state.player.atkBuff = 1; state.selectedCard = null;
@@ -203,8 +228,8 @@ function playCard(card) {
     case 'buff': {
       if (card.id === 'huashuoshidian') p.dmgMul = 2;
       if (card.id === 'zhishangtanbing') {
-        let pool2 = state.deck.filter(c => !state.hand.find(h => h.id === c.id));
-        if (pool2.length > 0) { state.hand.push({...pool2[Math.floor(Math.random()*pool2.length)]}); }
+        let extra = drawFromDeck(1);
+        state.hand.push(...extra);
         p.maxEnergy += 1;
       }
       gameLog.push(`「${card.name}」发动`);
@@ -240,6 +265,12 @@ function playCard(card) {
   }
   if (gameLog.length > 6) gameLog.shift();
   state.selectedCard = null;
+  // 打出的卡进弃牌堆（从手牌移除）
+  let idx = state.hand.findIndex(c => c.id === card.id);
+  if (idx >= 0) {
+    state.hand.splice(idx, 1);
+    state.discard.push(card);
+  }
 }
 
 function endTurn() {
@@ -343,6 +374,9 @@ function nextFloor() {
   state.level = state.floor - 1;
   state.player.hp = min(state.player.maxHp, state.player.hp + 15);
   state.player.shield = 0;
+  // 手牌进弃牌堆，不凭空消失
+  if (state.hand && state.hand.length > 0) state.discard.push(...state.hand);
+  state.hand = [];
   spawnEnemy();
   state.turn = 1;
   state.screen = 'battle';
@@ -450,6 +484,13 @@ function drawBattle() {
   if (state.player.burn > 0) { fill(PALETTE.fire); text(`🔥${state.player.burn}`, 170, 190); }
   if (state.player.dmgMul > 1) { fill(PALETTE.red); text('✖2 伤害', 210, 190); }
 
+  // 牌库/弃牌数量
+  fill(PALETTE.inkLight); textSize(11); textAlign(LEFT);
+  text(`牌库 ${state.deck.length}`, 30, 214);
+  if (state.discard.length > 0) {
+    fill(PALETTE.goldDark); text(`弃牌 ${state.discard.length}`, 95, 214);
+  }
+
   // Score
   fill(PALETTE.gold); textSize(12); textAlign(RIGHT);
   text(`得分 ${state.runScore}`, width-30, 190);
@@ -464,12 +505,13 @@ function drawBattle() {
     let cy = 585;
     let hover = mouseX > cx && mouseX < cx+cardW && mouseY > cy && mouseY < cy+cardH;
     if (hover) hoveredCard = i;
-    if (state.selectedCard === i && state.player.energy >= card.cost) {
+    let isSelected = state.selectedCard === card.id;
+    if (isSelected && state.player.energy >= card.cost) {
       drawCard(cx, cy-10, cardW, cardH, card, true);
     } else {
       drawCard(cx, cy, cardW, cardH, card, hover);
     }
-    if (state.selectedCard === i) {
+    if (isSelected) {
       noFill(); stroke(PALETTE.red); strokeWeight(2);
       rect(cx-2, cy-12, cardW+4, cardH+4, 6);
     }
@@ -606,7 +648,8 @@ function handleTap() {
       state.screen = 'battle';
       gameLog = [`第 1 层 · ${state.enemy.name} 来袭！`];
       state.turn = 1;
-      drawCards(true);
+      computeIntent();
+      // resetGame 已抽好手牌，这里不再重新抽
     }
     return;
   }
@@ -634,13 +677,14 @@ function handleTap() {
     return;
   }
 
-  // Card selection
+  // Card selection（按 id 匹配，避免出牌后索引错位）
   if (hoveredCard !== null && state.hand[hoveredCard]) {
     let card = state.hand[hoveredCard];
-    if (state.selectedCard === hoveredCard && state.player.energy >= card.cost) {
+    let selCard = state.selectedCard !== null ? state.hand.find(c => c.id === state.selectedCard) : null;
+    if (selCard && selCard.id === card.id && state.player.energy >= card.cost) {
       playCard(card);
     } else {
-      state.selectedCard = hoveredCard;
+      state.selectedCard = card.id;
       sfx('select');
     }
   }
