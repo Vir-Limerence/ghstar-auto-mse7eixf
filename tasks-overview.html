@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-16 19:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-16 20:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-16 19-45</span>
+    <span class="card-meta">🕐 最近 08-16 20-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-16 19-15</span>
+    <span class="card-meta">🕐 最近 08-16 20-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-16 19:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-16 20:15]</p>
 <p>🥇 黄金: $4434/盎司 (+0.32%)</p>
 <p>   高$4454.600 低$4365.500 | 约 ¥962/克</p>
 <p>⚡ 快手(1024.HK): HK$40.06 (-1.86%)</p>
@@ -112,18 +112,27 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-16 19-08</span>
+    <span class="card-meta">🕐 最近 08-16 20-12</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成（19:07）</p>
-<table><thead><tr><th>源</th><th>数据</th></tr></thead><tbody>
-<tr><td>抖音热点</td><td>10 条</td></tr>
-<tr><td>B站排行</td><td>10 条</td></tr>
-<tr><td>vicoman 新闻</td><td>20 条</td></tr>
-<tr><td>GitHub Trending</td><td>日 8 / 周 10 / 月 10</td></tr>
+  <div class="card-body"><p>✅ 仪表盘更新完成，已验证远程推送成功（remote HEAD = e12217e）。</p>
+<h3 class='h3'>更新报告 2026-08-16 20:11 CST</h3>
+<table><thead><tr><th>数据源</th><th>方式</th><th>数量</th></tr></thead><tbody>
+<tr><td>🎵 抖音热点</td><td>API</td><td>10 条（王艺迪4:2张本美和、北极航线、朱镕基同志遗体8月18日火化…）</td></tr>
+<tr><td>📺 B站全站排行</td><td>CDP</td><td>10 条（MC还原《神的随波逐流》、WasteTheFallen首曝PV…）</td></tr>
+<tr><td>📰 vicoman AI 新闻</td><td>CDP</td><td>20 条（OpenAI代理失控入侵、Anthropic生物武器过滤器漏洞、哥伦比亚地震…）</td></tr>
+<tr><td>📊 GitHub 今日</td><td>CDP trending</td><td>8 条</td></tr>
+<tr><td>📊 GitHub 本周</td><td>CDP trending</td><td>10 条（deepseek-ai/deepseek-harness 12.5万星领跑）</td></tr>
+<tr><td>📊 GitHub 本月</td><td>CDP trending</td><td>10 条</td></tr>
 </tbody></table>
-<p>index.html 已生成（26KB）→ 同步 star-rank.html → git push 成功（884aadb）。vicoman guest 会话修复已生效，抓取 tab 均已自动关闭无残留。</p></div>
+<p><b>产出</b>：</p>
+<ul>
+<li><code>index.html</code> + <code>star-rank.html</code> 已生成（26,680 bytes）</li>
+<li>commit <code>e12217e</code> 已推送到 main，Pages 将自动更新</li>
+<li>手动创建的 CDP tab 已全部关闭</li>
+</ul>
+<p><b>说明</b>：发现已有 <code>~/.hermes/scripts/dashboard-cdp-update.py</code> 完整脚本（覆盖任务要求的全部流程，GitHub 用 CDP 抓 trending 页面而非 Search API——符合此前经验：匿名限流不可靠），直接运行成功。本任务按系统约定自动执行完毕。</p></div>
 </details>
 <details class="card " >
   <summary>
