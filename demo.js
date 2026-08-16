@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>成语肉鸽 · 墨韵</title>
-<script>p5.disableFriendlyErrors = true;</script>
-<script src="p5.min.js"></script>
-<style>
-  html, body { margin: 0; padding: 0; overflow: hidden; background: #2c2416; touch-action: none; }
-  canvas { display: block; margin: 0 auto; }
-</style>
-</head>
-<body>
-<script>
+
 // ========== 配置 ==========
 const PALETTE = {
   paper:'#f0e6d3', ink:'#2c2416', inkLight:'#5c5040', red:'#c41e3a',
@@ -49,42 +35,6 @@ const IDIOMS = [
 ];
 
 // 敌人池：随层数增强
-const RELICS = [
-  {id:'bi',   name:'碧玉笔',   icon:'🖌️', desc:'攻击伤害 +3',       mod:{atk:+3}},
-  {id:'yan',  name:'古砚台',   icon:'🪨', desc:'回合开始 +1 能量',   mod:{energy:+1}},
-  {id:'zhi',  name:'宣纸卷',   icon:'📜', desc:'每层回血 +5',       mod:{healFloor:+5}},
-  {id:'yin',  name:'朱砂印',   icon:'🔴', desc:'暴击率 15%（1.5倍）',mod:{crit:.15}},
-  {id:'shan', name:'山水屏风', icon:'🖼️', desc:'每回合开始 +3 护盾', mod:{shieldStart:+3}},
-  {id:'jian', name:'松烟墨锭', icon:'⚫', desc:'灼烧伤害 +3',       mod:{burn:+3}},
-  {id:'lu',  name:'流觞曲水', icon:'🏮', desc:'偷取效果 +50%',     mod:{stealMult:1.5}},
-  {id:'qin', name:'焦尾古琴', icon:'🎼', desc:'治疗效果 +50%',     mod:{healMult:1.5}},
-  {id:'ta',  name:'镇纸石兽', icon:'🗿', desc:'护盾获取 +50%',     mod:{shieldMult:1.5}},
-  {id:'zhou',name:'砚池春水', icon:'💧', desc:'抽牌时多抽 1 张',   mod:{draw:+1}},
-];
-
-// 随机事件池
-const EVENTS = [
-  {id:'yinshi', title:'山中隐士', icon:'🧙', text:'隐士赠你一件宝物，或教你一招', options:[
-    {label:'收下宝物', effect:'relic', desc:'获得一件随机遗物'},
-    {label:'学一招', effect:'card', desc:'获得一张随机成语卡'},
-    {label:'求疗伤', effect:'heal', desc:'回复 25 生命'},
-  ]},
-  {id:'poMiao', title:'荒废破庙', icon:'🏯', text:'庙中香火未尽，供桌上有东西', options:[
-    {label:'上香祈福', effect:'buff', desc:'本局攻击 +10%（永久）'},
-    {label:'取走贡品', effect:'gold', desc:'获得 30 墨玉（局外货币）'},
-    {label:'离去', effect:'skip', desc:'什么都不做'},
-  ]},
-  {id:'shiren', title:'落魄诗人', icon:'📝', text:'诗人想以诗换物', options:[
-    {label:'赠他卡片', effect:'trade_card', desc:'弃一张卡，得一张稀有卡'},
-    {label:'施舍墨玉', effect:'heal2', desc:'-10墨玉，回 40 生命'},
-    {label:'转身离开', effect:'skip', desc:'什么都不做'},
-  ]},
-  {id:'shuhua', title:'神秘商人', icon:'🧧', text:'商人低价出售宝物', options:[
-    {label:'买遗物', effect:'buy_relic', desc:'-15墨玉，获得遗物'},
-    {label:'买生命', effect:'buy_hp', desc:'-10墨玉，回满生命'},
-    {label:'离开', effect:'skip', desc:'什么都不做'},
-  ]},
-];
 const ENEMY_TYPES = [
   {name:'山贼',      emoji:'🥷', hp:55, atk:7,  pattern:'simple'},
   {name:'流寇',      emoji:'🗡️', hp:70, atk:9,  pattern:'heavy'},
@@ -113,128 +63,24 @@ function sfx(type) {
   } catch(e) {}
 }
 
-// ========== 种子随机 (mulberry32) ==========
-let runSeed = null;
-function mulberry32(a) {
-  return function() {
-    a |= 0; a = a + 0x6D2B79F5 | 0;
-    let t = Math.imul(a ^ a >>> 15, 1 | a);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-function resetRng() {
-  runSeed = (Math.random() * 2**32) >>> 0;
-  rng = mulberry32(runSeed);
-}
-let rng = null;
-
 // ========== 状态 ==========
 let state, particles, hoveredCard, animQueue, draftCards, floatTexts = [], bestFloor = 0;
-// localStorage 防护（隐私模式/禁用存储时降级为内存）
-const store = {
-  get(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch(e) {} },
-};
 
 function resetGame() {
-  resetRng();
-  let meta = loadMeta();
   state = {
-    screen: 'start', // start | battle | draft | event | reward | lose | win
+    screen: 'start', // start | battle | draft | reward | lose | win
     floor: 1, level: 0,
-    player: { hp:80, maxHp:80, shield:0, energy:3, maxEnergy:5, dmgMul:1, dodge:false, reflect:false, burn:0, atkBuff:1, atkBonus:0 },
+    player: { hp:80, maxHp:80, shield:0, energy:3, maxEnergy:5, dmgMul:1, dodge:false, reflect:false, burn:0, atkBuff:1 },
     enemy: null,
-    deck: [], discard: [], hand: [], turn: 1, selectedCard: null,
-    runScore: 0, seed: runSeed,
-    relics: [], // 本局遗物
-    event: null, // 当前事件
-    meta: meta, // 局外档案
+    deck: IDIOMS.slice(0, 5).map(c => ({...c})),
+    hand: [], turn: 1, selectedCard: null,
+    runScore: 0,
   };
-  // 起始牌组：5 张基础成语
-  state.deck = IDIOMS.slice(0, 5).map(c => ({...c}));
-  state.discard = [];
-  shuffleDeck();
   gameLog = [];
   animQueue = [];
   draftCards = [];
   floatTexts = [];
   drawCards(true);
-}
-
-// ========== 双轨存档 ==========
-function loadMeta() {
-  let m = null;
-  try { m = JSON.parse(store.get('chengyuMeta') || 'null'); } catch(e) {}
-  return m || { currency: 0, bestFloor: 0, totalRuns: 0, totalWins: 0, unlocks: [] };
-}
-function saveMeta() {
-  if (!state?.meta) return;
-  store.set('chengyuMeta', JSON.stringify(state.meta));
-}
-// 局内存档：战斗结束时自动存，死了可续
-function saveRun() {
-  if (!state || state.screen === 'start') return;
-  try {
-    store.set('chengyuRun', JSON.stringify({
-      seed: state.seed, floor: state.floor, level: state.level,
-      deck: state.deck, relics: state.relics,
-      hp: state.player.hp, maxHp: state.player.maxHp,
-      score: state.runScore, turn: state.turn,
-    }));
-  } catch(e) {}
-}
-function loadRun() {
-  try { return JSON.parse(store.get('chengyuRun') || 'null'); } catch(e) { return null; }
-}
-function clearRun() { try { store.set('chengyuRun', ''); } catch(e) {} }
-
-// Fisher-Yates 洗牌（种子随机）
-function shuffleDeck() {
-  for (let i = state.deck.length - 1; i > 0; i--) {
-    let j = Math.floor(rng() * (i + 1));
-    [state.deck[i], state.deck[j]] = [state.deck[j], state.deck[i]];
-  }
-}
-
-// 抽牌：deck 空时把 discard 洗回 deck（经典循环）
-function drawFromDeck(n) {
-  // 遗物：砚池春水 多抽 1
-  let drawN = n + (hasRelic('zhou') ? 1 : 0);
-  let drawn = [];
-  for (let k = 0; k < drawN; k++) {
-    if (state.deck.length === 0) {
-      if (state.discard.length === 0) break; // 全空
-      state.deck = state.discard.splice(0);
-      shuffleDeck();
-    }
-    drawn.push(state.deck.pop());
-  }
-  return drawn;
-}
-
-// ========== 遗物系统 ==========
-function hasRelic(id) { return state.relics.some(r => r.id === id); }
-function addRelic(relic) {
-  state.relics.push({...relic});
-  gameLog.push(`✨ 获得遗物「${relic.name}」！`);
-}
-function rollRelic() {
-  let pool = RELICS.filter(r => !state.relics.find(x => x.id === r.id));
-  if (pool.length === 0) return null;
-  return pool[Math.floor(rng() * pool.length)];
-}
-// 随机事件
-function rollEvent() {
-  if (rng() < 0.35) { // 35% 概率遇事件
-    let pool = EVENTS.filter(e => !(e.id === 'shuhua' && state.meta.currency < 10)); // 商人需有货币
-    let ev = pool[Math.floor(rng() * pool.length)];
-    state.event = ev;
-    state.screen = 'event';
-    gameLog = [`🏮 事件：${ev.title}`];
-    return true;
-  }
-  return false;
 }
 
 function spawnEnemy() {
@@ -250,21 +96,18 @@ function spawnEnemy() {
 }
 
 function drawCards(firstTurn) {
-  // 回合结束：手牌进弃牌堆
-  if (!firstTurn && state.hand) {
-    state.discard.push(...state.hand);
-  }
   state.hand = [];
+  let pool = [...state.deck];
   let n = 5;
-  let drawn = drawFromDeck(n);
-  state.hand = drawn;
-  state.player.energy = min(state.player.maxEnergy + (hasRelic('yan') ? 1 : 0), state.player.energy + 3);
-  // 遗物：山水屏风 每回合开始 +3 护盾
-  if (hasRelic('shan')) { state.player.shield += 3; }
+  if (firstTurn) n = 5;
+  for (let i = 0; i < n && pool.length > 0; i++) {
+    let idx = Math.floor(Math.random() * pool.length);
+    state.hand.push(pool.splice(idx, 1)[0]);
+  }
+  state.player.energy = min(state.player.maxEnergy, state.player.energy + 3);
   state.player.dmgMul = 1; state.player.dodge = false; state.player.reflect = false;
   state.player.atkBuff = 1; state.selectedCard = null;
-  if (state.enemy) computeIntent();
-  saveRun(); // 自动存局
+  computeIntent();
 }
 
 function computeIntent() {
@@ -298,25 +141,21 @@ function playCard(card) {
 
   switch (card.type) {
     case 'attack': {
-      let dmg = card.value * p.dmgMul * p.atkBuff + (hasRelic('bi') ? 3 : 0);
+      let dmg = card.value * p.dmgMul * p.atkBuff;
       if (card.id === 'yijuguqin') dmg = 6 * min(3, state.turn);
       if (card.id === 'qianjunyifa') dmg = (e.hp > e.maxHp*0.5) ? 30 : 5;
       if (card.id === 'sheshenchuren') { dmg = 22; let cost = dealDamage(p, 6, e); addFloat(width/2, 480, '-6', PALETTE.red); }
-      // 遗物：朱砂印 暴击
-      let isCrit = hasRelic('yin') && rng() < 0.15;
-      if (isCrit) dmg = Math.round(dmg * 1.5);
       let actual = dealDamage(e, dmg, p);
-      addFloat(width/2, 200, `-${Math.floor(dmg)}${isCrit?'!':''}`, isCrit ? PALETTE.gold : PALETTE.red);
-      gameLog.push(`「${card.name}」造成 ${Math.floor(dmg)} 伤害${isCrit?'（暴击）':''}`);
-      if (card.id === 'huoshangjiaoyou') e.burn += 2 + (hasRelic('jian') ? 1 : 0);
+      addFloat(width/2, 200, `-${Math.floor(dmg)}`, PALETTE.red);
+      gameLog.push(`「${card.name}」造成 ${Math.floor(dmg)} 伤害`);
+      if (card.id === 'huoshangjiaoyou') e.burn += 2;
       if (card.id === 'duoduo_biren') { e.intent.dmg = max(1, e.intent.dmg-4); }
-      sfx(card.value >= 18 || isCrit ? 'crit' : 'hit');
+      sfx(card.value >= 18 ? 'crit' : 'hit');
       break;
     }
     case 'defense': {
       let val = card.value;
       if (card.id === 'wenzhongqiushu') { p.atkBuff = 1.25; }
-      if (hasRelic('ta')) val = Math.round(val * 1.5); // 镇纸石兽
       p.shield += val;
       addFloat(width/2, 500, `+${val} 🛡`, PALETTE.shield);
       gameLog.push(`「${card.name}」获得 ${val} 护盾`);
@@ -326,7 +165,6 @@ function playCard(card) {
     case 'heal': {
       let heal = card.value;
       if (card.id === 'guazhushishui') { p.burn = 0; }
-      if (hasRelic('qin')) heal = Math.round(heal * 1.5); // 焦尾古琴
       p.hp = min(p.maxHp, p.hp + heal);
       if (card.id === 'wangyangbulao') p.shield += 5;
       if (card.id === 'jingweitianhai') p.shield += 1;
@@ -346,8 +184,8 @@ function playCard(card) {
     case 'buff': {
       if (card.id === 'huashuoshidian') p.dmgMul = 2;
       if (card.id === 'zhishangtanbing') {
-        let extra = drawFromDeck(1);
-        state.hand.push(...extra);
+        let pool2 = state.deck.filter(c => !state.hand.find(h => h.id === c.id));
+        if (pool2.length > 0) { state.hand.push({...pool2[Math.floor(Math.random()*pool2.length)]}); }
         p.maxEnergy += 1;
       }
       gameLog.push(`「${card.name}」发动`);
@@ -357,7 +195,6 @@ function playCard(card) {
     case 'counter': { p.reflect = true; gameLog.push(`「${card.name}」反弹姿态`); sfx('defend'); break; }
     case 'steal': {
       let stolen = min(card.id === 'anshiduliang' ? 12 : 8, e.hp);
-      if (hasRelic('lu')) stolen = Math.round(stolen * 1.5); // 流觞曲水
       e.hp -= stolen; p.hp = min(p.maxHp, p.hp + stolen);
       if (card.id === 'anshiduliang') p.shield += 6;
       if (card.id === 'hunyin_zhongzhi' && e.buffs && Object.keys(e.buffs).length > 0) {
@@ -384,12 +221,6 @@ function playCard(card) {
   }
   if (gameLog.length > 6) gameLog.shift();
   state.selectedCard = null;
-  // 打出的卡进弃牌堆（从手牌移除）
-  let idx = state.hand.findIndex(c => c.id === card.id);
-  if (idx >= 0) {
-    state.hand.splice(idx, 1);
-    state.discard.push(card);
-  }
 }
 
 function endTurn() {
@@ -465,127 +296,27 @@ function onEnemyDefeated() {
   if (state.enemy.isBoss) {
     state.screen = 'win';
     bestFloor = max(bestFloor, state.floor);
-    state.meta.bestFloor = max(state.meta.bestFloor, state.floor);
-    state.meta.totalWins++;
-    state.meta.currency += 100 + state.floor * 20;
-    saveMeta();
-    store.set('chengyuBest', bestFloor);
+    localStorage.setItem('chengyuBest', bestFloor);
     gameLog = [`🏆 击败墨魔！通关第 ${state.floor} 层`];
   } else {
-    // 胜利后：先给遗物，再判定事件，最后选牌
-    let relic = rollRelic();
-    if (relic) {
-      addRelic(relic);
-      state.screen = 'reward';
-      draftCards = [];
-      // reward 画面显示遗物，点击后进事件/选牌
-      gameLog = [`🎉 第 ${state.floor} 层胜利！获得遗物「${relic.name}」`];
-    } else {
-      enterDraftOrEvent();
+    state.screen = 'draft';
+    draftCards = [];
+    let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
+    let n = min(3, pool.length);
+    for (let i = 0; i < n; i++) {
+      let idx = Math.floor(Math.random() * pool.length);
+      draftCards.push(pool.splice(idx, 1)[0]);
     }
+    gameLog = [`🎉 第 ${state.floor} 层胜利！选择一张新成语`];
   }
-}
-
-// 胜利后流程：35% 事件 → 否则选牌
-function enterDraftOrEvent() {
-  if (rollEvent()) {
-    saveRun();
-    return; // 进事件
-  }
-  state.screen = 'draft';
-  draftCards = [];
-  let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
-  let n = min(3, pool.length);
-  for (let i = 0; i < n; i++) {
-    let idx = Math.floor(rng() * pool.length);
-    draftCards.push(pool.splice(idx, 1)[0]);
-  }
-  gameLog = [`🎉 第 ${state.floor} 层胜利！选择一张新成语`];
-  saveRun();
 }
 
 function onPlayerDefeated() {
   sfx('lose');
   state.screen = 'lose';
   bestFloor = max(bestFloor, state.floor-1);
-  state.meta.bestFloor = max(state.meta.bestFloor, state.floor-1);
-  state.meta.totalRuns++;
-  state.meta.currency += Math.max(5, state.floor * 5);
-  saveMeta();
-  store.set('chengyuBest', bestFloor);
-  clearRun();
+  localStorage.setItem('chengyuBest', bestFloor);
   gameLog = ['败北... 点击重新开始'];
-}
-
-// ========== 事件选项执行 ==========
-function resolveEventOption(opt) {
-  let p = state.player, r = state.relics;
-  switch(opt.effect) {
-    case 'relic': {
-      let relic = rollRelic();
-      if (relic) addRelic(relic);
-      else { p.hp = min(p.maxHp, p.hp + 20); }
-      break;
-    }
-    case 'card': {
-      let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
-      if (pool.length > 0) {
-        let card = pool[Math.floor(rng() * pool.length)];
-        state.deck.push({...card});
-        gameLog.push(`习得成语「${card.name}」！`);
-      }
-      break;
-    }
-    case 'heal': p.hp = min(p.maxHp, p.hp + 25); break;
-    case 'heal2':
-      if (state.meta.currency >= 10) {
-        state.meta.currency -= 10;
-        p.hp = p.maxHp;
-        gameLog.push('施舍墨玉，回满生命');
-      } else { p.hp = min(p.maxHp, p.hp + 10); }
-      break;
-    case 'buff': p.atkBonus += 0.1; gameLog.push('本局攻击 +10%'); break;
-    case 'gold': state.meta.currency += 30; gameLog.push('获得 30 墨玉'); break;
-    case 'trade_card': {
-      let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
-      if (state.deck.length > 1 && pool.length > 0) {
-        let dropIdx = Math.floor(rng() * state.deck.length);
-        state.deck.splice(dropIdx, 1);
-        let card = pool[Math.floor(rng() * pool.length)];
-        state.deck.push({...card});
-        gameLog.push('以旧换新，获得「' + card.name + '」');
-      }
-      break;
-    }
-    case 'buy_relic':
-      if (state.meta.currency >= 15) {
-        state.meta.currency -= 15;
-        let relic = rollRelic();
-        if (relic) addRelic(relic);
-      } else { p.hp = min(p.maxHp, p.hp + 15); }
-      break;
-    case 'buy_hp':
-      if (state.meta.currency >= 10) {
-        state.meta.currency -= 10;
-        p.hp = p.maxHp;
-        gameLog.push('买下灵药，回满生命');
-      } else { p.hp = min(p.maxHp, p.hp + 10); }
-      break;
-    case 'skip': break;
-  }
-  saveMeta();
-  // 事件结束 → 选牌
-  state.event = null;
-  state.screen = 'draft';
-  draftCards = [];
-  let pool = IDIOMS.filter(c => !state.deck.find(d => d.id === c.id));
-  let n = min(3, pool.length);
-  for (let i = 0; i < n; i++) {
-    let idx = Math.floor(rng() * pool.length);
-    draftCards.push(pool.splice(idx, 1)[0]);
-  }
-  gameLog.push('事件结束，选择一张新成语');
-  saveRun();
 }
 
 function nextFloor() {
@@ -593,9 +324,6 @@ function nextFloor() {
   state.level = state.floor - 1;
   state.player.hp = min(state.player.maxHp, state.player.hp + 15);
   state.player.shield = 0;
-  // 手牌进弃牌堆，不凭空消失
-  if (state.hand && state.hand.length > 0) state.discard.push(...state.hand);
-  state.hand = [];
   spawnEnemy();
   state.turn = 1;
   state.screen = 'battle';
@@ -617,7 +345,7 @@ function setup() {
     particles.push({ x: Math.random()*width, y: Math.random()*height, vx:(Math.random()-0.5)*0.3, vy:Math.random()*0.3+0.1, size:Math.random()*2+1, alpha:Math.random()*30+10 });
   }
   try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e) {}
-  bestFloor = parseInt(store.get('chengyuBest')||'0') || 0;
+  bestFloor = parseInt(localStorage.getItem('chengyuBest')||'0') || 0;
 }
 
 function draw() {
@@ -642,8 +370,6 @@ function draw() {
   if (state.screen === 'start') drawStart();
   else if (state.screen === 'battle') drawBattle();
   else if (state.screen === 'draft') drawDraft();
-  else if (state.screen === 'event') drawEvent();
-  else if (state.screen === 'reward') drawReward();
   else if (state.screen === 'lose') drawLose();
   else if (state.screen === 'win') drawWin();
 }
@@ -658,11 +384,6 @@ function drawStart() {
   text('每 3 层遭遇 Boss，击败即可通关', width/2, 385);
   text('⚡ 能量 · 🛡 护盾 · 🔥 灼烧 · 💰 偷取', width/2, 410);
   if (bestFloor > 0) { fill(PALETTE.gold); text(`最佳战绩：第 ${bestFloor} 层`, width/2, 450); }
-  // 局外墨玉
-  let meta = state?.meta;
-  if (meta && meta.currency > 0) {
-    fill(PALETTE.goldDark); text(`🪙 墨玉 ${meta.currency}`, width/2, 480);
-  }
   // 开始按钮
   let bw = 180, bh = 54, bx = width/2-90, by = 520;
   fill(PALETTE.red); noStroke(); rect(bx, by, bw, bh, 10);
@@ -710,18 +431,6 @@ function drawBattle() {
   if (state.player.burn > 0) { fill(PALETTE.fire); text(`🔥${state.player.burn}`, 170, 190); }
   if (state.player.dmgMul > 1) { fill(PALETTE.red); text('✖2 伤害', 210, 190); }
 
-  // 牌库/弃牌数量
-  fill(PALETTE.inkLight); textSize(11); textAlign(LEFT);
-  text(`牌库 ${state.deck.length}`, 30, 214);
-  if (state.discard.length > 0) {
-    fill(PALETTE.goldDark); text(`弃牌 ${state.discard.length}`, 95, 214);
-  }
-  // 遗物图标
-  if (state.relics.length > 0) {
-    fill(PALETTE.gold); textSize(12); textAlign(LEFT);
-    text(state.relics.map(r => r.icon).join(''), 30, 236);
-  }
-
   // Score
   fill(PALETTE.gold); textSize(12); textAlign(RIGHT);
   text(`得分 ${state.runScore}`, width-30, 190);
@@ -736,13 +445,12 @@ function drawBattle() {
     let cy = 585;
     let hover = mouseX > cx && mouseX < cx+cardW && mouseY > cy && mouseY < cy+cardH;
     if (hover) hoveredCard = i;
-    let isSelected = state.selectedCard === card.id;
-    if (isSelected && state.player.energy >= card.cost) {
+    if (state.selectedCard === i && state.player.energy >= card.cost) {
       drawCard(cx, cy-10, cardW, cardH, card, true);
     } else {
       drawCard(cx, cy, cardW, cardH, card, hover);
     }
-    if (isSelected) {
+    if (state.selectedCard === i) {
       noFill(); stroke(PALETTE.red); strokeWeight(2);
       rect(cx-2, cy-12, cardW+4, cardH+4, 6);
     }
@@ -851,63 +559,6 @@ function drawDraft() {
   text('点击卡牌选择 · 之后进入下一层', width/2, 480);
 }
 
-// ========== 遗物奖励画面 ==========
-function drawReward() {
-  fill(PALETTE.ink); textSize(18); textAlign(CENTER);
-  text('✨ 获得遗物', width/2, 180);
-
-  let relic = state.relics[state.relics.length - 1];
-  if (relic) {
-    fill(PALETTE.gold); textSize(44);
-    text(relic.icon, width/2, 270);
-    fill(PALETTE.ink); textSize(22);
-    text(relic.name, width/2, 315);
-    fill(PALETTE.inkLight); textSize(14);
-    text(relic.desc, width/2, 345);
-  }
-
-  // 已收集遗物列表
-  if (state.relics.length > 1) {
-    fill(PALETTE.inkLight); textSize(12);
-    text('已拥有:', width/2, 390);
-    let icons = state.relics.map(r => r.icon).join(' ');
-    fill(PALETTE.ink); textSize(18);
-    text(icons, width/2, 415);
-  }
-
-  // 继续按钮
-  let bx = width/2-80, by = 480;
-  fill(PALETTE.red); noStroke(); rect(bx, by, 160, 46, 10);
-  fill(255); textSize(16); textAlign(CENTER);
-  text('继 续', width/2, by+30);
-}
-
-// ========== 随机事件画面 ==========
-function drawEvent() {
-  let ev = state.event;
-  if (!ev) return;
-  fill(PALETTE.ink); textSize(20); textAlign(CENTER);
-  text(`${ev.icon} ${ev.title}`, width/2, 150);
-  fill(PALETTE.inkLight); textSize(14);
-  text(ev.text, width/2, 190);
-
-  // 选项按钮（最多3个，竖排）
-  let by = 250;
-  for (let i = 0; i < ev.options.length; i++) {
-    let o = ev.options[i];
-    let bx = width/2-170, bh = 70;
-    let hover = mouseX > bx && mouseX < bx+340 && mouseY > by && mouseY < by+bh;
-    fill(hover ? '#e8dcc3' : '#f5ecd9');
-    noStroke(); rect(bx, by, 340, bh, 10);
-    noFill(); stroke(PALETTE.gold); strokeWeight(1.5); rect(bx, by, 340, bh, 10);
-    fill(PALETTE.ink); textSize(15); textAlign(LEFT);
-    text(o.label, bx+16, by+27);
-    fill(PALETTE.inkLight); textSize(12);
-    text(o.desc, bx+16, by+50);
-    by += 82;
-  }
-}
-
 function drawLose() {
   fill(PALETTE.red); textSize(24); textAlign(CENTER);
   text('败 北', width/2, 280);
@@ -936,8 +587,7 @@ function handleTap() {
       state.screen = 'battle';
       gameLog = [`第 1 层 · ${state.enemy.name} 来袭！`];
       state.turn = 1;
-      computeIntent();
-      // resetGame 已抽好手牌，这里不再重新抽
+      drawCards(true);
     }
     return;
   }
@@ -954,34 +604,6 @@ function handleTap() {
     }
     return;
   }
-
-  // 遗物奖励：点击继续
-  if (state.screen === 'reward') {
-    let bx = width/2-80, by = 480;
-    if (mouseX > bx && mouseX < bx+160 && mouseY > by && mouseY < by+46) {
-      sfx('draft');
-      enterDraftOrEvent();
-    }
-    return;
-  }
-
-  // 事件选项
-  if (state.screen === 'event') {
-    let ev = state.event;
-    if (ev) {
-      let by = 250;
-      for (let i = 0; i < ev.options.length; i++) {
-        let bx = width/2-170, bh = 70;
-        if (mouseX > bx && mouseX < bx+340 && mouseY > by && mouseY < by+bh) {
-          sfx('select');
-          resolveEventOption(ev.options[i]);
-          return;
-        }
-        by += 82;
-      }
-    }
-    return;
-  }
   if (state.screen === 'lose' || state.screen === 'win') {
     resetGame();
     return;
@@ -993,14 +615,13 @@ function handleTap() {
     return;
   }
 
-  // Card selection（按 id 匹配，避免出牌后索引错位）
+  // Card selection
   if (hoveredCard !== null && state.hand[hoveredCard]) {
     let card = state.hand[hoveredCard];
-    let selCard = state.selectedCard !== null ? state.hand.find(c => c.id === state.selectedCard) : null;
-    if (selCard && selCard.id === card.id && state.player.energy >= card.cost) {
+    if (state.selectedCard === hoveredCard && state.player.energy >= card.cost) {
       playCard(card);
     } else {
-      state.selectedCard = card.id;
+      state.selectedCard = hoveredCard;
       sfx('select');
     }
   }
@@ -1015,6 +636,3 @@ function keyPressed() {
 }
 
 function windowResized() { resizeCanvas(480, 800); }
-</script>
-</body>
-</html>
