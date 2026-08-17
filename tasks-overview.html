@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-18 00:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-18 01:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-18 00-45</span>
+    <span class="card-meta">🕐 最近 08-18 01-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-18 00-15</span>
+    <span class="card-meta">🕐 最近 08-18 01-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-18 00:15]</p>
-<p>🥇 黄金: $4484/盎司 (+1.06%)</p>
-<p>   高$4486.500 低$4422.300 | 约 ¥972/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-18 01:15]</p>
+<p>🥇 黄金: $4481/盎司 (+0.98%)</p>
+<p>   高$4486.500 低$4422.300 | 约 ¥971/克</p>
 <p>⚡ 快手(1024.HK): HK$40.08 (+0.05%)</p>
-<p>💱 美元/人民币: 6.7427</p></div>
+<p>💱 美元/人民币: 6.7412</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,11 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-18 00-08</span>
+    <span class="card-meta">🕐 最近 08-18 01-09</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成（00:08 已推送）</p>
-<p><b>数据统计:</b></p>
-<ul>
-<li>🎵 抖音热点: 10 条</li>
-<li>📺 B站全站排行: 10 条</li>
-<li>📰 vicoman AI新闻: 20 条</li>
-<li>📊 GitHub: 今日 10 / 本周 10 / 本月 10（今日TOP1: yetone/cumora 667⭐）</li>
-</ul>
-<p><b>本次修复:</b> 首轮跑时 GitHub 今日维度 5 次重试全空——根因是查询用 <code>created:&gt;昨天零点</code>，GitHub 搜索索引按天粒度，昨天全天入库数据被排除（实测该查询 total=0）。已改 <code>&gt;=</code> 并加注释，三档日期统一。补跑后今日维度 10 条全部到位。</p>
-<p><b>验证:</b> index.html 27429 bytes，50 条榜单链接齐全，<code>git push</code> 已同步（Everything up-to-date），提交 0b16743。</p></div>
+  <div class="card-body"><p>兜底逻辑确认：<code>gen_news_section</code> 在新闻为空时会保留旧数据，所以已推送的页面新闻部分没丢。现在给 <code>fetch_vicoman_cdp</code> 打补丁——把「建tab→guest会话→导航→等待渲染」整个周期改成最多3轮重试，单次 eval 失败不再直接放弃：</p></div>
 </details>
 <details class="card " >
   <summary>
