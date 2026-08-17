@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-17 14:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-17 15:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-17 14-45</span>
+    <span class="card-meta">🕐 最近 08-17 15-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-17 14-15</span>
+    <span class="card-meta">🕐 最近 08-17 15-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-17 14:15]</p>
-<p>🥇 黄金: $4454/盎司 (+0.38%)</p>
+  <div class="card-body"><p>💰 每日行情 [08-17 15:15]</p>
+<p>🥇 黄金: $4455/盎司 (+0.41%)</p>
 <p>   高$4473.200 低$4422.300 | 约 ¥965/克</p>
-<p>⚡ 快手(1024.HK): HK$40.22 (+0.40%)</p>
-<p>💱 美元/人民币: 6.7393</p></div>
+<p>⚡ 快手(1024.HK): HK$40.32 (+0.65%)</p>
+<p>💱 美元/人民币: 6.7385</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,24 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-17 14-08</span>
+    <span class="card-meta">🕐 最近 08-17 15-16</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成（2026-08-17 14:07 CST）</p>
-<p><b>数据抓取：</b></p>
+  <div class="card-body"><p>✅ 任务完成。</p>
+<p><b>仪表盘更新结果</b>（15:15 CST，已推送 commit <code>bc34bf9</code>）：</p>
 <ul>
-<li>🎵 抖音热点：10条（API直连）</li>
-<li>📺 B站全站排行：10条（CDP）</li>
-<li>📰 vicoman AI新闻：20条（CDP + guest会话）</li>
-<li>📊 GitHub Trending：今日7 / 本周10 / 本月10（CDP抓趋势页，Search API匿名限流不可靠，按经验走CDP）</li>
+<li>🎵 抖音热点 10 条 | 📺 B站排行 10 条 | 📰 vicoman 新闻 20 条 | 📊 GitHub 今日/周/月 各 10 条</li>
+<li>index.html + star-rank.html 各 30KB 已生成并 push，工作区干净</li>
 </ul>
-<p><b>发布：</b></p>
-<ul>
-<li>index.html 已生成（26KB），star-rank.html 已同步</li>
-<li>提交 <code>de362cc</code> 已推送 origin/main，本地与远端同步确认 ✅</li>
-</ul>
-<p>无异常，全部成功。</p></div>
+<p><b>本次修复了 2 个问题</b>：</p>
+<p>1. <b>vicoman 0条</b> → 固定等9秒不够（页面 complete 但卡片 ~14s 才渲染），改为轮询等待 <code>.nw-card</code> 出现，现稳定 20 条</p>
+<p>2. <b>GitHub 7/16条</b> → CDP 抓 trending 页面触发风控（<code>.flash-error</code> 只渲染部分行），按任务要求改用 Search API（走 1082 代理，<code>created:&gt;</code> 三档），三档全 10 条</p>
+<p>已同步更新记忆中的脚本方法说明。</p></div>
 </details>
 <details class="card " >
   <summary>
