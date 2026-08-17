@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-17 22:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-17 23:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-17 22-45</span>
+    <span class="card-meta">🕐 最近 08-17 23-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-17 22-16</span>
+    <span class="card-meta">🕐 最近 08-17 23-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-17 22:15]</p>
-<p>🥇 黄金: $4471/盎司 (+0.75%)</p>
-<p>   高$4473.200 低$4422.300 | 约 ¥969/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-17 23:15]</p>
+<p>🥇 黄金: $4479/盎司 (+0.94%)</p>
+<p>   高$4484.900 低$4422.300 | 约 ¥970/克</p>
 <p>⚡ 快手(1024.HK): HK$40.08 (+0.05%)</p>
-<p>💱 美元/人民币: 6.7402</p></div>
+<p>💱 美元/人民币: 6.7391</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,26 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-17 22-17</span>
+    <span class="card-meta">🕐 最近 08-17 23-19</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成，所有数据源全量成功。</p>
-<p><b>本次抓取结果（2026-08-17 22:17 CST）</b></p>
-<table><thead><tr><th>数据源</th><th>条目</th><th>状态</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>10</td><td>✅ 新鲜</td></tr>
-<tr><td>📺 B站全站排行</td><td>10</td><td>✅ 新鲜</td></tr>
-<tr><td>📰 vicoman AI新闻</td><td>20</td><td>✅ 新鲜</td></tr>
-<tr><td>📊 GitHub 今日/本周/本月</td><td>10/10/10</td><td>✅ 全部补齐</td></tr>
-</tbody></table>
-<p>已生成 index.html（27.6KB，star-rank.html 同步）并推送 → commit <code>d92b40a</code></p>
-<p><b>过程说明</b></p>
+  <div class="card-body"><p>✅ 仪表盘更新完成并已推送。</p>
+<p><b>数据抓取结果</b>（2026-08-17 23:19 CST）：</p>
 <ul>
-<li>前 3 轮运行 GitHub 匿名 Search API 频繁空响应（共享代理 IP 限流），每次总有维度缺失</li>
-<li>已修复 <code>~/.hermes/scripts/dashboard-cdp-update.py</code>：GitHub 抓取改为 <b>5 次重试 + 递增退避（10~25s）</b>，空响应显式告警不再静默丢弃</li>
-<li>最终第 4 轮全维度成功，一次到位</li>
+<li>🎵 抖音热点：10 条</li>
+<li>📺 B站全站排行：10 条</li>
+<li>📰 vicoman AI新闻：20 条</li>
+<li>📊 GitHub Trending：今日/本周/本月各 10 条</li>
 </ul>
-<p>GitHub Pages 将于数分钟后自动同步最新数据。</p></div>
+<p><b>本次修复的问题</b>：GitHub Search API 此前全部失败 — fake-ip 劫持 DNS（api.github.com → 198.18.0.31）导致走代理 -x 1082 时 504。用 DoH 查到真实 IP（20.27.177.116），改为 <code>--resolve</code> 直连后稳定 200。已更新 <code>dashboard-cdp-update.py</code> 并保存到记忆，后续 cron 不会再踩坑。</p>
+<p><b>推送</b>：<code>f3b4ea9</code> 已 push，index.html 29.8KB，含 GitHub 数据（cumora 516★ 等）。</p></div>
 </details>
 <details class="card " >
   <summary>
