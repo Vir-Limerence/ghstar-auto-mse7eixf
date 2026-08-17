@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-17 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-17 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-17 20-45</span>
+    <span class="card-meta">🕐 最近 08-17 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-17 20-15</span>
+    <span class="card-meta">🕐 最近 08-17 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-17 20:15]</p>
-<p>🥇 黄金: $4453/盎司 (+0.36%)</p>
-<p>   高$4473.200 低$4422.300 | 约 ¥965/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-17 21:15]</p>
+<p>🥇 黄金: $4438/盎司 (+0.02%)</p>
+<p>   高$4473.200 低$4422.300 | 约 ¥962/克</p>
 <p>⚡ 快手(1024.HK): HK$40.08 (+0.05%)</p>
-<p>💱 美元/人民币: 6.7405</p></div>
+<p>💱 美元/人民币: 6.7425</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,18 +112,31 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-17 20-07</span>
+    <span class="card-meta">🕐 最近 08-17 21-14</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成并已推送</p>
+  <div class="card-body"><p>✅ 仪表盘更新完成（2026-08-17 21:07 CST）</p>
+<p><b>抓取结果：</b></p>
 <ul>
-<li>🎵 抖音热点 10 条（API）</li>
-<li>📺 B站全站排行 10 条（CDP）</li>
-<li>📰 vicoman AI新闻 20 条（CDP+guest会话）</li>
-<li>📊 GitHub 今日/周/月各 10 条（Search API 走代理）</li>
-<li>📄 index.html 已生成（27.6KB，star-rank.html 同步），commit <code>39df69b</code> 已 push，工作区干净</li>
-</ul></div>
+<li>🎵 抖音热点：10 条 ✅</li>
+<li>📺 B站全站排行：10 条 ✅</li>
+<li>📊 GitHub 今日/本周/本月：各 10 条 ✅</li>
+<li>📰 vicoman AI新闻：<b>0 条 ⚠️（源站故障）</b></li>
+</ul>
+<p><b>vicoman 故障排查（已确认是源站问题，非本地）：</b></p>
+<ul>
+<li>Chrome CDP 加载显示 Cloudflare <b>525: SSL handshake failed</b></li>
+<li>curl 直连 /tools/ai-news/ 超时（timeout 30s，code=000），走 1082 代理同样超时，Jina 也失败</li>
+<li>但 vicoman 根域名正常（200，0.4s）——仅新闻页路径后端 SSL 挂掉</li>
+<li>已用旧数据兜底：index.html 保留今日 20 条新闻（20:06 那次抓取的）</li>
+</ul>
+<p><b>发布：</b></p>
+<ul>
+<li>index.html + star-rank.html 已提交推送（commit 3e0beeb），工作区干净</li>
+<li>Pages 已生效：<code>vir-limerence.github.io/ghstar-auto-mse7eixf/</code> 返回 200（30019 bytes）</li>
+</ul>
+<p>vicoman 大概率是源站临时性故障，下轮每小时 cron 会自动重试恢复。</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -144,31 +157,33 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-16 21-01</span>
+    <span class="card-meta">🕐 最近 08-17 21-01</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-08-16</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-08-17</h2>
 <h3 class='h3'>🔑 关键话题</h3>
 <ul>
-<li><b>北京消防招录查询</b>（Telegram，12:51）：北京昌平专职已公示（拟录用142+待补录41）；编制内（国家队）全平台未出，官方公示栏最新5条为甘肃/四川等，均无北京</li>
-<li><b>仪表盘</b>：15:00–20:00 六次更新全部成功（抖音10/B站10/vicoman20/GitHub日周月各10）</li>
-<li><b>消防监控 cron</b>：10:00/18:00 两次核查，上海编制内名单仍未公示 → 静默（符合预期）</li>
+<li>今日无用户主动对话（周一，全部为 cron 自动任务，运行正常）</li>
+<li>仪表盘更新：全天 13 次（07:05~20:07）全部成功：抖音10/B站10/vicoman20/GitHub日周月各10</li>
+<li>15:16 修复 2 处：vicoman 0条→轮询等待 <code>.nw-card</code> 渲染（~14s）；GitHub CDP 抓 trending 触发风控（.flash-error）→改走 Search API（1082 代理），已固化进脚本并更新记忆</li>
+<li>消防员监控 10:00/18:00：上海编制内名单仍未公示 → 静默（符合预期，预计 8-9 月）</li>
 </ul>
 <h3 class='h3'>✅ 待办</h3>
 <ul>
-<li>消防员编制内名单持续监控，出榜当天自动推送（上海、北京均在等，预计8-9月）</li>
+<li>消防员编制内名单持续监控，出榜当天自动推送（上海、北京均在等）</li>
 <li>成语肉鸽优化方案（docs/optimization-plan.md）待确认实施</li>
 </ul>
 <h3 class='h3'>💡 决策</h3>
 <ul>
-<li>今日无新决策，均为例行任务</li>
+<li>GitHub Trending 固定用 Search API（CDP 抓页面持续风控）</li>
+<li>vicoman 抓取改为轮询等待卡片渲染，不再固定 sleep</li>
 </ul>
 <h3 class='h3'>🔗 会话链接</h3>
 <ul>
-<li>@session:default/20260811_214431_cc4aba1c（北京消防查询）</li>
-<li>@session:default/cron_64217fe26851_20260816_200543（仪表盘20:05）</li>
-<li>@session:default/cron_977b44e0805f_20260816_180028（消防监控18:00）</li>
+<li>@session:default/cron_64217fe26851_20260817_150504（15:16 修复）</li>
+<li>@session:default/cron_64217fe26851_20260817_200542（20:07 仪表盘）</li>
+<li>@session:default/cron_977b44e0805f_20260817_180027（消防监控 18:00）</li>
 </ul></div>
 </details>
 <details class="card " >
