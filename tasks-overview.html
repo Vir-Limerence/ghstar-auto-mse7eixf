@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-18 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-18 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-18 20-45</span>
+    <span class="card-meta">🕐 最近 08-18 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-18 20-15</span>
+    <span class="card-meta">🕐 最近 08-18 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-18 20:15]</p>
-<p>🥇 黄金: $4447/盎司 (-0.59%)</p>
-<p>   高$4493.100 低$4441.400 | 约 ¥964/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-18 21:15]</p>
+<p>🥇 黄金: $4450/盎司 (-0.53%)</p>
+<p>   高$4493.100 低$4441.400 | 约 ¥965/克</p>
 <p>⚡ 快手(1024.HK): HK$39.38 (-1.75%)</p>
-<p>💱 美元/人民币: 6.7419</p></div>
+<p>💱 美元/人民币: 6.7446</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,24 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-18 20-06</span>
+    <span class="card-meta">🕐 最近 08-18 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
   <div class="card-body"><p>仪表盘更新完成 ✅</p>
-<p>全部数据源抓取成功并已推送 GitHub：</p>
-<table><thead><tr><th>数据源</th><th>状态</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>10 条</td></tr>
-<tr><td>📺 B站全站排行</td><td>10 条</td></tr>
-<tr><td>📰 vicoman AI新闻</td><td>20 条</td></tr>
-<tr><td>📊 GitHub Trending（今日/周/月）</td><td>各 10 条</td></tr>
-</tbody></table>
+<p><b>数据抓取（全部成功）：</b></p>
 <ul>
-<li><code>index.html</code> + <code>star-rank.html</code> 已更新（27,536 bytes）</li>
-<li>已 git commit + push 成功</li>
-<li>更新时间：2026-08-18 20:06 CST</li>
+<li>🎵 抖音热点：10 条</li>
+<li>📺 B站全站排行：10 条（CDP）</li>
+<li>📰 vicoman AI 新闻：20 条（CDP）</li>
+<li>📊 GitHub Trending：今日 / 本周 / 本月各 10 条（Search API）</li>
 </ul>
-<p>四个 Tab（热点/B站/GitHub/新闻）全部有新鲜数据，无空档。</p></div>
+<p><b>已推送：</b> <code>e8ac760 🔄 仪表盘更新 2026-08-18 21:06</code>（index.html + star-rank.html，27692 bytes），工作区干净。</p>
+<p>DASHBOARD_UPDATE=success</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -150,33 +146,29 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-17 21-01</span>
+    <span class="card-meta">🕐 最近 08-18 21-01</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-08-17</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板</h2>
 <h3 class='h3'>🔑 关键话题</h3>
 <ul>
-<li>今日无用户主动对话（周一，全部为 cron 自动任务，运行正常）</li>
-<li>仪表盘更新：全天 13 次（07:05~20:07）全部成功：抖音10/B站10/vicoman20/GitHub日周月各10</li>
-<li>15:16 修复 2 处：vicoman 0条→轮询等待 <code>.nw-card</code> 渲染（~14s）；GitHub CDP 抓 trending 触发风控（.flash-error）→改走 Search API（1082 代理），已固化进脚本并更新记忆</li>
-<li>消防员监控 10:00/18:00：上海编制内名单仍未公示 → 静默（符合预期，预计 8-9 月）</li>
+<li>消防员招录结果核实：你问&quot;出结果了怎么没抓到&quot;，实查官方平台(xfyzl.119.gov.cn)公示栏仅甘肃/四川/河北/宁夏/内蒙古，<b>北京/上海编制内均未公示</b>。监控只盯上海编制内、只报编制内，故静默。</li>
+<li>仪表盘每小时自动更新正常运行（18/19/20时均成功，5数据源全绿）。</li>
 </ul>
 <h3 class='h3'>✅ 待办</h3>
 <ul>
-<li>消防员编制内名单持续监控，出榜当天自动推送（上海、北京均在等）</li>
-<li>成语肉鸽优化方案（docs/optimization-plan.md）待确认实施</li>
+<li>待你确认：你看到的&quot;结果&quot;是哪个批次（上海/北京编制内，还是政府专职）？确认后可修监控。</li>
 </ul>
 <h3 class='h3'>💡 决策</h3>
 <ul>
-<li>GitHub Trending 固定用 Search API（CDP 抓页面持续风控）</li>
-<li>vicoman 抓取改为轮询等待卡片渲染，不再固定 sleep</li>
+<li>结论：上海/北京编制内尚未公示；近期公示均为其他省份/政府专职，属监控范围外，不抓不报。</li>
+<li>上海2026编制内预计8-9月出结果，监控继续每日10:00/18:00守候。</li>
 </ul>
 <h3 class='h3'>🔗 会话链接</h3>
 <ul>
-<li>@session:default/cron_64217fe26851_20260817_150504（15:16 修复）</li>
-<li>@session:default/cron_64217fe26851_20260817_200542（20:07 仪表盘）</li>
-<li>@session:default/cron_977b44e0805f_20260817_180027（消防监控 18:00）</li>
+<li>主对话：@session:default/20260811_214431_cc4aba1c</li>
+<li>仪表盘更新：@session:default/cron_64217fe26851_20260818_200542</li>
 </ul></div>
 </details>
 <details class="card " >
