@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-18 11:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-18 12:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-18 11-45</span>
+    <span class="card-meta">🕐 最近 08-18 12-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-18 11-15</span>
+    <span class="card-meta">🕐 最近 08-18 12-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-18 11:15]</p>
-<p>🥇 黄金: $4457/盎司 (-0.37%)</p>
-<p>   高$4493.100 低$4450.000 | 约 ¥966/克</p>
-<p>⚡ 快手(1024.HK): HK$38.60 (-3.69%)</p>
-<p>💱 美元/人民币: 6.7428</p></div>
+  <div class="card-body"><p>💰 每日行情 [08-18 12:15]</p>
+<p>🥇 黄金: $4448/盎司 (-0.56%)</p>
+<p>   高$4493.100 低$4445.400 | 约 ¥964/克</p>
+<p>⚡ 快手(1024.HK): HK$38.56 (-3.79%)</p>
+<p>💱 美元/人民币: 6.7433</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,27 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-18 11-06</span>
+    <span class="card-meta">🕐 最近 08-18 12-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>全部数据源抓取成功并已推送 GitHub Pages。</p>
-<h3 class='h3'>仪表盘更新完成 ✅</h3>
-<p>所有 4 路数据源 + 三档 GitHub 排行均成功抓取并生成 <code>index.html</code>，已 git push：</p>
+  <div class="card-body"><p>✅ 仪表盘统一更新完成，已推送 GitHub（commit <code>9484c19</code>，工作区干净）。</p>
+<p><b>数据抓取结果（2026-08-18 12:06 CST）：</b></p>
 <table><thead><tr><th>数据源</th><th>方式</th><th>条数</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>公开 API</td><td>10</td></tr>
-<tr><td>📺 B站全站排行</td><td>CDP 浏览器</td><td>10</td></tr>
-<tr><td>📰 vicoman AI 新闻</td><td>CDP（guest 会话 + 卡片轮询）</td><td>20</td></tr>
-<tr><td>📊 GitHub 今日</td><td>Search API</td><td>10</td></tr>
-<tr><td>📊 GitHub 本周</td><td>Search API</td><td>10</td></tr>
-<tr><td>📊 GitHub 本月</td><td>Search API</td><td>10</td></tr>
+<tr><td>🎵 抖音热点</td><td>API（手机UA）</td><td>10</td></tr>
+<tr><td>📺 B站全站排行</td><td>CDP浏览器</td><td>10</td></tr>
+<tr><td>📰 vicoman AI新闻</td><td>CDP浏览器（guest会话）</td><td>20</td></tr>
+<tr><td>📊 GitHub Search</td><td>API（日/周/月三档）</td><td>10×3</td></tr>
 </tbody></table>
-<ul>
-<li>✅ 已生成 <code>index.html</code>（27,394 bytes）并同步 <code>star-rank.html</code></li>
-<li>✅ 已提交并 <code>git push origin main</code> 成功</li>
-<li>CDP 代理（localhost:3456）正常运行，B 站与 vicoman 的临时 tab 已自动关闭</li>
-</ul>
-<p>无异常，全部完成。</p></div>
+<p><b>执行流程：</b> 抖音/GitHub 走 API，B站和 vicoman 用共享 Chrome CDP（localhost:3456）抓动态渲染内容，全部成功。生成 <code>index.html</code> 并复制为 <code>star-rank.html</code>，<code>git add -A</code> → commit「🔄 仪表盘更新」→ push 完成。</p>
+<p>四组数据均正常，无降级/占位，工作区已同步无未提交变更。</p></div>
 </details>
 <details class="card " >
   <summary>
