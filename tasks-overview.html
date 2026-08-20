@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-20 19:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-20 20:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-20 19-45</span>
+    <span class="card-meta">🕐 最近 08-20 20-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-20 19-15</span>
+    <span class="card-meta">🕐 最近 08-20 20-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-20 19:15]</p>
-<p>🥇 黄金: $4540/盎司 (-0.11%)</p>
-<p>   高$4583.800 低$4534.800 | 约 ¥982/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-20 20:15]</p>
+<p>🥇 黄金: $4520/盎司 (-0.56%)</p>
+<p>   高$4583.800 低$4506.200 | 约 ¥978/克</p>
 <p>⚡ 快手(1024.HK): HK$33.64 (-11.01%)</p>
-<p>💱 美元/人民币: 6.7249</p></div>
+<p>💱 美元/人民币: 6.7265</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,25 +112,19 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-20 19-06</span>
+    <span class="card-meta">🕐 最近 08-20 20-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘已更新并推送。</p>
-<p><b>本次抓取 (19:05 CST)</b></p>
-<ul>
-<li>🎵 抖音热点：10 条</li>
-<li>📺 B站全站排行：10 条</li>
-<li>📰 vicoman AI新闻：20 条</li>
-<li>📊 GitHub Trending（Search API）：今日/本周/本月各 10 条</li>
-</ul>
-<p><b>已提交推送</b></p>
-<ul>
-<li>commit <code>b5584aa</code> &quot;🔄 仪表盘更新 2026-08-20 19:06&quot;</li>
-<li><code>index.html</code> + <code>star-rank.html</code> 已生成（27764 bytes）</li>
-<li>远端 main 已同步（<code>b5584aa…</code>）</li>
-</ul>
-<p>GitHub Trending 用 Search API（<code>--resolve</code> 直连 20.27.177.116，绕 fake-ip/504），B站和 vicoman 走 CDP proxy 3456，全程无风控。无异常。</p></div>
+  <div class="card-body"><p>仪表盘已更新并推送成功 ✅</p>
+<p><b>数据抓取情况</b>（全部走 CDP proxy localhost:3456，已复用 <code>dashboard-cdp-update.py</code> 的完整逻辑）：</p>
+<table><thead><tr><th>数据源</th><th>方式</th><th>条数</th></tr></thead><tbody>
+<tr><td>🎵 抖音热点</td><td>API</td><td>10</td></tr>
+<tr><td>📺 B站全站排行</td><td>CDP</td><td>10</td></tr>
+<tr><td>📰 vicoman AI新闻</td><td>CDP（guest会话）</td><td>20</td></tr>
+<tr><td>📊 GitHub 今日/周/月</td><td>Search API（--resolve 直连）</td><td>10/10/10</td></tr>
+</tbody></table>
+<p><b>结果</b>：<code>index.html</code> 27863 bytes 已生成，同时写入 <code>star-rank.html</code>，git commit <code>242109d</code> 已 push 到 <code>origin/main</code>，工作区干净，GitHub Pages 自动更新。</p></div>
 </details>
 <details class="card " >
   <summary>
