@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-21 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-21 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-21 20-45</span>
+    <span class="card-meta">🕐 最近 08-21 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-21 20-15</span>
+    <span class="card-meta">🕐 最近 08-21 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-21 20:15]</p>
-<p>🥇 黄金: $4652/盎司 (+1.77%)</p>
-<p>   高$4661.700 低$4565.500 | 约 ¥1006/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-21 21:15]</p>
+<p>🥇 黄金: $4646/盎司 (+1.63%)</p>
+<p>   高$4661.700 低$4565.500 | 约 ¥1004/克</p>
 <p>⚡ 快手(1024.HK): HK$34.42 (+2.32%)</p>
-<p>💱 美元/人民币: 6.723</p></div>
+<p>💱 美元/人民币: 6.7235</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,27 +112,11 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-21 20-06</span>
+    <span class="card-meta">🕐 最近 08-21 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘已更新并推送成功。</p>
-<p><b>数据抓取（20:06 CST）：</b></p>
-<ul>
-<li>🎵 抖音热点：10 条（API）</li>
-<li>📊 GitHub Trending：今日/本周/本月各 10 条（Search API）</li>
-<li>📺 B站全站排行：10 条（CDP）</li>
-<li>📰 vicoman 新闻：4 条（CDP，页面懒加载仅展示 4 条）</li>
-<li>快手/小红书：无公开数据，沿用占位</li>
-</ul>
-<p><b>执行：</b></p>
-<ul>
-<li>复用 <code>dashboard-update.py</code> 生成逻辑，注入 CDP 数据</li>
-<li>生成 index.html + star-rank.html（23,983 bytes）</li>
-<li><code>git add -A &amp;&amp; commit &amp;&amp; push</code> ✅ 提交 <code>608293a</code></li>
-<li>已关闭 CDP 临时 tab</li>
-</ul>
-<p>新增脚本 <code>~/.hermes/scripts/dashboard-cdp-fetch.py</code>，下次 cron 可直接复用。</p></div>
+  <div class="card-body"><p>仪表盘已更新并推送完成。所有数据源抓取成功，GitHub Pages 已同步。</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -153,30 +137,30 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-20 21-01</span>
+    <span class="card-meta">🕐 最近 08-21 21-01</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-08-20</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板（2026-08-21）</h2>
 <h3 class='h3'>🔑 关键话题</h3>
 <ul>
-<li>咨询<b>多智能体编排工具</b>盘点（今天唯一用户对话）</li>
-<li>已给推荐：LangGraph/ CrewAI/ AutoGen 主流框架，deer-flow/ Omnigent 协调外部AGENT，并点了你已用的 TradingAgents + Hermes delegate_task</li>
-<li>其余均为定时任务：仪表盘统一更新（19:06、20:06 两次），数据源自动抓取推送</li>
+<li>今日无用户发起的对话，全部为定时任务自动运行</li>
+<li>⏰ 仪表盘统一更新：整点每小时运行（01:00~20:05，共 23 次）</li>
+<li>🚒 消防员招录名单监控：10:00、18:00 各一次</li>
 </ul>
 <h3 class='h3'>✅ 待办</h3>
 <ul>
-<li>用户可装一个编排工具试玩（待你确认，如 CrewAI/ Swarm）</li>
+<li>无用户新待办</li>
 </ul>
 <h3 class='h3'>💡 决策</h3>
 <ul>
-<li>无实际落地决策（停留在推荐阶段）</li>
+<li>无新决策</li>
 </ul>
 <h3 class='h3'>🔗 会话链接</h3>
 <ul>
-<li>用户对话：@session:default/20260804_171615_3ab77922（浏览器扩展逆向/多智能体）</li>
-<li>仪表盘更新：@session:default/cron_64217fe26851_20260820_200540</li>
-</ul></div>
+<li>今日仅含 cron 自动任务，无用户会话</li>
+</ul>
+<p><b>今日无对话</b>（仅自动化例行任务正常执行，无异常、无告警）。</p></div>
 </details>
 <details class="card " >
   <summary>
