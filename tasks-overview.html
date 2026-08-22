@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-22 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-22 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-22 20-45</span>
+    <span class="card-meta">🕐 最近 08-22 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-22 20-15</span>
+    <span class="card-meta">🕐 最近 08-22 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-22 20:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-22 21:15]</p>
 <p>🥇 黄金: $4664/盎司 (+2.04%)</p>
 <p>   高$4690.400 低$4565.500 | 约 ¥1009/克</p>
 <p>⚡ 快手(1024.HK): HK$34.42 (+2.32%)</p>
@@ -112,20 +112,24 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-22 20-06</span>
+    <span class="card-meta">🕐 最近 08-22 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成，已推送。</p>
-<p><b>本次结果：</b></p>
+  <div class="card-body"><p>The update ran cleanly — all data sources fetched, HTML written, and pushed.</p>
+<p><b>仪表盘更新成功 ✅</b></p>
+<table><thead><tr><th>数据源</th><th>条数</th></tr></thead><tbody>
+<tr><td>🎵 抖音热点</td><td>10</td></tr>
+<tr><td>📺 B站全站排行</td><td>10</td></tr>
+<tr><td>📰 vicoman AI新闻</td><td>20</td></tr>
+<tr><td>📊 GitHub 今日/周/月</td><td>10/10/10</td></tr>
+</tbody></table>
 <ul>
-<li>🎵 抖音热点 10 条 ✅</li>
-<li>📺 B站全站排行 10 条（CDP）✅</li>
-<li>📰 vicoman AI新闻 20 条（guest会话绕登录）✅</li>
-<li>📊 GitHub 今日10 / 本周10 / 本月10（Search API 直连20.27.177.116）✅</li>
-<li>index.html + star-rank.html 已生成，git push 成功</li>
+<li>index.html + star-rank.html 已更新 (27,406 bytes)</li>
+<li>git commit + push ✅ 已推送 GitHub Pages</li>
+<li>全程无失败、无重试告警</li>
 </ul>
-<p>total 27700 bytes，更新于 20:06 CST。</p></div>
+<p>DASHBOARD_UPDATE=success</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -146,30 +150,33 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-21 21-01</span>
+    <span class="card-meta">🕐 最近 08-22 21-01</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板（2026-08-21）</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-08-22</h2>
 <h3 class='h3'>🔑 关键话题</h3>
 <ul>
-<li>今日无用户发起的对话，全部为定时任务自动运行</li>
-<li>⏰ 仪表盘统一更新：整点每小时运行（01:00~20:05，共 23 次）</li>
-<li>🚒 消防员招录名单监控：10:00、18:00 各一次</li>
+<li><b>今日无用户对话</b>（周六，无微信/Telegram 主动消息）</li>
+<li>仪表盘每小时自动更新×9次（12:00–20:00），全部推送成功：抖音热点10 + B站排行10 + vicoman新闻20 + GitHub日/周/月各10</li>
+<li><b>13:11 修复两个抓取 bug</b>：vicoman 新闻改用 <code>.nw-card</code> 卡片选择器（先前只抓到4条）；B站视频链接修复协议相对地址 <code>//bilibili.com</code> 双前缀问题</li>
+<li>消防员名单监控 18:00 运行，上海编制内无新内容 → 静默</li>
 </ul>
 <h3 class='h3'>✅ 待办</h3>
 <ul>
-<li>无用户新待办</li>
+<li>消防员编制内名单早已公示，监控可停/转其他省（沿用）</li>
+<li>快手行情感兴趣，关注 1024.HK（迁延事项）</li>
 </ul>
 <h3 class='h3'>💡 决策</h3>
 <ul>
-<li>无新决策</li>
+<li>仪表盘抓取链路已稳定复用 <code>dashboard-cdp-update.py</code>，B站/vicoman 走 CDP，GitHub 走 Search API 直连</li>
 </ul>
 <h3 class='h3'>🔗 会话链接</h3>
 <ul>
-<li>今日仅含 cron 自动任务，无用户会话</li>
+<li>@session:default/cron_64217fe26851_20260822_200541（仪表盘 20:06）</li>
+<li>@session:default/cron_977b44e0805f_20260822_180025（消防监控 18:00）</li>
 </ul>
-<p><b>今日无对话</b>（仅自动化例行任务正常执行，无异常、无告警）。</p></div>
+<p>其余均为 cron 自动任务，无须关注。</p></div>
 </details>
 <details class="card " >
   <summary>
