@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-23 08:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-23 09:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-23 08-45</span>
+    <span class="card-meta">🕐 最近 08-23 09-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-23 08-15</span>
+    <span class="card-meta">🕐 最近 08-23 09-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-23 08:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-23 09:15]</p>
 <p>🥇 黄金: $4664/盎司 (+2.04%)</p>
 <p>   高$4690.400 低$4565.500 | 约 ¥1009/克</p>
 <p>⚡ 快手(1024.HK): HK$34.42 (+2.32%)</p>
@@ -112,24 +112,21 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-23 08-06</span>
+    <span class="card-meta">🕐 最近 08-23 09-05</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘统一更新完成。</p>
-<p><b>抓取结果（08:06 更新）：</b></p>
-<ul>
-<li>🎵 <b>抖音热点</b>：10 条（API 直连）</li>
-<li>📊 <b>GitHub Trending</b>：今/周/月 各 10 条（Search API）</li>
-<li>📺 <b>B站全站排行</b>：10 条（CDP 抓取）— 榜首《黑神话：钟馗》15分钟实机演示</li>
-<li>📰 <b>vicoman 新闻</b>：4 条（CDP）— 含英伟达AI服务器涨价、太平洋岛国地缘等</li>
-</ul>
-<p><b>HTML↔推送：</b></p>
-<ul>
-<li>复用 <code>dashboard-update.py</code> 的 <code>build_html</code> 组装，已写入 <code>index.html</code> + <code>star-rank.html</code></li>
-<li>git commit + push 成功（<code>90d77a8</code>），线上 raw 已验证含新数据「更新于 2026-08-23 08:06」</li>
-</ul>
-<p><b>说明：</b> 触发页面的 <code>vicoman</code>/<code>B站</code> 采用 CDP <code>/eval</code> 抓取（非静态），走用户日常 Chrome 登录态；vicoman 分类筛选（科技/财经/国际/AI等）按钮已探测到，如需更全新闻可后续翻页扩展。快手/小红书因登录态暂无数据，保留占位逻辑。</p></div>
+  <div class="card-body"><p>✅ <b>仪表盘已更新并推送</b>（提交 <code>1320f41</code>，工作区干净）</p>
+<p><b>数据抓取结果：</b></p>
+<table><thead><tr><th>数据源</th><th>条数</th></tr></thead><tbody>
+<tr><td>🎵 抖音热点</td><td>10</td></tr>
+<tr><td>📺 B站全站排行 (CDP)</td><td>10</td></tr>
+<tr><td>📊 GitHub 今日/本周/本月</td><td>10/10/10</td></tr>
+<tr><td>📰 vicoman 新闻 (CDP)</td><td>20</td></tr>
+<tr><td>⚡ 快手热搜</td><td>0（需登录，正常占位）</td></tr>
+</tbody></table>
+<p>index.html / star-rank.html 已同步生成（27129 bytes），Git push 到 GitHub Pages 成功。</p>
+<blockquote>注：vicoman 通过 CDP 抓到 20 条、B站抓满 10 条，均为实时数据，本次非静默跳过。</blockquote></div>
 </details>
 <details class="card " >
   <summary>
