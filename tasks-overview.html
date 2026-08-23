@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-23 15:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-23 16:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-23 15-45</span>
+    <span class="card-meta">🕐 最近 08-23 16-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-23 15-15</span>
+    <span class="card-meta">🕐 最近 08-23 16-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-23 15:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-23 16:15]</p>
 <p>🥇 黄金: $4664/盎司 (+2.04%)</p>
 <p>   高$4690.400 低$4565.500 | 约 ¥1009/克</p>
 <p>⚡ 快手(1024.HK): HK$34.42 (+2.32%)</p>
@@ -112,21 +112,22 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-23 15-10</span>
+    <span class="card-meta">🕐 最近 08-23 16-05</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成 ✅</p>
-<p><b>结果（2026-08-23 15:10，commit <code>341c001</code> 已推送）</b></p>
+  <div class="card-body"><p>仪表盘更新完成。</p>
+<p><b>本次更新结果</b></p>
 <ul>
-<li><b>抖音热点</b> 10条</li>
-<li><b>B站排行</b> 10条</li>
-<li><b>GitHub Trending</b> 今日/本周/本月 各10条（共30）</li>
-<li><b>vicoman AI新闻</b> 20条</li>
-<li>快手（需登录，占位）· 小红书（需扫码，跳过）— 与往常一致</li>
+<li>🎵 抖音热点：10条</li>
+<li>📺 B站全站排行：10条（官方API，免登录）</li>
+<li>📊 GitHub Trending：今日/本周/本月 各10条</li>
+<li>📰 vicoman AI新闻：20条（CDP）</li>
+<li>⚡ 快手：0条（需登录，占位）</li>
+<li>📕 小红书：跳过（需登录）</li>
 </ul>
-<p><b>遇到的问题与修复</b>：B站 API 首次全量返回 <code>code=-352</code>（IP突发风控），后台CDP tab懒加载不渲染导致0条。已给 <code>dashboard-cdp-full.py</code> 内建 <b>重试+轮换旧UA+等待</b> 逻辑，重试第4次成功拿到10条，并已验证 git 工作树干净、页面含B站板块。</p>
-<p>工作目录 <code>/Users/maqi/idiom-roguelike</code>，index.html 与 star-rank.html 均已更新并推送 GitHub Pages。</p></div>
+<p>已生成 <code>index.html</code> + <code>star-rank.html</code>（26970 bytes），git commit <code>dc33cad</code>，已 push 到 GitHub Pages（远端 main 哈希一致 ✓）。</p>
+<p><b>推送统计</b>：抖音10 / B站10 / GitHub日10周10月10 / 新闻20 / 更新于 16:05 CST。</p></div>
 </details>
 <details class="card " >
   <summary>
