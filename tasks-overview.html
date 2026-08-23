@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-24 04:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-24 05:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-24 04-45</span>
+    <span class="card-meta">🕐 最近 08-24 05-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-24 04-15</span>
+    <span class="card-meta">🕐 最近 08-24 05-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-24 04:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-24 05:15]</p>
 <p>🥇 黄金: $4664/盎司 (+2.04%)</p>
 <p>   高$4690.400 低$4565.500 | 约 ¥1009/克</p>
 <p>⚡ 快手(1024.HK): HK$34.42 (+2.32%)</p>
@@ -112,26 +112,22 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-24 04-07</span>
+    <span class="card-meta">🕐 最近 08-24 05-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成，已推送 GitHub。</p>
-<p><b>数据抓取结果</b>（2026-08-24）：</p>
+  <div class="card-body"><p>✅ 仪表盘已更新并推送成功。</p>
+<p><b>数据抓取结果（2026-08-24 05:06 CST）：</b></p>
 <ul>
-<li>🎵 抖音热点：10 条（TYL总冠军、台风沙德尔、中超积分榜…）</li>
-<li>📺 B站全站排行：10 条（CDP）</li>
-<li>📊 GitHub Trending：今日/本周/本月各 10 条（Search API）</li>
-<li>📰 vicoman 新闻：20 条（CDP，<code>article.nw-card</code> 结构）</li>
+<li>🎵 抖音热点：10 条</li>
+<li>📺 B站全站排行：10 条（官方 API）</li>
+<li>📊 GitHub Trending：今日10 / 本周10 / 本月10</li>
+<li>📰 vicoman AI 新闻：20 条</li>
+<li>⚡ 快手：0 条（登录墙，用占位数据）</li>
+<li>📕 小红书：跳过（需 CDP 登录态）</li>
 </ul>
-<p><b>本次处理</b>：</p>
-<ul>
-<li>B站、vicoman 用 CDP 新建后台 tab 抓取，完成后已关闭，未动你现有 tab</li>
-<li>修正了 vicoman 选择器（之前只抓到 4 条 → 20 条，用 <code>.nw-card-title-text</code> + 真实链接）</li>
-<li>复用 dashboard-update.py 的 <code>build_html</code>，注释内容分级</li>
-<li>git push 成功：<code>9fcb89c..ae81708 main -&gt; main</code></li>
-</ul>
-<p>index.html / star-rank.html 已同步更新，GitHub Pages 稍后生效。</p></div>
+<p><b>操作：</b> index.html + star-rank.html 已生成（27KB），git commit+push 成功，<code>origin/main</code> 已同步（commit <code>2956fdb</code>）。</p>
+<p>已复用最完整的 <code>dashboard-cdp-full.py</code>，数据全部落到一手来源。</p></div>
 </details>
 <details class="card " >
   <summary>
