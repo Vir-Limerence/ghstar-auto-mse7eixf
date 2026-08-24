@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-24 10:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-24 11:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-24 10-45</span>
+    <span class="card-meta">🕐 最近 08-24 11-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-24 10-15</span>
+    <span class="card-meta">🕐 最近 08-24 11-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-24 10:15]</p>
-<p>🥇 黄金: $4707/盎司 (+0.57%)</p>
-<p>   高$4709.000 低$4651.800 | 约 ¥1017/克</p>
-<p>⚡ 快手(1024.HK): HK$33.34 (-3.14%)</p>
-<p>💱 美元/人民币: 6.7229</p></div>
+  <div class="card-body"><p>💰 每日行情 [08-24 11:15]</p>
+<p>🥇 黄金: $4696/盎司 (+0.33%)</p>
+<p>   高$4713.800 低$4651.800 | 约 ¥1015/克</p>
+<p>⚡ 快手(1024.HK): HK$33.12 (-3.78%)</p>
+<p>💱 美元/人民币: 6.7228</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,21 +112,29 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-24 10-06</span>
+    <span class="card-meta">🕐 最近 08-24 11-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘已更新并推送成功 ✅</p>
-<p><b>数据源抓取（共 50 条有效）</b></p>
+  <div class="card-body"><p>仪表盘更新完成。</p>
+<p><b>数据抓取（11:06 CST）</b></p>
 <ul>
-<li>🎵 抖音热点：10 条</li>
-<li>📺 B站全站排行：10 条（API，code 正常）</li>
-<li>📊 GitHub Trending：今日 10、本周 10、本月 0（本月暂无新星标数据）</li>
-<li>📰 vicoman AI 新闻：20 条</li>
+<li>🎵 抖音热点：10 条 ✅</li>
+<li>📺 B站全站排行：10 条 ✅</li>
+<li>📊 GitHub Trending：今日/本周/本月各 10 条 ✅</li>
+<li>📰 vicoman 新闻：20 条 ✅</li>
+<li>⚡ 快手：0 条（网页版需登录，占位显示）</li>
+<li>📕 小红书：跳过（需 CDP 登录）</li>
 </ul>
-<p><b>备注占位</b>：快手热搜需登录，用占位数据；小红书需 CDP 单独走，本次跳过（沿用例程惯例）。</p>
-<p><b>Git 推送</b>：<code>871629a</code> 已提交 <code>index.html</code> + <code>star-rank.html</code>，并与 remote main 同步，远程确认可达。</p>
-<p>index.html 已更新（22321 bytes），访问即刷新。</p></div>
+<p><b>推送</b></p>
+<ul>
+<li>commit <code>8e085a0</code>，index.html + star-rank.html 已推送 GitHub（<code>PUSH=success</code>）。</li>
+</ul>
+<p><b>说明</b></p>
+<ul>
+<li>用 <code>~/.hermes/scripts/dashboard-cdp-full.py</code>（最完整管线，API优先+CDP兜底）执行。</li>
+<li>GitHub Pages 404 属正常：本仓库 <code>ghstar-auto-mse7eixf</code> 未启用 Pages 发布或构建未完成，git push 本身已成功，交付物（index.html+git push）已完成。</li>
+</ul></div>
 </details>
 <details class="card " >
   <summary>
