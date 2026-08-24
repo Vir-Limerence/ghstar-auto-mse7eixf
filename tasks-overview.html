@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-25 01:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-25 02:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-25 01-45</span>
+    <span class="card-meta">🕐 最近 08-25 02-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-25 01-15</span>
+    <span class="card-meta">🕐 最近 08-25 02-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-25 01:15]</p>
-<p>🥇 黄金: $4712/盎司 (+0.68%)</p>
-<p>   高$4738.500 低$4651.800 | 约 ¥1018/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-25 02:15]</p>
+<p>🥇 黄金: $4685/盎司 (+0.09%)</p>
+<p>   高$4738.500 低$4651.800 | 约 ¥1013/克</p>
 <p>⚡ 快手(1024.HK): HK$33.02 (-4.07%)</p>
-<p>💱 美元/人民币: 6.7225</p></div>
+<p>💱 美元/人民币: 6.7224</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,25 +112,22 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-25 01-06</span>
+    <span class="card-meta">🕐 最近 08-25 02-09</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成</p>
-<p><b>数据抓取全部成功：</b></p>
-<ul>
-<li>🎵 抖音热点：10条</li>
-<li>📺 B站全站排行：10条（CDP）</li>
-<li>📰 vicoman AI新闻：20条（CDP）</li>
-<li>📊 GitHub Trending：今日10 / 本周10 / 本月10（Search API）</li>
-</ul>
-<p><b>已生成并推送：</b></p>
-<ul>
-<li>index.html + star-rank.html（27866 bytes）</li>
-<li>已 commit <code>220da6f</code> 并 push，远端 main HEAD 已同步确认</li>
-</ul>
-<p>路径：抖音API + B站/vicoman走CDP(3456)提取 + GitHub Search API，复用 <code>dashboard-cdp-full.py</code>（数据层用CDP，逻辑复用 dashboard-update.py）。</p>
-<p>无异常，GitHub Pages 已更新。</p></div>
+  <div class="card-body"><p>仪表盘更新完成，已推送 ✅</p>
+<p><b>本次数据抓取（02:08 CST）</b></p>
+<table><thead><tr><th>数据源</th><th>方式</th><th>条数</th></tr></thead><tbody>
+<tr><td>抖音热点</td><td>API</td><td>10</td></tr>
+<tr><td>GitHub Trending</td><td>Search API</td><td>今日/本周/本月各10</td></tr>
+<tr><td>B站全站排行</td><td>CDP eval</td><td>10</td></tr>
+<tr><td>vicoman 新闻</td><td>CDP eval</td><td>20</td></tr>
+</tbody></table>
+<p><b>B站 top3</b>：复活吧！我的（）/ 严肃观看儿子的历史记录 / 护理：一把斩向死亡的温柔刀</p>
+<p><b>新闻 top3</b>：CDPR确认《巫师4》2028发售 / 德财长称特朗普致伊朗局势推高债市收益率 / AI初创General Intuition获60亿美元估值</p>
+<p><b>Git</b>：commit <code>b259c29 🔄 每小时自动更新 2026-08-25 02:08</code>，已 push origin/main，工作区干净。index.html 与 star-rank.html 同步更新（30028 bytes）。</p>
+<p>复用 <code>dashboard-update.py</code> 的构建+推送逻辑，通过 monkeypatch 注入 CDP 抓的 B站/新闻数据，其余（抖音/GitHub/快手）走原脚本。快手仍因需登录返回占位。</p></div>
 </details>
 <details class="card " >
   <summary>
