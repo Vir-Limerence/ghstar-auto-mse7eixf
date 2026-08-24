@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-24 16:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-24 17:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-24 16-45</span>
+    <span class="card-meta">🕐 最近 08-24 17-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-24 16-15</span>
+    <span class="card-meta">🕐 最近 08-24 17-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-24 16:15]</p>
-<p>🥇 黄金: $4694/盎司 (+0.29%)</p>
+  <div class="card-body"><p>💰 每日行情 [08-24 17:15]</p>
+<p>🥇 黄金: $4698/盎司 (+0.38%)</p>
 <p>   高$4716.700 低$4651.800 | 约 ¥1015/克</p>
 <p>⚡ 快手(1024.HK): HK$33.02 (-4.07%)</p>
-<p>💱 美元/人民币: 6.7238</p></div>
+<p>💱 美元/人民币: 6.723</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,25 +112,22 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-24 16-11</span>
+    <span class="card-meta">🕐 最近 08-24 17-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>儀表盘更新完成并已验证。</p>
-<h3 class='h3'>本轮仪表盘更新结果</h3>
-<p><b>数据源抓取</b>（terminal + CDP localhost:3456）：</p>
+  <div class="card-body"><p>仪表盘更新完成 ✅</p>
+<p><b>抓取结果</b>（2026-08-24 17:06）</p>
 <ul>
-<li><b>抖音热点</b>：10 条 ✅（公开 API）</li>
-<li><b>GitHub Trending</b>：今日 10 / 本周 10 / 本月 10 ✅（Search API 本次正常返回）</li>
-<li><b>B站排行</b>：10 条 ✅（CDP 提取）— API 触发 -352 IP 限流，改用 CDP 后台 tab，因懒加载未触发，滚动后按实际 <code>.info a.title</code> 结构成功提取</li>
-<li><b>vicoman 新闻</b>：20 条 ✅（首轮 CDP，合并时保留）</li>
+<li>抖音热点：10 条 ✅</li>
+<li>GitHub Trending：今日 10 / 本周 10 / 本月 10 ✅</li>
+<li>vicoman AI 新闻：20 条 ✅</li>
+<li>B站排行：0 条 ⚠️（API <code>code=-352</code> IP 风控限流 6 次全失败，CDP 兜底未渲染出榜单项）</li>
+<li>快手：0 条（需登录，占位数据）</li>
+<li>小红书：跳过（需 CDP 手动登录态）</li>
 </ul>
-<p><b>发布</b>：index.html + star-rank.html 已生成（27215 bytes）并 git push 成功</p>
-<ul>
-<li>commit: <code>9a17ba6 🔄 每小时自动更新</code></li>
-<li>已验证 HTML 内含：B站视频链接 10、vicoman 新闻 20、GitHub repo 链接 36</li>
-</ul>
-<p><b>备注</b>：快手需登录用占位数据、小红书需 CDP 跳过（与既往一致，非本次异常）。B站 API 因共享 IP 短时 -352 风控，CDP 兜底路径生效。已清理临时脚本。</p></div>
+<p><b>产出</b>：index.html + star-rank.html 已更新（27KB），git push → commit <code>7821cb3</code> 成功推送 GitHub Pages。</p>
+<p>B站这次因 IP 风控而缺数据（已自动走 CDP 兜底仍空，属短时突发风控，通常等 30s-1h 恢复；原因已按记忆内建重试+轮换 UA，本次正值风控窗口）。其余数据源正常。</p></div>
 </details>
 <details class="card " >
   <summary>
