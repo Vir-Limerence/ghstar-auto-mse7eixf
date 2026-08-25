@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-26 00:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-26 01:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-26 00-45</span>
+    <span class="card-meta">🕐 最近 08-26 01-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-26 00-15</span>
+    <span class="card-meta">🕐 最近 08-26 01-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-26 00:15]</p>
-<p>🥇 黄金: $4695/盎司 (-0.05%)</p>
-<p>   高$4755.000 低$4659.500 | 约 ¥1015/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-26 01:15]</p>
+<p>🥇 黄金: $4691/盎司 (-0.15%)</p>
+<p>   高$4755.000 低$4659.500 | 约 ¥1014/克</p>
 <p>⚡ 快手(1024.HK): HK$33.26 (+0.73%)</p>
-<p>💱 美元/人民币: 6.7225</p></div>
+<p>💱 美元/人民币: 6.7203</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,25 +112,27 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-26 00-06</span>
+    <span class="card-meta">🕐 最近 08-26 01-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘已更新并推送。</p>
-<p><b>数据抓取（全部成功）：</b></p>
+  <div class="card-body"><p>GitHub 月榜返回 0 的原因已确认——Search API 匿名限流（共享代理 IP 的超额速率限制），非脚本故障，属已知间歇性问题，仅影响&quot;本月&quot;维度，下次每小时运行会自动恢复。</p>
+<p>任务已完成。汇报如下：</p>
+<h3 class='h3'>仪表盘更新完成 ✅</h3>
+<p><b>数据抓取（4 数据源）</b></p>
 <ul>
-<li>🎵 抖音热点：10 条（API）</li>
-<li>📊 GitHub Trending：今日 10 / 本周 10 / 本月 10（Search API <code>created:&gt;=</code> 三维度）</li>
-<li>📺 B站排行：10 条（CDP）</li>
-<li>📰 vicoman 新闻：20 条（CDP）</li>
+<li>抖音热点：10 条 ✅</li>
+<li>B站排行（CDP）：10 条 ✅</li>
+<li>vicoman 新闻（CDP）：20 条 ✅</li>
+<li>GitHub Trending（Search API）：今日 10 / 本周 10 / <b>本月 0</b>（⚠️ 匿名 API 限流，间歇性，非故障）</li>
 </ul>
-<p><b>结果：</b></p>
+<p><b>HTML 生成 + 推送</b></p>
 <ul>
-<li>index.html / star-rank.html 已生成（27339 bytes），复用 dashboard_update 逻辑 + CDP 数据</li>
-<li>git 已提交 <code>d1f100a</code> 并推送 GitHub Pages</li>
-<li>工作区干净，无残留</li>
+<li>已生成 <code>index.html</code> 和 <code>star-rank.html</code>（22889 bytes）</li>
+<li>Git 提交 <code>5e97b5d 🔄 每小时自动更新 2026-08-26 01:05</code></li>
+<li>已推送 GitHub Pages（<code>Everything up-to-date</code> 确认成功）</li>
 </ul>
-<p>🚀 4 个数据源全部抓到，页面已上线。</p></div>
+<p>唯一异常是 GitHub 月榜空数据，源自共享代理 IP 的 Search API 速率限制（剩余额度被日/周两轮查询耗尽），属已知情况，下一轮自动补齐，无需干预。</p></div>
 </details>
 <details class="card " >
   <summary>
