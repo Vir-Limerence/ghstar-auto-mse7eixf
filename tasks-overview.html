@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-26 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-26 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-26 20-45</span>
+    <span class="card-meta">🕐 最近 08-26 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-26 20-15</span>
+    <span class="card-meta">🕐 最近 08-26 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-26 20:15]</p>
-<p>🥇 黄金: $4680/盎司 (-0.31%)</p>
-<p>   高$4730.900 低$4668.800 | 约 ¥1012/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-26 21:15]</p>
+<p>🥇 黄金: $4665/盎司 (-0.63%)</p>
+<p>   高$4730.900 低$4662.600 | 约 ¥1008/克</p>
 <p>⚡ 快手(1024.HK): HK$33.62 (+1.08%)</p>
-<p>💱 美元/人民币: 6.7227</p></div>
+<p>💱 美元/人民币: 6.7213</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,25 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-26 20-06</span>
+    <span class="card-meta">🕐 最近 08-26 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘已更新完成 ✅</p>
-<p><b>抓取结果：</b></p>
+  <div class="card-body"><p>仪表盘更新完成，工作区干净，已推送。</p>
+<p><b>数据抓取（全部成功）：</b></p>
 <ul>
-<li>🎵 抖音热点：10 条（API）</li>
-<li>📺 B站排行：10 条（CDP）</li>
-<li>📰 vicoman 新闻：20 条（CDP）</li>
-<li>📊 GitHub Trending：今/周/月各 10 条（Search API）</li>
+<li>抖音热点 API：10 条</li>
+<li>B站排行（CDP <code>.rank-item</code>）：10 条</li>
+<li>vicoman AI新闻（CDP <code>.nw-card</code>）：20 条</li>
+<li>GitHub Trending（Search API）今/周/月：10/10/10</li>
 </ul>
-<p><b>已推送：</b> commit <code>26d5ad5</code>，origin/main 已同步，GitHub Pages 更新（index.html 27KB）。</p>
-<p>📊 抖音:10 ｜ B站:10 ｜ 新闻:20 ｜ GH:10/10/10</p></div>
+<p><b>生成与推送：</b></p>
+<ul>
+<li><code>index.html</code> + <code>star-rank.html</code> 已更新（27404 bytes）</li>
+<li>commit <code>05fecaa</code> → 已 push 到 GitHub Pages ✅</li>
+<li>工作区干净，无残留 tab 关闭完成</li>
+</ul>
+<p>DASHBOARD_UPDATE=success</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -146,25 +151,30 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-25 21-01</span>
+    <span class="card-meta">🕐 最近 08-26 21-01</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板（2026-08-25）</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板（8月26日）</h2>
 <h3 class='h3'>🔑 关键话题</h3>
-<p>今天无用户对话，仅有定时任务自动运行：</p>
-<ul>
-<li>仪表盘统一更新（18:06/19:07/20:06 等多次，数据源全成功）</li>
-<li>消防员名单监控（无编制内新名单，静默）</li>
-</ul>
+<p>今日<b>无用户主动对话</b>，仅有自动 cron 任务运行。仪表盘统一更新执行 3 次（18:07 / 19:07 / 20:06），全部成功。</p>
 <h3 class='h3'>✅ 待办</h3>
-<p>无新增（本次为自动巡检，无人工待办）</p>
+<ul>
+<li>无新用户待办</li>
+</ul>
 <h3 class='h3'>💡 决策</h3>
-<p>无新决策</p>
+<ul>
+<li>GitHub Search API 匿名限流返回 0 → 已改回 CDP 抓 github.com/trending（今/周/月三档）补齐，验证正常</li>
+<li>19:07 一次 <code>False</code> 校验仅是 shell emoji 编码假象，非真问题</li>
+</ul>
+<h3 class='h3'>🔧 自动任务执行</h3>
+<p>仪表盘抓取：抖音热点 10、B站排行 10、vicoman 新闻 20、GitHub 今/周/月各 10。commit 已推送远端 main，GitHub Pages 正常（index.html ~27KB）。</p>
 <h3 class='h3'>🔗 会话链接</h3>
-<p>今天无用户会话；仅例行 cron：@session:default/cron_64217fe26851_20260825_200542（仪表盘，commit c9ad0b3）</p>
-<p>---</p>
-<p><b>结论：今天无对话</b>。全部为凌晨~晚间的仪表盘/监控自动任务，均已正常运行推送，无异常、无需人工介入。</p></div>
+<ul>
+<li>@session:default/cron_64217fe26851_20260826_200545</li>
+<li>@session:default/cron_64217fe26851_20260826_190538</li>
+<li>@session:default/cron_64217fe26851_20260826_180530</li>
+</ul></div>
 </details>
 <details class="card " >
   <summary>
