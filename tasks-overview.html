@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-26 22:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-26 23:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-26 22-45</span>
+    <span class="card-meta">🕐 最近 08-26 23-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-26 22-15</span>
+    <span class="card-meta">🕐 最近 08-26 23-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-26 22:15]</p>
-<p>🥇 黄金: $4674/盎司 (-0.44%)</p>
-<p>   高$4730.900 低$4653.300 | 约 ¥1010/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-26 23:15]</p>
+<p>🥇 黄金: $4645/盎司 (-1.06%)</p>
+<p>   高$4730.900 低$4642.600 | 约 ¥1004/克</p>
 <p>⚡ 快手(1024.HK): HK$33.62 (+1.08%)</p>
-<p>💱 美元/人民币: 6.7222</p></div>
+<p>💱 美元/人民币: 6.7249</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,26 +112,19 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-26 22-07</span>
+    <span class="card-meta">🕐 最近 08-26 23-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成 ✅</p>
-<p><b>数据抓取（全链路成功）</b></p>
+  <div class="card-body"><p>✅ 仪表盘已更新并推送</p>
 <ul>
-<li>🎵 抖音热点：10 条</li>
-<li>📺 B站全站排行：10 条（CDP）</li>
-<li>📰 vicoman 新闻：20 条（CDP）</li>
-<li>📊 GitHub Trending：今日/本周/本月各 10 条（Search API 直连）</li>
+<li><b>抖音热点</b>：10 条</li>
+<li><b>GitHub Trending</b>（今日/本周/本月）：各 10 条</li>
+<li><b>B站全站排行</b>（CDP）：10 条</li>
+<li><b>vicoman 新闻</b>（CDP）：20 条</li>
 </ul>
-<p><b>变更</b></p>
-<ul>
-<li><code>index.html</code> + <code>star-rank.html</code> 重新生成（27457 bytes），抖音/B站/新闻/GitHub 各区块均已填充</li>
-<li>已 commit 并推送 GitHub Pages（<code>46f81ce 🔄 每小时自动更新 2026-08-26 22:07</code>）</li>
-<li>清理了我手动打开的 2 个 CDP 孤儿 tab</li>
-</ul>
-<p><b>顺手修复</b>：<code>dashboard_update.py</code> 里 GitHub API 走了 <code>-x 1082</code> fake-ip 代理导致 504，已改为直连（实测直接请求正常），今后 GitHub 数据不再落空。</p>
-<p>工作区已干净，无未提交变更。</p></div>
+<p><code>index.html</code> + <code>star-rank.html</code> 已生成（27797 bytes），commit <code>d2c40b4</code>，已 push GitHub Pages，工作区干净。</p>
+<p>方法：复用 <code>dashboard-cdp-full.py</code>（抖音/GitHub 走 API，B站/vicoman 走共享 Chrome CDP localhost:3456），模板逻辑即 <code>dashboard_update.py</code> 的复用层。</p></div>
 </details>
 <details class="card " >
   <summary>
