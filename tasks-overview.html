@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-27 23:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-28 00:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-27 23-45</span>
+    <span class="card-meta">🕐 最近 08-28 00-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-27 23-15</span>
+    <span class="card-meta">🕐 最近 08-28 00-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-27 23:15]</p>
-<p>🥇 黄金: $4644/盎司 (-0.19%)</p>
-<p>   高$4697.700 低$4616.000 | 约 ¥1003/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-28 00:15]</p>
+<p>🥇 黄金: $4663/盎司 (+0.21%)</p>
+<p>   高$4697.700 低$4616.000 | 约 ¥1008/克</p>
 <p>⚡ 快手(1024.HK): HK$33.66 (+0.12%)</p>
-<p>💱 美元/人民币: 6.721</p></div>
+<p>💱 美元/人民币: 6.7228</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,18 +112,24 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-27 23-06</span>
+    <span class="card-meta">🕐 最近 08-28 00-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成 ✅</p>
+  <div class="card-body"><p>仪表盘更新完成，已推送。</p>
+<p><b>抓取结果（真实数据，CDP proxy 3456 + API 直连）</b></p>
 <ul>
-<li><b>抖音热点</b>：10 条</li>
-<li><b>B站全站排行</b>：10 条（CDP 抓取）</li>
-<li><b>vicoman 新闻</b>：20 条（CDP 抓取）</li>
-<li><b>GitHub Trending</b>：今日/本周/本月 各 10 条（Search API）</li>
+<li>🎵 抖音热点：10 条（西藏泥石流救援、高考优化方案、运20驰援吉隆、台风沙德尔等）</li>
+<li>📊 GitHub Trending：今/周/月 各 10 条</li>
+<li>📺 B站全站排行：10 条（苏新皓4K直拍、王中王自战解说、星穹铁道PV、《无限大》定档等）</li>
+<li>📰 vicoman 新闻：20 条（柏林校园事件、宝马主动安全、ATF勒索软件事件、中汽协倡议等）</li>
 </ul>
-<p><code>index.html</code> 与 <code>star-rank.html</code> 同步更新（29689 bytes），已 push 到 GitHub Pages，提交 <code>35c1ef1</code>。工作区干净、无未提交变更。</p></div>
+<p><b>执行链路</b></p>
+<p>1. 抖音 → API 免登录直接抓取</p>
+<p>2. GitHub → <code>--resolve</code> 直连 Search API（绕过代理 504）</p>
+<p>3. B站/vicoman → 打开 CDP 后台 tab，<code>/eval</code> 裸 JS 提取，抓完已关闭 tab</p>
+<p>4. 复用 <code>dashboard-update.py</code> 的 HTML 模板逻辑生成 <code>index.html</code> + <code>star-rank.html</code></p>
+<p><b>Git 提交</b>：<code>ca6e7fa</code>（00:06），index.html 30KB，已 push 到 GitHub Pages。无未提交变更。全流程 <code>DASHBOARD_UPDATE=success</code>。</p></div>
 </details>
 <details class="card " >
   <summary>
