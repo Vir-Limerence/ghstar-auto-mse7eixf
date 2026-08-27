@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-27 16:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-27 17:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-27 16-45</span>
+    <span class="card-meta">🕐 最近 08-27 17-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-27 16-15</span>
+    <span class="card-meta">🕐 最近 08-27 17-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-27 16:15]</p>
-<p>🥇 黄金: $4656/盎司 (+0.07%)</p>
-<p>   高$4697.700 低$4647.200 | 约 ¥1006/克</p>
-<p>⚡ 快手(1024.HK): HK$33.62 (+0.00%)</p>
-<p>💱 美元/人民币: 6.7194</p></div>
+  <div class="card-body"><p>💰 每日行情 [08-27 17:15]</p>
+<p>🥇 黄金: $4649/盎司 (-0.10%)</p>
+<p>   高$4697.700 低$4646.600 | 约 ¥1005/克</p>
+<p>⚡ 快手(1024.HK): HK$33.66 (+0.12%)</p>
+<p>💱 美元/人民币: 6.7205</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,28 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-27 16-05</span>
+    <span class="card-meta">🕐 最近 08-27 17-09</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘已更新并推送。</p>
-<p><b>本次任务结果</b>（<code>dashboard-cdp-full.py</code> 完成，commit <code>cb4cc4d</code>，已 push）：</p>
+  <div class="card-body"><p>仪表盘更新完成，全部数据新鲜抓取、clean 生成并已推送。</p>
+<p><b>本次执行摘要</b></p>
 <ul>
-<li>抖音热点：10 条</li>
-<li>GitHub Trending：今日/本周/本月各 10 条（Search API）</li>
-<li>B站全站排行（CDP）：10 条</li>
-<li>vicoman 新闻（CDP）：20 条</li>
-<li><code>index.html</code>（27201 bytes）+ <code>star-rank.html</code> 已同步，<code>git push</code> 成功</li>
+<li><b>数据源（全部实时抓取）</b></li>
+<p>  - 抖音：API 直抓 10 条</p>
+<p>  - B站：CDP 抓 <code>/popular/rank/all</code>，用 <code>a[href*=&quot;/video/&quot;]</code> 通用选择器，10 条干净视频（首版 <code>.content .info a</code> 混入 up 主主页链接，已换选择器重抓）</p>
+<p>  - vicoman：CDP 抓 20 条新闻（无需 guest 会话，页面直接渲染 30 卡片取前 20），标题+真实外链（ithome/bloomberg 等）</p>
+<p>  - GitHub：Search API 直连日/周/月各 10 条</p>
 </ul>
-<p>所有数据源全部抓取成功，无失败回退。</p></div>
+<ul>
+<li><b>生成与推送</b>：monkeypatch <code>fetch_bilibili</code>/<code>fetch_ai_news</code> 后复用 <code>dashboard_update.main()</code> 完整流程，<code>index.html</code>(27357B) + <code>star-rank.html</code> 已写盘并 push 成功（commit <code>23e0930</code>）。</li>
+</ul>
+<ul>
+<li><b>自检</b>：<code>bilibili.com//</code> 双前缀废链 0；新闻 20 条；残留 CDP tab 已全部清理；计数全绿。</li>
+</ul>
+<ul>
+<li><b>统计</b>：抖音10 / B站10 / GitHub日10周10月10 / 新闻20。快手仍需登录（占位）、小红书需扫码（跳过）——均为已知限制。</li>
+</ul></div>
 </details>
 <details class="card " >
   <summary>
