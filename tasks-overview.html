@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-28 06:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-28 07:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-28 06-45</span>
+    <span class="card-meta">🕐 最近 08-28 07-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,13 +96,13 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-28 06-15</span>
+    <span class="card-meta">🕐 最近 08-28 07-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-28 06:15]</p>
-<p>🥇 黄金: $4658/盎司 (-0.13%)</p>
-<p>   高$4660.900 低$4653.900 | 约 ¥1007/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-28 07:15]</p>
+<p>🥇 黄金: $4657/盎司 (-0.16%)</p>
+<p>   高$4664.800 低$4653.900 | 约 ¥1007/克</p>
 <p>⚡ 快手(1024.HK): HK$33.66 (+0.12%)</p>
 <p>💱 美元/人民币: 6.7249</p></div>
 </details>
@@ -112,24 +112,25 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-28 06-07</span>
+    <span class="card-meta">🕐 最近 08-28 07-05</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘统一更新完成。</p>
-<p><b>本次执行（dashboard-cdp-full.py，全流程成功）</b></p>
-<table><thead><tr><th>数据源</th><th>抓取方式</th><th>条数</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>官方 API</td><td>10</td></tr>
-<tr><td>📊 GitHub 今日/本周/本月</td><td>Search API</td><td>10/10/10</td></tr>
-<tr><td>📺 B站全站排行</td><td>CDP</td><td>10</td></tr>
-<tr><td>📰 vicoman 新闻</td><td>CDP</td><td>20</td></tr>
-</tbody></table>
+  <div class="card-body"><p>✅ 仪表盘更新完成</p>
+<p><b>数据抓取（全成功）</b></p>
 <ul>
-<li><code>index.html</code> 已生成（27,881 bytes，含时间戳），同步复制到 <code>star-rank.html</code></li>
-<li>Git commit + push 至 GitHub Pages ✅</li>
-<li>所有 tab（APP热榜 / GitHub / 新闻 / 解读）数据完整，无空维度</li>
+<li>🎵 抖音热点：10条</li>
+<li>📺 B站排行（CDP）：10条</li>
+<li>📰 vicoman新闻（CDP）：20条</li>
+<li>🐙 GitHub Trending（今日/本周/本月）：各10条</li>
 </ul>
-<p><code>DASHBOARD_UPDATE=success</code></p></div>
+<p><b>结果</b></p>
+<ul>
+<li>index.html + star-rank.html 已生成（27.5KB）</li>
+<li>已 git push，commit <code>51a2c53</code>，Everything up-to-date</li>
+<li>页面：<code>DASHBOARD_UPDATE=success</code></li>
+</ul>
+<p>全部四个数据源都用到了（抖音API + GitHub Search API + B站/vicoman CDP浏览器）。</p></div>
 </details>
 <details class="card " >
   <summary>
