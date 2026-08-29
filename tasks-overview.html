@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-30 05:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-30 06:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-30 05-45</span>
+    <span class="card-meta">🕐 最近 08-30 06-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-30 05-15</span>
+    <span class="card-meta">🕐 最近 08-30 06-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-30 05:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-30 06:15]</p>
 <p>🥇 黄金: $4503/盎司 (-3.44%)</p>
 <p>   高$4688.000 低$4495.000 | 约 ¥975/克</p>
 <p>⚡ 快手(1024.HK): HK$33.46 (-0.59%)</p>
@@ -112,27 +112,21 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-30 05-09</span>
+    <span class="card-meta">🕐 最近 08-30 06-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>已完成，推送成功。</p>
-<p><b>仪表盘更新完成</b> <code>60f6b61</code></p>
-<table><thead><tr><th>数据源</th><th>抓取方式</th><th>条数</th></tr></thead><tbody>
-<tr><td>抖音热点</td><td>curl API</td><td>10 ✅</td></tr>
-<tr><td>GitHub Trending (日/周/月)</td><td>Search API (--resolve 直连)</td><td>10/10/10 ✅</td></tr>
-<tr><td>B站全站排行</td><td>CDP</td><td>10 ✅</td></tr>
-<tr><td>vicoman 新闻</td><td>CDP</td><td>20 ✅</td></tr>
-</tbody></table>
-<p><b>本次要点</b></p>
+  <div class="card-body"><p>完成。仪表盘已通过 CDP + curl 抓取全部数据源、生成并推送 index.html。</p>
+<p><b>结果汇总</b></p>
 <ul>
-<li>B站标题提取修正：须用 <code>.title</code> 选择器抓文本，通用 <code>a</code> 只拿到 URL 标题为空</li>
-<li>GitHub 用 <code>--resolve api.github.com:443:20.27.177.116</code> 直连绕开代理限流</li>
-<li>复用了 <code>dashboard-update.py</code> 的 <code>build_html</code>/<code>repo_to_cn_*</code> 逻辑，快手/小红书空态保留占位</li>
-<li><code>index.html</code> + <code>star-rank.html</code> 已同步更新并 push，CDP 新建的 tab 已清理</li>
+<li>🎵 抖音 10条 ✅ ｜ 📺 B站 10条 ✅ ｜ 📰 vicoman 新闻 20条 ✅ ｜ 📊 GitHub 今日/本周/本月 各10条 ✅</li>
+<li><code>index.html</code>（29853B）多 tab 正常渲染，已 commit 并 push，工作区干净</li>
+<li>快手/小红书因登录墙仍为占位</li>
 </ul>
-<p>更新于 05:09 CST，已推送 ghstar-auto-mse7eixf → Pages。</p>
-<p>要不要我更新 sklearn 技能，把「B站 CDP 抓取 + GitHub --resolve 直连」这套稳定流程沉淀为可复用脚本？</p></div>
+<p><b>两个关键修复</b></p>
+<p>1. GitHub 当天搜索用 <code>created:&gt;=今天</code> 恒空 → 今日榜改用 2 天窗口</p>
+<p>2. 未认证 Search API 限流（10req/min）会被误判为&quot;无数据&quot; → 加了限流检测+重试+查询间隔，三榜最终拉满</p>
+<p>脚本已保存为 <code>~/.hermes/scripts/dashboard-cdp-update.py</code> 供后续 cron 复用。</p></div>
 </details>
 <details class="card " >
   <summary>
