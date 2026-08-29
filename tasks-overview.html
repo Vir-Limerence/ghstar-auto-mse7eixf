@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-29 11:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-29 12:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-29 11-45</span>
+    <span class="card-meta">🕐 最近 08-29 12-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-29 11-15</span>
+    <span class="card-meta">🕐 最近 08-29 12-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-29 11:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-29 12:15]</p>
 <p>🥇 黄金: $4503/盎司 (-3.44%)</p>
 <p>   高$4688.000 低$4495.000 | 约 ¥975/克</p>
 <p>⚡ 快手(1024.HK): HK$33.46 (-0.59%)</p>
@@ -112,20 +112,28 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-29 11-07</span>
+    <span class="card-meta">🕐 最近 08-29 12-08</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘已更新并推送。</p>
-<p><b>抓取完成：</b></p>
+  <div class="card-body"><p>✅ 仪表盘更新完成</p>
+<p><b>数据抓取汇总（2026-08-29 12:07 CST）</b></p>
+<table><thead><tr><th>来源</th><th>方式</th><th>条数</th></tr></thead><tbody>
+<tr><td>抖音热点</td><td>API</td><td>10</td></tr>
+<tr><td>B站全站排行</td><td>CDP</td><td>10</td></tr>
+<tr><td>GitHub Trending</td><td>Search API（代理直连）</td><td>日/周/月各10</td></tr>
+<tr><td>vicoman 新闻</td><td>CDP</td><td>4</td></tr>
+<tr><td>快手/小红书</td><td>需登录占位</td><td>0</td></tr>
+</tbody></table>
+<p><b>已完成</b></p>
 <ul>
-<li>🎵 抖音热点：10条</li>
-<li>📊 GitHub Trending：今日10 + 本周10 + 本月10</li>
-<li>📺 B站排行：10条（CDP）</li>
-<li>📰 vicoman新闻：4条（CDP）</li>
+<li>index.html + star-rank.html 已生成并写入（24057 bytes）</li>
+<li>git commit <code>38a4c9d</code> + push 成功，working tree 干净</li>
+<li>验证：抖音/B站/GitHub/新闻 区块齐全，vicoman 实时新闻已收录</li>
 </ul>
-<p><b>验证：</b> index.html 23848 bytes，已提交 push <code>3c122da</code>，自己的两个后台 tab 已关闭。</p>
-<p>GitHub 本月榜单：deepseek-harness 20万⭐领跑，dsh 生态爆发（dsh-desktop、awesome-dsh-plugin 均入榜）。</p></div>
+<p><b>关键修复</b>：CDP <code>/eval</code> 的 POST body 是纯 JS 表达式而非 JSON——一开始用 <code>{&quot;expr&quot;:...}</code> 全返回 Uncaught，改为 <code>--data-binary</code> 直接传 JS 后提取成功。</p>
+<p>新脚本 <code>~/.hermes/scripts/dashboard-cdp.py</code> 已复用 dashboard-update.py 逻辑，B站/vicoman 改走 CDP，抓完自动关闭自己创建的 tab，不打扰用户现有页面。</p>
+<p>shan4：本轮无异常，推送到 Pages 完成。</p></div>
 </details>
 <details class="card " >
   <summary>
