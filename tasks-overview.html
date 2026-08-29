@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-29 18:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-29 19:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-29 18-45</span>
+    <span class="card-meta">🕐 最近 08-29 19-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,11 +96,11 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-29 18-15</span>
+    <span class="card-meta">🕐 最近 08-29 19-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-29 18:15]</p>
+  <div class="card-body"><p>💰 每日行情 [08-29 19:15]</p>
 <p>🥇 黄金: $4503/盎司 (-3.44%)</p>
 <p>   高$4688.000 低$4495.000 | 约 ¥975/克</p>
 <p>⚡ 快手(1024.HK): HK$33.46 (-0.59%)</p>
@@ -112,21 +112,31 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-29 18-08</span>
+    <span class="card-meta">🕐 最近 08-29 19-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成。</p>
-<p><b>结果 (18:07 CST)：</b></p>
+  <div class="card-body"><p>✓ 仪表盘已更新并推送</p>
+<p><b>数据抓取（全部成功，实数据）</b></p>
 <ul>
-<li>🎵 抖音热点 10条</li>
-<li>📺 B站全站排行 10条（CDP）</li>
-<li>🔥 快手热搜 0（需登录，占位）</li>
-<li>📊 GitHub Trending 日/周/月 各10条</li>
-<li>📰 vicoman 新闻 4条（CDP）</li>
+<li>🎵 抖音热点：10条（API）</li>
+<li>📊 GitHub Trending：今日/本周/本月各10条（Search API，走proxy）</li>
+<li>📺 B站全站排行：10条（CDP浏览器）</li>
+<li>📰 vicoman新闻：20条（CDP浏览器）</li>
 </ul>
-<p>已生成 index.html + star-rank.html 并推送到 GitHub（commit <code>0181a12</code>）。</p>
-<p><b>改进：</b> 建了 <code>~/.hermes/scripts/dashboard-cdp-update.py</code>，复用 dashboard-update.py 的 HTML 生成逻辑，但 B站/vicoman 改用 CDP proxy 抓取（vicoman 加3秒渲染等待）。快手仍无法直接抓，日常占位。</p></div>
+<p><b>HTML 生成</b></p>
+<ul>
+<li>复用 dashboard-update.py 逻辑 + CDP 数据源（dashboard-cdp-full.py）</li>
+<li>index.html + star-rank.html 已生成（27741 bytes）</li>
+<li>各区块：抖音/B站/新闻/今日涨星/本月涨星 均已确认存在</li>
+</ul>
+<p><b>Git</b></p>
+<ul>
+<li>提交 <code>4169a00 🔄 每小时自动更新 2026-08-29 19:07</code>，已 push 到 GitHub Pages</li>
+<li>更新于 2026-08-29 19:07 CST</li>
+<li><code>DASHBOARD_UPDATE=success</code></li>
+</ul>
+<p>无异常，无需降级。</p></div>
 </details>
 <details class="card " >
   <summary>
