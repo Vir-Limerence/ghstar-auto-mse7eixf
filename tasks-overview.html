@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-08-31 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-08-31 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 08-31 20-45</span>
+    <span class="card-meta">🕐 最近 08-31 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 08-31 20-15</span>
+    <span class="card-meta">🕐 最近 08-31 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [08-31 20:15]</p>
-<p>🥇 黄金: $4509/盎司 (-0.46%)</p>
-<p>   高$4521.500 低$4445.600 | 约 ¥975/克</p>
+  <div class="card-body"><p>💰 每日行情 [08-31 21:15]</p>
+<p>🥇 黄金: $4500/盎司 (-0.66%)</p>
+<p>   高$4521.500 低$4445.600 | 约 ¥973/克</p>
 <p>⚡ 快手(1024.HK): HK$33.58 (+0.36%)</p>
-<p>💱 美元/人民币: 6.7251</p></div>
+<p>💱 美元/人民币: 6.7263</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,19 +112,19 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 08-31 20-06</span>
+    <span class="card-meta">🕐 最近 08-31 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成。</p>
-<p><b>数据抓取(20:06 CST):</b></p>
+  <div class="card-body"><p>仪表盘更新完成 ✅</p>
 <ul>
-<li>🎵 抖音热点 10 条</li>
-<li>📊 GitHub Trending 每日/每周/每月 各 10 个</li>
-<li>📺 B站排行 10 条</li>
-<li>📰 vicoman 新闻 20 条</li>
+<li>抖音热点 10 条</li>
+<li>B 站排行 10 条</li>
+<li>GitHub Trending 今日/本周/本月 各 10 个</li>
+<li>vicoman 新闻 20 条</li>
+<li>index.html 已生成（27KB），已 git push</li>
 </ul>
-<p><b>推送:</b> index.html + star-rank.html 已更新(27.5KB), git push 成功 → <code>DASHBOARD_UPDATE=success</code>。</p></div>
+<p>GitHub 首次请求触发限流，自动等待后重试成功。</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -145,11 +145,32 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 08-30 21-00</span>
+    <span class="card-meta">🕐 最近 08-31 21-00</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>[SILENT]</p></div>
+  <div class="card-body"><p>今日对话记录均为定时任务自动执行，无真人交互。汇总如下：</p>
+<h2 class='h2'>📋 每日面板（8-31）</h2>
+<h3 class='h3'>🔑 关键话题</h3>
+<ul>
+<li>仪表盘统一更新：每小时:05 触发，抖音热点10条 + GitHub Trending三榜各10 + B站排行10 + vicoman新闻20，全部成功并 git push（index.html/star-rank.html，约27.5KB）</li>
+<li>消防员招录监控 18:01：检查上海拟录用名单，无新增，已静默</li>
+</ul>
+<h3 class='h3'>✅ 待办</h3>
+<ul>
+<li>无（均为自动化 cron，已自动完成）</li>
+</ul>
+<h3 class='h3'>💡 决策</h3>
+<ul>
+<li>复用现成 <code>dashboard-cdp-update.py</code>，无需新建脚本</li>
+<li>vicoman 需先开 CDP tab 再抓取；B站复用已开 tab</li>
+</ul>
+<h3 class='h3'>🔗 会话链接</h3>
+<ul>
+<li>@session:default/cron_64217fe26851_20260831_200554（20:06 仪表盘）</li>
+<li>@session:default/cron_977b44e0805f_20260831_180039（18:00 消防监控）</li>
+</ul>
+<p>今日无用户主动对话，仅系统定时任务运行正常。</p></div>
 </details>
 <details class="card " >
   <summary>
