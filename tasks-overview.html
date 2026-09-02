@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-02 13:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-02 14:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-02 13-45</span>
+    <span class="card-meta">🕐 最近 09-02 14-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-02 13-15</span>
+    <span class="card-meta">🕐 最近 09-02 14-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-02 13:15]</p>
-<p>🥇 黄金: $4361/盎司 (-0.82%)</p>
-<p>   高$4382.000 低$4329.200 | 约 ¥943/克</p>
-<p>⚡ 快手(1024.HK): HK$33.72 (-2.66%)</p>
-<p>💱 美元/人民币: 6.7233</p></div>
+  <div class="card-body"><p>💰 每日行情 [09-02 14:15]</p>
+<p>🥇 黄金: $4375/盎司 (-0.50%)</p>
+<p>   高$4382.000 低$4329.200 | 约 ¥945/克</p>
+<p>⚡ 快手(1024.HK): HK$33.74 (-2.60%)</p>
+<p>💱 美元/人民币: 6.7213</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,26 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-02 13-06</span>
+    <span class="card-meta">🕐 最近 09-02 14-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成并已推送。</p>
-<p><b>数据统计：</b></p>
-<table><thead><tr><th>来源</th><th>数量</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>10</td></tr>
-<tr><td>📊 GitHub Trending (日/周/月)</td><td>10/10/10</td></tr>
-<tr><td>📺 B站排行</td><td>10</td></tr>
-<tr><td>📰 vicoman 新闻</td><td>20</td></tr>
+  <div class="card-body"><p>All data sources fetched successfully and pushed to GitHub Pages.</p>
+<p><b>仪表盘更新完成 ✅</b></p>
+<table><thead><tr><th>数据源</th><th>条数</th><th>方式</th></tr></thead><tbody>
+<tr><td>抖音热点</td><td>10</td><td>curl API</td></tr>
+<tr><td>GitHub 今日</td><td>10</td><td>Search API</td></tr>
+<tr><td>GitHub 本周</td><td>10</td><td>Search API</td></tr>
+<tr><td>GitHub 本月</td><td>10</td><td>Search API</td></tr>
+<tr><td>B站排行</td><td>10</td><td>CDP proxy eval</td></tr>
+<tr><td>vicoman 新闻</td><td>20</td><td>CDP proxy eval</td></tr>
 </tbody></table>
-<p>index.html 已更新 (27540 bytes)，拷贝至 star-rank.html，git commit <code>ecaa99b</code> <b>已推送到 GitHub Pages</b>。</p>
-<p>注：任务描述中的 GitHub Search API 部分，现脚本已按记忆中的坑处理——当日榜用 2 天窗口（当天索引滞后 total=0），三次查询间隔 6s 规避未认证限流，<code>--resolve</code> 直连 api.github.com。</p></div>
+<ul>
+<li>index.html = star-rank.html = 27,588 bytes</li>
+<li>已 git commit + push 到 GitHub Pages</li>
+<li>CDP proxy 健康（sessions 25，chromePort 9222）</li>
+</ul>
+<p>REPORT=dashboard 更新完成 ✅</p></div>
 </details>
 <details class="card " >
   <summary>
