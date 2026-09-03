@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-03 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-03 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-03 20-45</span>
+    <span class="card-meta">🕐 最近 09-03 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-03 20-15</span>
+    <span class="card-meta">🕐 最近 09-03 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-03 20:15]</p>
-<p>🥇 黄金: $4491/盎司 (+1.74%)</p>
-<p>   高$4496.700 低$4426.700 | 约 ¥970/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-03 21:15]</p>
+<p>🥇 黄金: $4536/盎司 (+2.75%)</p>
+<p>   高$4543.700 低$4426.700 | 约 ¥980/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
-<p>💱 美元/人民币: 6.7191</p></div>
+<p>💱 美元/人民币: 6.7182</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-03 20-08</span>
+    <span class="card-meta">🕐 最近 09-03 21-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘更新完成，已推送。</p>
-<p><b>本次抓取结果</b></p>
+  <div class="card-body"><p>仪表盘更新完成 ✅</p>
+<p><b>本次结果 (2026-09-03 21:06 CST)</b></p>
 <ul>
 <li>🎵 抖音热点：10 条</li>
-<li>📊 GitHub Trending：今日 10 / 本周 10 / 本月 10</li>
+<li>📊 GitHub Trending：今日/本周/本月各 10 个</li>
 <li>📺 B站排行：10 条</li>
-<li>📰 vicoman 新闻：仅 2 条</li>
+<li>📰 vicoman 新闻：2 条（源站当前仅 2 条，选择器正常，非抓取故障）</li>
+<li>📄 index.html + star-rank.html 已生成（25241 bytes），<code>f59ca55 🔄 仪表盘更新</code> 已 git push 成功</li>
 </ul>
-<p><b>vicoman 说明</b>：核实后确认是数据源问题，非脚本故障——该新闻流「最近更新」停在 9月1日 00:01，当前只有 2 条（库克卸任苹果CEO、Clipto融资）。&quot;加载更多&quot;按钮在虚拟布局上无法程序化点击，即使加载也是历史旧闻。已抓取到当前最新 2 条。</p>
-<p>index.html（23670 bytes）已更新并 <code>git push</code> 到 Pages，commit <code>1aff00a</code>。</p></div>
+<p>全流程走 <code>dashboard-cdp-update.py</code>，复用现有 CDP proxy(3456) + Search API 逻辑，数据均为实时真实抓取。vicoman 低条数已核实为源站现状，无需修复。</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -146,33 +146,32 @@
     <span class="card-name">每日聊天面板</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 09-02 21-00</span>
+    <span class="card-meta">🕐 最近 09-03 21-00</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板（9月2日）</h2>
+  <div class="card-body"><h2 class='h2'>📋 每日面板</h2>
 <h3 class='h3'>🔑 关键话题</h3>
 <ul>
-<li><b>TikTok/字节「分享团队」岗位调研</b>：用户询问 TikTok 分享团队，用 CDP 搜索确认北京有相关在招岗位（AI-3D创作引擎-TikTok研发、平台研发专家、直播运营Leader等）</li>
-<li><b>消防员招录监控 10:00</b>：查上海国家综合性消防救援队伍编制内拟录用名单，官方平台（四川/新疆/内蒙古等有，上海）<b>未见上海</b>，无新增，静默</li>
-<li><b>仪表盘统一更新</b>（19:05、20:06 两次 cron）：抖音热点10条 + GitHub Trending三榜各10 + B站 + vicoman新闻，均正常</li>
+<li>调研 GitHub 数据分析 Agent 榜单（LobsterAI 6k⭐ 居首，赛道偏冷门）</li>
+<li>已装 Hermes 无现成数据分析 skill（仅 arxiv/blogwatcher/llm-wiki/polymarket）</li>
+<li>推荐契合方案：Data-Analysis-Agent(2.5k)/qinyan-academic-skills/Agent-Loop-Skills</li>
 </ul>
 <h3 class='h3'>✅ 待办</h3>
 <ul>
-<li>TikTok 岗位：是否整理北京当前完整在招岗位列表 — 待用户决定</li>
-<li>消防员：继续只盯上海编制内名单</li>
+<li>可选：为用户定制&quot;数据分析+HTML可视化&quot;专属 skill（喂CSV→自动EDA→深色HTML交互报告），已提出，等确认</li>
 </ul>
 <h3 class='h3'>💡 决策</h3>
 <ul>
-<li>TikTok「分享」若指社交功能，在其研发团队而非独立团队</li>
+<li>结论：纯数据分析 Agent star 普遍不高，因能力已被通用 Agent 内化，倾向自建专属 skill 而非装现成工具</li>
 </ul>
 <h3 class='h3'>🔗 会话链接</h3>
 <ul>
-<li>TikTok 岗位调研（微信会话）：@session:default/20260804_171615_3ab77922</li>
-<li>消防员监控：@session:default/cron_977b44e0805f_20260902_100048</li>
-<li>仪表盘更新：@session:default/cron_64217fe26851_20260902_200508</li>
+<li>数据分析调研：@session:default/20260804_171615_3ab77922</li>
+<li>仪表盘统一更新(20:08)：@session:default/cron_64217fe26851_20260903_200517</li>
 </ul>
-<p>今日实质对话仅 TikTok 岗位咨询一项，其余为常规 cron 自动运行正常。</p></div>
+<p>---</p>
+<p>今日实质对话聚焦数据分析 Agent/skill 选型，并酝酿自建 Hermes 数据分析可视化 skill。仪表盘 cron 正常履行每小时更新（非人工对话）。</p></div>
 </details>
 <details class="card " >
   <summary>
