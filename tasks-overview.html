@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-04 03:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-04 04:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-04 03-45</span>
+    <span class="card-meta">🕐 最近 09-04 04-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,12 +96,12 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-04 03-15</span>
+    <span class="card-meta">🕐 最近 09-04 04-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-04 03:15]</p>
-<p>🥇 黄金: $4525/盎司 (+2.51%)</p>
+  <div class="card-body"><p>💰 每日行情 [09-04 04:15]</p>
+<p>🥇 黄金: $4523/盎司 (+2.45%)</p>
 <p>   高$4558.500 低$4426.700 | 约 ¥978/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
 <p>💱 美元/人民币: 6.7238</p></div>
@@ -112,20 +112,21 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-04 03-06</span>
+    <span class="card-meta">🕐 最近 09-04 04-08</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成。</p>
-<p>📊 <b>仪表盘已更新并推送</b> (<code>e7e88ad</code>)</p>
+  <div class="card-body"><p>仪表盘更新完成并已推送（提交 <code>bb22683</code>，<code>main</code> 与 <code>origin/main</code> 同步）。</p>
+<h3 class='h3'>报告</h3>
+<p><b>✅ 已更新 &amp; 推送</b> —— GitHub Pages 仪表盘 (<code>index.html</code> / <code>star-rank.html</code>)，提交 <code>bb22683 🔄 仪表盘更新 2026-09-04 04:06</code>，仓库已同步。</p>
 <table><thead><tr><th>数据源</th><th>结果</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>✅ 10 条</td></tr>
-<tr><td>📊 GitHub Trending</td><td>✅ 每日/每周/每月 各 10 条</td></tr>
-<tr><td>📺 B站排行 (CDP)</td><td>✅ 10 条</td></tr>
-<tr><td>📰 vicoman 新闻</td><td>⚠️ 0 条</td></tr>
+<tr><td>🎵 抖音热点</td><td>✅ 10 条（curl API）</td></tr>
+<tr><td>📊 GitHub Trending</td><td>✅ 今日/本周/本月 各 10（Search API，2天窗口规避限流）</td></tr>
+<tr><td>📺 B站排行</td><td>✅ 10 条（CDP eval）</td></tr>
+<tr><td>📰 vicoman 新闻</td><td>⚠️ <b>0 条 —— 服务端不可达</b></td></tr>
 </tbody></table>
-<p><b>vicoman 说明</b>：非抓取失败，是源站当前为空 —— 页面显示&quot;今日新闻 0 · 暂无匹配新闻&quot;，三种 API 变体（limit/page/offset）均 <code>total=0</code>，DOM 无 article。已升级排查核实，属源站数据空窗，无法伪造。</p>
-<p>其余数据正常，<code>index.html</code> 与 <code>star-rank.html</code> 已同步，Git 已推送。探测用 CDP tab 已关闭。</p></div>
+<p><b>vicoman 根因排查（非脚本问题）</b>：<code>chrome</code> 与 <code>curl</code> 双通道验证，<code>www.vicoman.top/tools/ai-news/</code> 均返回 <code>ERR_CONNECTION_CLOSED</code>（页面加载成「无法访问此网站」错误页）。尝试了内部 API <code>/web-api/news/news?limit=30</code> 与 guest 会话 <code>/api/auth/guest</code>，页面内 fetch 一律 <code>Failed to fetch</code>。结论：vicoman 当前宕机或网络被劫持（终端 fake-ip 代理 198.18.x 亦直连失败，<code>code=000</code>），并非选择器或抓取逻辑失效。服务恢复后下次 cron 会自动补上。</p>
+<p>数据抓取已本地缓存于 <code>data.json</code>，HTML 生成复用了 <code>dashboard-update.py</code> 逻辑，未改动脚本。无遗留脏改动。</p></div>
 </details>
 <details class="card " >
   <summary>
