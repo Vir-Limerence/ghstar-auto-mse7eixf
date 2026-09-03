@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-04 05:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-04 06:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-04 05-45</span>
+    <span class="card-meta">🕐 最近 09-04 06-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,13 +96,13 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-04 05-15</span>
+    <span class="card-meta">🕐 最近 09-04 06-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-04 05:15]</p>
-<p>🥇 黄金: $4524/盎司 (+2.47%)</p>
-<p>   高$4558.500 低$4426.700 | 约 ¥978/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-04 06:15]</p>
+<p>🥇 黄金: $4525/盎司 (-0.32%)</p>
+<p>   高$4525.800 低$4520.100 | 约 ¥978/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
 <p>💱 美元/人民币: 6.7238</p></div>
 </details>
@@ -112,21 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-04 05-07</span>
+    <span class="card-meta">🕐 最近 09-04 06-09</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘已更新并推送 ✅</p>
-<p><b>运行结果</b> (<code>dashboard-cdp-update.py</code>):</p>
-<ul>
-<li>🎵 抖音热点: 10 条 ✅</li>
-<li>📊 GitHub Trending: 今日/本周/本月 各 10 条 ✅</li>
-<li>📺 B站全站排行: 10 条 ✅</li>
-<li>📰 vicoman 新闻: 0 条 ⚠️</li>
-<li>已 git commit + push（index.html / star-rank.html）</li>
-</ul>
-<p><b>vicoman 新闻为 0 的原因（已核实）</b>：并非抓取失败，而是上游新闻源此刻确实为空。CDP 实测页面显示「今日新闻 0」「暂无匹配新闻」，内部 API <code>/web-api/news/news</code> 返回 <code>{items:[],total:0}</code>，全部类目（科技/财经/国际/AI 等）均为 0。已是服务器端真实状态。</p>
-<p>由于脚本对空新闻会复用上一版 HTML，新闻 tab 仍保留了历史内容，页面完整。本次为正常的空数据时段，无需处理。</p></div>
+  <div class="card-body"><p>抓取完成，已推送。vicoman 新闻源确实为空（页面显示「暂无匹配新闻」，内部 API 各种参数 total 均=0，非抓取失败），余下三源全部满额。</p>
+<p><b>仪表盘更新完成 · 2026-09-04 06:06 CST</b></p>
+<table><thead><tr><th>数据源</th><th>条数</th><th>方式</th></tr></thead><tbody>
+<tr><td>抖音热点</td><td>10</td><td>curl API ✅</td></tr>
+<tr><td>GitHub Trending 日/周/月</td><td>10/10/10</td><td>Search API ✅</td></tr>
+<tr><td>B站排行</td><td>10</td><td>CDP proxy 3456 ✅</td></tr>
+<tr><td>vicoman 新闻</td><td>0</td><td>源本身无数据（「暂无匹配新闻」，非脚本故障）</td></tr>
+</tbody></table>
+<p><b>Git 推送</b>：commit <code>0494737</code>，<code>git ls-remote</code> 确认与 origin/main 一致，工作树干净。index.html 已更新（23682 bytes）并同步 star-rank.html。</p>
+<p>说明：B站与 vicoman 走共享 Chrome CDP（localhost:3456）抓取，完成后已关闭自建 tab，未打扰你现有页面。</p></div>
 </details>
 <details class="card " >
   <summary>
