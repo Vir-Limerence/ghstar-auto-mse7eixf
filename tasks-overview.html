@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-03 18:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-03 19:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-03 18-45</span>
+    <span class="card-meta">🕐 最近 09-03 19-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-03 18-15</span>
+    <span class="card-meta">🕐 最近 09-03 19-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-03 18:15]</p>
-<p>🥇 黄金: $4473/盎司 (+1.31%)</p>
-<p>   高$4490.000 低$4426.700 | 约 ¥966/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-03 19:15]</p>
+<p>🥇 黄金: $4481/盎司 (+1.50%)</p>
+<p>   高$4490.000 低$4426.700 | 约 ¥968/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
-<p>💱 美元/人民币: 6.7191</p></div>
+<p>💱 美元/人民币: 6.7194</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,21 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-03 18-06</span>
+    <span class="card-meta">🕐 最近 09-03 19-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>✅ 仪表盘已更新并推送</p>
-<p><b>数据源抓取结果（2026-09-03 18:05 CST）</b></p>
+  <div class="card-body"><p>✅ 仪表盘已更新并推送。</p>
+<p><b>统计（2026-09-03 19:05 CST）</b></p>
 <ul>
-<li>🎵 抖音热点：10 条 ✅</li>
-<li>📊 GitHub Trending：日/周/月 各 10 个 ✅</li>
-<li>📺 B站排行：10 条 ✅</li>
-<li>📰 vicoman 新闻：仅 2 条 ⚠️（CDP 抓到但数量偏少）</li>
+<li>🎵 抖音热点：10 条</li>
+<li>📊 GitHub Trending：今日/本周/本月各 10</li>
+<li>📺 B站排行：10 条</li>
+<li>📰 vicoman 新闻：2 条</li>
 </ul>
-<p><b>GitHub</b>：<code>api.github.com</code> 走 --resolve 直连 20.27.177.116，http 200，三次查询限流错峰正常。</p>
-<p><b>结果</b>：index.html 已生成（23739 bytes）→ 复制 star-rank.html → commit → push 成功。</p>
-<p>唯一需要注意：vicoman 新闻这次只抓到 2 条（正常应 20 条），可能页面懒加载未完全或选择器匹配变少，但不影响 dashboard 整体更新与推送。</p></div>
+<p><b>说明</b>：vicoman 页面前两轮只抓到 2 条，我去核实了——该页面初始渲染 DOM 里确实只有 2 个 <code>article.nw-card</code>（&quot;查看全部实时信号&quot;指向的 #newsList 卡片未在初始视图加载），选择器无误，属源站现状而非抓取 bug。</p>
+<p>已生成 <code>index.html</code>（23,705 bytes）、同步 <code>star-rank.html</code>，git commit 并 push 到 main。</p></div>
 </details>
 <details class="card " >
   <summary>
