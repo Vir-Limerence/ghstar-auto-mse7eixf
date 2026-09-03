@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-04 00:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-04 01:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-04 00-45</span>
+    <span class="card-meta">🕐 最近 09-04 01-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-04 00-15</span>
+    <span class="card-meta">🕐 最近 09-04 01-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-04 00:15]</p>
-<p>🥇 黄金: $4543/盎司 (+2.91%)</p>
-<p>   高$4558.500 低$4426.700 | 约 ¥982/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-04 01:15]</p>
+<p>🥇 黄金: $4537/盎司 (+2.77%)</p>
+<p>   高$4558.500 低$4426.700 | 约 ¥980/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
-<p>💱 美元/人民币: 6.7219</p></div>
+<p>💱 美元/人民币: 6.7216</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,21 +112,31 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-04 00-07</span>
+    <span class="card-meta">🕐 最近 09-04 01-12</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>任务完成。已抓取全部数据源并生成、推送指数仪表盘。</p>
-<p><b>结果统计：</b></p>
+  <div class="card-body"><p>仪表盘更新完成。</p>
+<h3 class='h3'>结果</h3>
+<p>✅ <b>已生成并推送</b> — 提交 <code>52ef0ed</code>，index.html 与 star-rank.html 一致，工作区干净，包含：</p>
 <ul>
-<li>🎵 抖音热点：10 条 ✅</li>
-<li>📊 GitHub Trending：今日/本周/本月各 10 个 ✅</li>
-<li>📺 B站排行：10 条 ✅</li>
-<li>📰 vicoman 新闻：仅 2 条 ⚠️</li>
+<li>抖音热点 10 条（curl API）</li>
+<li>GitHub Trending 10/10/10（日/周/月，Search API + 2天窗口）</li>
+<li>B站排行 10 条（CDP）</li>
+<li>vicoman 新闻 2 条（CDP）</li>
 </ul>
-<p><b>vicoman 2 条说明：</b> 已实测确认非选择器问题——页面当前只渲染了 2 张 <code>article.nw-card</code>（库克卸任苹果CEO、Clipto融资估值2.5亿美元），滚动加载后也无新增。这是凌晨 00:05 数据源当前真实状态（新闻源定时刷新，夜间条目少）。已按日常逻辑关 tab、复用现有 HTML 兜底。</p>
-<p><b>Git：</b> index.html 与 star-rank.html 已更新（23743 bytes），<code>git add/commit/push</code> 成功推送 main。</p>
-<p><code>DASHBOARD_UPDATE=success</code>，官网报表已更新。</p></div>
+<h3 class='h3'>排查：vicoman 只有 2 条是&quot;虚惊&quot;</h3>
+<p>一开始以为抓取有回归（历史曾出 20 条），做了完整根因排查：</p>
+<p>1. 补上了 <b>guest 会话</b>（POST <code>/api/auth/guest</code> + reload），脚本已修复，但仍是 2 条</p>
+<p>2. 找到真实数据源：内部 API <code>/web-api/news/news?limit=30</code>，页面内调用返回 <b><code>total:2, has_more:false</code></b></p>
+<p><b>结论：vicoman 当前实时确实只有 2 条新闻</b>，不是 bug——02:50 那 20 条是当时站点有更多内容。GPU 仪表盘如实反映现状。</p>
+<h3 class='h3'>顺手改进</h3>
+<ul>
+<li><code>dashboard-cdp-update.py</code> 的 <code>fetch_vicoman</code> 加上了游客会话步骤 + 分类识别（更贴近数据源）</li>
+<li>内存更新：记录 vicoman 内部 API endpoint 才是稳定取数方式，DOM 值 2 条属正常</li>
+<li>已关闭调试期间创建的 CDP tab、清理临时文件</li>
+</ul>
+<p>仪表盘数据源全部正常，无异常。</p></div>
 </details>
 <details class="card " >
   <summary>
