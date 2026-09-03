@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-03 10:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-03 11:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-03 10-45</span>
+    <span class="card-meta">🕐 最近 09-03 11-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-03 10-15</span>
+    <span class="card-meta">🕐 最近 09-03 11-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-03 10:15]</p>
-<p>🥇 黄金: $4458/盎司 (+0.97%)</p>
-<p>   高$4461.200 低$4426.700 | 约 ¥963/克</p>
-<p>⚡ 快手(1024.HK): HK$33.36 (-0.83%)</p>
-<p>💱 美元/人民币: 6.7178</p></div>
+  <div class="card-body"><p>💰 每日行情 [09-03 11:15]</p>
+<p>🥇 黄金: $4474/盎司 (+1.35%)</p>
+<p>   高$4475.800 低$4426.700 | 约 ¥966/克</p>
+<p>⚡ 快手(1024.HK): HK$32.94 (-2.08%)</p>
+<p>💱 美元/人民币: 6.718</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,22 +112,21 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-03 10-07</span>
+    <span class="card-meta">🕐 最近 09-03 11-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>vicoman 页面本身当前只渲染 2 条 <code>.nw-card</code>（非提取问题），属数据源现状。任务已完成。</p>
-<h3 class='h3'>仪表盘更新完成 ✅</h3>
-<p><b>数据抓取</b>（已全部成功）：</p>
-<table><thead><tr><th>源</th><th>条数</th><th>方式</th></tr></thead><tbody>
-<tr><td>🎵 抖音热点</td><td>10</td><td>curl API</td></tr>
-<tr><td>📊 GitHub Trending</td><td>日/周/月 各10</td><td>Search API（2天窗口）</td></tr>
-<tr><td>📺 B站排行</td><td>10</td><td>CDP proxy 3456</td></tr>
-<tr><td>📰 vicoman 新闻</td><td>2</td><td>CDP proxy（页面本身仅渲染2条）</td></tr>
-</tbody></table>
-<p><b>HTML</b>：<code>index.html</code> 已生成（23617 bytes）→ 同步 <code>star-rank.html</code> → <code>git add/commit/push</code> ✅ 已推送</p>
-<p>统计：抖音10 | B站10 | GitHub 10/10/10 | 新闻2，<code>DASHBOARD_UPDATE=success</code></p>
-<blockquote>说明：vicoman 仅 2 条是数据源当前仅暴露这些新闻卡片，非脚本问题。其余三源数据完整。</blockquote></div>
+  <div class="card-body"><p>仪表盘已更新并推送 ✅</p>
+<ul>
+<li><b>抖音热点</b>: 10条</li>
+<li><b>GitHub Trending</b>: 今日/本周/本月 各10个</li>
+<li><b>B站排行</b>: 10条</li>
+<li><b>vicoman新闻</b>: 2条（页面当前确实只有2篇新闻卡片，非抓取问题——重大：库克卸任苹果CEO；关键：AI视频搜索Clipto融资）</li>
+</ul>
+<ul>
+<li><b>index.html / star-rank.html 已生成提交</b>，<code>git push</code> 成功（commit <code>4c04374</code>）</li>
+<li>状态: <code>DASHBOARD_UPDATE=success</code>，GitHub 主页报表已更新</li>
+</ul></div>
 </details>
 <details class="card " >
   <summary>
