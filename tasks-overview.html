@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-03 16:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-03 17:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-03 16-45</span>
+    <span class="card-meta">🕐 最近 09-03 17-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,15 +96,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-03 16-15</span>
+    <span class="card-meta">🕐 最近 09-03 17-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-03 16:15]</p>
-<p>🥇 黄金: $4480/盎司 (+1.47%)</p>
-<p>   高$4490.000 低$4426.700 | 约 ¥968/克</p>
-<p>⚡ 快手(1024.HK): HK$32.74 (-2.68%)</p>
-<p>💱 美元/人民币: 6.7186</p></div>
+  <div class="card-body"><p>💰 每日行情 [09-03 17:15]</p>
+<p>🥇 黄金: $4485/盎司 (+1.59%)</p>
+<p>   高$4490.000 低$4426.700 | 约 ¥969/克</p>
+<p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
+<p>💱 美元/人民币: 6.7185</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,20 +112,24 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-03 16-07</span>
+    <span class="card-meta">🕐 最近 09-03 17-08</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>抓取完成并已推送。</p>
-<p><b>仪表盘更新完成（2026-09-03 16:06）</b></p>
+  <div class="card-body"><p>vicoman 页面实际只有 2 篇文章（卡片与文章数均为 2），非抓取错误，是数据源本身内容少。任务已完成。</p>
+<p><b>仪表盘更新完成 ✅</b></p>
+<table><thead><tr><th>数据源</th><th>抓取数</th><th>方式</th></tr></thead><tbody>
+<tr><td>抖音热点</td><td>10</td><td>curl API</td></tr>
+<tr><td>GitHub Trending</td><td>今日10/本周10/本月10</td><td>Search API</td></tr>
+<tr><td>B站排行</td><td>10</td><td>CDP</td></tr>
+<tr><td>vicoman 新闻</td><td>2</td><td>CDP（页面本就只有2篇）</td></tr>
+</tbody></table>
 <ul>
-<li>抖音热点 10条 ✅</li>
-<li>GitHub Trending 日/周/月 各10个 ✅</li>
-<li>B站排行 10条 ✅</li>
-<li>vicoman 新闻 2条 ✅</li>
-<li>index.html 已生成 (23.7KB) 并 git push ✅</li>
+<li><code>index.html</code> → <code>star-rank.html</code> 已同步（23681 bytes）</li>
+<li>已 git commit + push 成功（<code>🔄 仪表盘更新 2026-09-03 17:07</code>）</li>
+<li>CDP proxy 3456 正常，B站/vicoman 均走共享 Chrome</li>
 </ul>
-<p>已推送 dashboard 更新。</p></div>
+<p><b>说明</b>：vicoman 新闻仅 2 条是页面本身内容少（页面验证 文章数=卡片数=2），非选择器问题，符合预期。</p></div>
 </details>
 <details class="card " >
   <summary>
