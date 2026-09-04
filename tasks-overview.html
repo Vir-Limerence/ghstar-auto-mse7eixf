@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-05 04:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-05 05:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-05 04-45</span>
+    <span class="card-meta">🕐 最近 09-05 05-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -97,12 +97,12 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-05 04-15</span>
+    <span class="card-meta">🕐 最近 09-05 05-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-05 04:15]</p>
-<p>🥇 黄金: $4484/盎司 (-1.24%)</p>
+  <div class="card-body"><p>💰 每日行情 [09-05 05:15]</p>
+<p>🥇 黄金: $4482/盎司 (-1.27%)</p>
 <p>   高$4537.800 低$4412.000 | 约 ¥967/克</p>
 <p>⚡ 快手(1024.HK): HK$33.66 (+2.75%)</p>
 <p>💱 美元/人民币: 6.7108</p></div>
@@ -113,19 +113,25 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-05 04-08</span>
+    <span class="card-meta">🕐 最近 09-05 05-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成。</p>
+  <div class="card-body"><p>仪表盘更新完成并已推送。</p>
+<p><b>运行结果</b>（<code>dashboard-cdp-update.py</code> 一键流程，06:06 CST）：</p>
 <ul>
-<li>抖音热点 ✅ 10条</li>
-<li>B站全站排行 ✅ 10条</li>
-<li>GitHub今日/本周/本月 ✅ 10/10/10</li>
-<li>vicoman新闻 ⚠️ 源站当前返回空（页面也显示&quot;今日新闻 0&quot;），保留上次2条旧闻兜底</li>
-<li>已写入 index.html + star-rank.html 并 git push</li>
+<li>抖音热点 ✅ 10 条</li>
+<li>GitHub Trending ✅ 日/周/月 各 10 条</li>
+<li>B站排行 ✅ 10 条（无 up 主混入、无双前缀废链）</li>
+<li>vicoman 新闻 ⚠️ 本轮源抓取 0 条（可能源真空/登录墙），已由 <code>fallback_news_from_history()</code> 从 git 历史兜底保留上一期 4 条真实新闻（库克卸任、Clipto 融资等，外链有效），区块未空缺</li>
 </ul>
-<p>数据已上线。vicoman 疑似临时异常，下次整点会自动重试。</p></div>
+<p><b>推送验证</b>：</p>
+<ul>
+<li>新 commit <code>6ff0717</code> push 成功，远端 HEAD == 本地 HEAD</li>
+<li><code>index.html</code> + <code>star-rank.html</code> 均已更新（23680 bytes）</li>
+<li>全页 51 个排行条目，时间戳 &quot;更新于 2026-09-05 05:06 CST&quot;</li>
+</ul>
+<p>在线页面 1-2 分钟后生效（GitHub Pages 延迟）。vicoman 低条数属已知源站波动，下一轮 cron 会自动重试恢复。</p></div>
 </details>
 <details class="card " >
   <summary>
