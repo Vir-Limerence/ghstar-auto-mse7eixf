@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-04 07:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-04 08:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-04 07-45</span>
+    <span class="card-meta">🕐 最近 09-04 08-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -96,13 +96,13 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-04 07-15</span>
+    <span class="card-meta">🕐 最近 09-04 08-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-04 07:15]</p>
-<p>🥇 黄金: $4521/盎司 (-0.41%)</p>
-<p>   高$4526.300 低$4518.500 | 约 ¥977/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-04 08:15]</p>
+<p>🥇 黄金: $4526/盎司 (-0.30%)</p>
+<p>   高$4529.900 低$4518.500 | 约 ¥978/克</p>
 <p>⚡ 快手(1024.HK): HK$32.76 (-2.62%)</p>
 <p>💱 美元/人民币: 6.7238</p></div>
 </details>
@@ -112,20 +112,20 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-04 07-08</span>
+    <span class="card-meta">🕐 最近 09-04 08-08</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>完成。仪表盘已全量更新并推送。</p>
-<p><b>本次结果</b>（commit <code>44c09d2</code>，时间戳 2026-09-04 07:06 CST）：</p>
+  <div class="card-body"><p>仪表盘更新完成。已复用 <code>dashboard-cdp-update.py</code> 全自动抓取并推送。</p>
+<p><b>结果</b></p>
 <ul>
-<li>🎵 抖音：10 条 ✓</li>
-<li>📊 GitHub Trending：今日/周/月各 10 条 ✓</li>
-<li>📺 B站：10 条 ✓</li>
-<li>📰 vicoman：0 条 —— 已诊断，<b>源站当前真实无数据</b>（guest 会话正常、权威 API <code>total:0 / has_more:false</code>、页面显示「今日新闻 0」），非抓取故障。HTML 按兜底逻辑保留旧 4 条新闻。</li>
+<li>✅ 抖音热点：10 条（API）</li>
+<li>✅ GitHub Trending：今日 10 / 本周 10 / 本月 10（Search API，已带限流重试）</li>
+<li>✅ B站排行：10 条（CDP 提取）</li>
+<li>⚠️ vicoman 新闻：<b>0 条</b></li>
 </ul>
-<p><b>推送后自检</b>：无双前缀废链，bilibili 10 条视频链接正常，rank-num 51 条，已 clean push，无残留改动。</p>
-<p>vicoman 空是此刻编委会现实，下轮 cron 源站恢复后会自动填满，无需人工干预。</p></div>
+<p><b>vicoman 说明</b>：已多次排查——建立 guest 会话成功（<code>POST /api/auth/guest</code> 返回 200，身份写入 localStorage <code>vico_identity</code>），但内部 API <code>/web-api/news/news</code> 返回 <code>items:[]</code>、页面自身显示「暂无匹配新闻 / 今日新闻 0」，是站点对 guest 会话当前无可用数据（且非抓取失败）。其余三源正常，index.html 已更新并 <code>git push</code> 成功（✅ 已推送）。</p>
+<p>实时数据统计：抖音 10 | B站 10 | GitHub 10/10/10 | 新闻 0。</p></div>
 </details>
 <details class="card " >
   <summary>
