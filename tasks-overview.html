@@ -64,7 +64,7 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-05 01:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-05 02:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
   <div class="stat g"><b>8</b><span>正常</span></div>
@@ -84,7 +84,7 @@
     <span class="card-name">智能心跳检测</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-05 01-46</span>
+    <span class="card-meta">🕐 最近 09-05 02-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -97,13 +97,13 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-05 01-15</span>
+    <span class="card-meta">🕐 最近 09-05 02-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-05 01:15]</p>
-<p>🥇 黄金: $4487/盎司 (-1.16%)</p>
-<p>   高$4537.800 低$4412.000 | 约 ¥969/克</p>
+  <div class="card-body"><p>💰 每日行情 [09-05 02:15]</p>
+<p>🥇 黄金: $4463/盎司 (-1.70%)</p>
+<p>   高$4537.800 低$4412.000 | 约 ¥963/克</p>
 <p>⚡ 快手(1024.HK): HK$33.66 (+2.75%)</p>
 <p>💱 美元/人民币: 6.7142</p></div>
 </details>
@@ -113,20 +113,23 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-05 01-09</span>
+    <span class="card-meta">🕐 最近 09-05 02-07</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>仪表盘更新完成。</p>
-<p><b>📊 本次更新（2026-09-05 01:06 CST）</b></p>
-<ul>
-<li>抖音热点：10 条 ✅</li>
-<li>GitHub Trending：今日 10 / 本周 10 / 本月 10 ✅</li>
-<li>B站排行：10 条 ✅</li>
-<li>vicoman 新闻：<b>数据源当前真实为空</b>（内部 API 反复返回 <code>total:0</code>，页面一致显示&quot;暂无匹配新闻&quot;，即使带有效 guest 会话）→ 按数据保留策略回退了上一轮有效新闻块，避免伪造</li>
-<li>已生成 index.html + star-rank.html 并 git push 成功 ✅</li>
-</ul>
-<p>已把&quot;vicoman total=0 是数据源真实空、非抓取失败&quot;的状态写入 dashboard-auto-update 经验文件，防下次误判。若需保持新闻区新鲜，建议后续改用 ithome / techcrunch 等备源。</p></div>
+  <div class="card-body"><p>vicoman 源站当前无实时新闻（DOM 显示 &quot;NO RESULTS / 当前还没有可展示的新闻&quot;），属源站数据为空，非抓取问题。仪表盘已完整更新并推送成功。</p>
+<h3 class='h3'>📊 仪表盘更新完成（2026-09-05 02:06 CST）</h3>
+<p>已生成 index.html 并 git push ✅（commit <code>c6e8db1</code>）</p>
+<p><b>数据抓取情况：</b></p>
+<table><thead><tr><th>数据源</th><th>结果</th></tr></thead><tbody>
+<tr><td>🎵 抖音热点</td><td>✅ 10 条</td></tr>
+<tr><td>📊 GitHub Trending（日/周/月）</td><td>✅ 10/10/10</td></tr>
+<tr><td>📺 B站排行（CDP）</td><td>✅ 10 条</td></tr>
+<tr><td>📰 vicoman 新闻（CDP）</td><td>⚠️ 0 条（源站当前无实时新闻，已回退保留最近 4 条旧链接）</td></tr>
+</tbody></table>
+<p><b>vicoman 说明：</b> 通过 CDP eval 确认源站当前显示 &quot;NO RESULTS / 暂无匹配新闻&quot;，内部 API <code>/web-api/news/news</code> 也返回 <code>total: 0</code>。凌晨时段源站实时信源为空，属正常现象，非抓取失败。已用 git 历史回退保留最近已知新闻，避免新闻区块空白。</p>
+<p><b>推送：</b> 成功，已提交并 push 到 <code>origin/main</code>。访问 GitHub Pages 即可查看最新仪表盘。</p>
+<p>任务完成，无其他异常。</p></div>
 </details>
 <details class="card " >
   <summary>
