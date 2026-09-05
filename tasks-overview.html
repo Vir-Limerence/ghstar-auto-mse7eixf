@@ -64,11 +64,11 @@
 <body>
 <header>
   <h1>📡 Hermes 任务总览</h1>
-  <p>生成于 2026-09-05 20:50 · 数据源：cron 输出目录</p>
+  <p>生成于 2026-09-05 21:50 · 数据源：cron 输出目录</p>
 </header>
 <div class="stats">
-  <div class="stat g"><b>6</b><span>正常</span></div>
-  <div class="stat e"><b>2</b><span>异常</span></div>
+  <div class="stat g"><b>5</b><span>正常</span></div>
+  <div class="stat e"><b>3</b><span>异常</span></div>
   <div class="stat w"><b>6</b><span>运行中</span></div>
   <div class="stat o"><b>2</b><span>已停用</span></div>
 </div>
@@ -82,13 +82,16 @@
   <summary>
     <span class="card-icon">💓</span>
     <span class="card-name">智能心跳检测</span>
-    <span class='badge ok'>正常</span>
+    <span class='badge warn'>⚠️ 告警</span>
     <span class="card-meta">⏱ 每小时 :45</span>
-    <span class="card-meta">🕐 最近 09-05 20-45</span>
+    <span class="card-meta">🕐 最近 09-05 21-45</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p class='empty'>无输出</p></div>
+  <div class="card-body"><p>🚨 心跳异常 [2026-09-05 21:45]</p>
+<p>❌ GitHub Pages 不可达</p>
+<p>❌ DeepSeek API 不可达</p>
+<p>正常项: 3</p></div>
 </details>
 <details class="card " open>
   <summary>
@@ -96,15 +99,15 @@
     <span class="card-name">每日金价快手行情</span>
     <span class='badge ok'>正常</span>
     <span class="card-meta">⏱ 每小时 :15</span>
-    <span class="card-meta">🕐 最近 09-05 20-16</span>
+    <span class="card-meta">🕐 最近 09-05 21-15</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><p>💰 每日行情 [09-05 20:16]</p>
-<p>🥇 黄金: $--/盎司 (--%)</p>
-<p>   高$-- 低$-- | 约 ¥--/克</p>
-<p>⚡ 快手(1024.HK): HK$-- (--%)</p>
-<p>💱 美元/人民币: --</p></div>
+  <div class="card-body"><p>💰 每日行情 [09-05 21:15]</p>
+<p>🥇 黄金: $4482/盎司 (-1.27%)</p>
+<p>   高$4537.800 低$4412.000 | 约 ¥967/克</p>
+<p>⚡ 快手(1024.HK): HK$33.66 (+2.75%)</p>
+<p>💱 美元/人民币: 6.7108</p></div>
 </details>
 <details class="card " >
   <summary>
@@ -112,7 +115,7 @@
     <span class="card-name">仪表盘统一更新</span>
     <span class='badge err'>异常</span>
     <span class="card-meta">⏱ 每小时 :05</span>
-    <span class="card-meta">🕐 最近 09-05 20-06</span>
+    <span class="card-meta">🕐 最近 09-05 21-06</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
@@ -434,28 +437,13 @@ RuntimeError: Connection error.
   <summary>
     <span class="card-icon">📋</span>
     <span class="card-name">每日聊天面板</span>
-    <span class='badge ok'>正常</span>
+    <span class='badge err'>异常</span>
     <span class="card-meta">⏱ 每日 21:00</span>
-    <span class="card-meta">🕐 最近 09-04 21-00</span>
+    <span class="card-meta">🕐 最近 09-05 21-02</span>
     <span class="card-en">运行中</span>
     <span class="chev">▾</span>
   </summary>
-  <div class="card-body"><h2 class='h2'>📋 每日面板 · 2026-09-04</h2>
-<h3 class='h3'>🔑 关键话题</h3>
-<p>今天无用户主动对话，均为自动 cron 任务（仪表盘每小时更新、消防员监控、股票分析等例行运行）。</p>
-<h3 class='h3'>✅ 待办</h3>
-<ul>
-<li>无新增待办</li>
-</ul>
-<h3 class='h3'>💡 决策</h3>
-<ul>
-<li>vicoman 新闻源今日多次抓取为 0（站点侧无数据，非脚本故障），已靠 git 历史回退兜底保留旧新闻区块，页面不空白</li>
-<li>消防员上海编制内名单 8-18 已公示，今日监控无新动态（符合预期，保持静默）</li>
-</ul>
-<h3 class='h3'>🔗 会话链接</h3>
-<p>今天的会话全部为 cron 例行任务（仪表盘更新 @session:default/cron_64217fe26851_... 多轮、消防监控 cron_977b44e0805f），无真人交互。</p>
-<p>---</p>
-<p>说明：今天 9-4 无用户聊天记录，仅系统自动任务正常运行，故无实质内容可整理。</p></div>
+  <div class="card-body"><p class='empty'>无输出</p></div>
 </details>
 <details class="card " >
   <summary>
